@@ -1,0 +1,31 @@
+
+Outline of XML
+- CA type
+- size of grid (num cells) [Visualizer has predefined display size for any size grid]
+
+
+Each type includes its initial state
+- CA types (extendable)
+    - Percolation
+        - blocked
+        - percent open (of unblocked) -> rest are percolated
+
+    - Fire
+        - empty
+        - percent burning
+
+    - Game of Life
+        - ??
+
+    - Segregation
+        - Similar
+        - percent blue ppl
+        - percent empty
+
+    - Predator-Prey
+        - Percent predator
+        - percent empty
+        - prey reproduction waiting time
+        - predator reproduction waiting time
+        - predator initial energy
+            ("energy" idea from http://beltoforion.de/article.php?a=wator_simulation)
