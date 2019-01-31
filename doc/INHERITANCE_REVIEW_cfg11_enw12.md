@@ -17,4 +17,13 @@
 5. Design keeps things compartmentalized and is spread out logically.
 
 ## Part 2
-1. Links to the main simulation class and 
+1. Links to the main simulation class and has internal public methods called from there.
+
+2. Based on behavior of simulation class and progression of the simulation
+
+3. Minimize dependencies by encapsulating
+
+## Part 3
+1. 5 different simulations
+
+2. 
