@@ -1,7 +1,8 @@
 
 Outline of XML
-- CA type
-- size of grid (num cells) [Visualizer has predefined display size for any size grid]
+- Type of CA
+- width
+- height
 
 
 Each type includes its initial state
@@ -29,3 +30,17 @@ Each type includes its initial state
         - predator reproduction waiting time
         - predator initial energy
             ("energy" idea from http://beltoforion.de/article.php?a=wator_simulation)
+
+
+
+For the parser:
+private String getTextValue (Element e, String tagName) {
+        var nodeList = e.getElementsByTagName(tagName); <-- or * for all children tags
+        if (nodeList != null && nodeList.getLength() > 0) {
+            return nodeList.item(0).getTextContent();
+        }
+        else {
+            // FIXME: empty string or null, is it an error to not find the text value?
+            return "";
+        }
+    }

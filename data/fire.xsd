@@ -1,0 +1,45 @@
+<xsd:schema elementFormDefault="qualified"
+            targetNamespace="all-CA"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:CA="CA_elements_and_types.xsd">
+
+    <xsd:element name="fire">
+        <xsd:element name="num-states" type="xsd:int"/>
+        <xsd:choice>
+            <xsd:element name="random" type="random-fire"/>
+            <xsd:element name="configuration" type="configuration-fire"/>
+        </xsd:choice>
+    </xsd:element>
+
+    <xsd:complexType name="random-fire">
+        <xsd:sequence>
+            <xsd:element name="state-makeup">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="burning" type="xsd:decimal"/>
+                        <!-- grid will infer composition of last state -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element ref="CA:parameters"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="configuration-fire">
+        <xsd:sequence>
+            <xsd:element name="state-locations">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="empty-spots" type="CA:positions"/> <!-- IMPORTANT to get this to work -->
+                        <xsd:element name="burning-spots" type="CA:positions"/>
+                        <!-- grid will infer composition of last state -->
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element ref="CA:parameters"/> <!-- FIX, bring the fire parameter back into this doc-->
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

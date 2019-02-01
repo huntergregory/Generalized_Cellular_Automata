@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<automaton title="Random Fire">
+    <dimensions>
+        <height>10</height>
+        <width>10</width>
+    </dimensions>
+    <fire>
+        <random>
+            <initial-state>
+                <empty>
+                    0.3
+                </empty>
+                <burning>
+                    0.1
+                </burning>
+                <green>
+                    -1
+                </green>
+            </initial-state>
+            <parameters>
+                <probCatch>
+                    0.3
+                </probCatch>
+            </parameters>
+        </random>
+    </fire>
+</automaton>

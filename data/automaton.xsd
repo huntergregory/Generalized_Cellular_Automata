@@ -1,0 +1,22 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="automaton-namespace">
+    <xsd:import namespace="all-CA" schemaLocation="fire.xsd"/>
+
+    <xsd:element name="automaton">
+        <xsd:complexType> <!-- might need to set mixed to true-->
+            <xsd:sequence>
+                <xsd:element name="dimensions">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="width" type="xsd:int"/>
+                            <xsd:element name="height" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:any namespace="all-CA"/> <!-- FIX??  -->  <!-- include any CA type here -->
+            </xsd:sequence>
+            <xsd:attribute name="title" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

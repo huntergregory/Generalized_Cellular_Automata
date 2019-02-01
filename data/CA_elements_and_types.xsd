@@ -1,0 +1,25 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            targetNamespace="elements-and-types-namespace">
+
+
+    <xsd:complexType name="positions">
+        <xsd:sequence>
+            <xsd:element name="position" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="x-pos" type="xsd:int"/>
+                        <xsd:element name="y-pos" type="xsd:int"/></xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="parameters">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="probCatch" type="xsd:decimal"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
