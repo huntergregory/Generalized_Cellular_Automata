@@ -1,0 +1,29 @@
+<xsd:schema elementFormDefault="qualified"
+        targetNamespace="all-CA"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:CA="all-CA/elements-and-types">
+
+    <xsd:element name="percolation" type="CA:general-CA"/>
+
+    <!-- overriding state-makeup-list in CA:general-CA -->
+    <!-- <xsd:override schemaLocation="CA_elements_and_types.xsd">
+        <xsd:complexType name="state-makeup-list">
+            <xsd:sequence>
+                <xsd:element name="open" type="xsd:decimal"/>
+                <xsd:element name="percolated" type="xsd:decimal"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:override> -->
+
+    <!-- overriding location-list in CA:general-CA -->
+    <xsd:override schemaLocation="CA_elements_and_types.xsd">
+        <xsd:complexType name="location-list">
+                    <!-- <xsd:sequence>
+                        <xsd:element name="open" type="CA:positions"/>
+                        <xsd:element name="percolated" type="CA:positions"/>
+                    </xsd:sequence> -->
+
+        </xsd:complexType>
+    </xsd:override>
+
+</xsd:schema>

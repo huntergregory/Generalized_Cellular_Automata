@@ -1,7 +1,37 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            targetNamespace="elements-and-types-namespace">
+            targetNamespace="all-CA/elements-and-types">
+
+    <xsd:complexType name="general-CA">
+            <xsd:sequence>
+                <xsd:element name="num-states" type="xsd:int"/>
+                <xsd:choice>
+                    <xsd:element name="random" type="state-makeup-list"/>
+                    <xsd:element name="configuration" type="location-list"/>
+                </xsd:choice>
+                <xsd:element name="parameters" type="parameter-list"/>
+            </xsd:sequence>
+    </xsd:complexType>
 
 
+    <!-- All list types below are placeholders that need to be overwritten -->
+
+    <!-- Rewrite for every CA type's schema.
+            Each item represents a percent of the grid occupied by a certain state.
+            Each item must have type decimal.
+            Omit the last state to let the grid infer it's composition. -->
+    <xsd:complexType name="state-makeup-list"/>
+
+    <!-- Rewrite for all CA types' schemas.
+            Each item must have type "positions".
+            Omit the last state to let the grid infer it's composition.-->
+    <xsd:complexType name="location-list"/>
+
+    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+            Each item must have type decimal. -->
+    <xsd:complexType name="parameter-list"/>
+
+
+    <!-- allows a list of position elements, each a parent to an x, y coordinate -->
     <xsd:complexType name="positions">
         <xsd:sequence>
             <xsd:element name="position" maxOccurs="unbounded">
@@ -13,13 +43,5 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-
-    <xsd:element name="parameters">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="probCatch" type="xsd:decimal"/>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
 
 </xsd:schema>

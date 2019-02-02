@@ -1,6 +1,6 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
            targetNamespace="automaton-namespace">
-    <xsd:import namespace="all-CA" schemaLocation="fire.xsd"/>
+    <xsd:import namespace="all-CA" schemaLocation="all-CA.xsd"/>
 
     <xsd:element name="automaton">
         <xsd:complexType> <!-- might need to set mixed to true-->
