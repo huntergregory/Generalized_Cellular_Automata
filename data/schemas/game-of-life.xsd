@@ -10,7 +10,7 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:state-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="cells-on" type="xsd:decimal"/>
+                        <xsd:element name="cells-on" type="xsd:decimal" default="0.1"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

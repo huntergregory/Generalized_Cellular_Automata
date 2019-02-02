@@ -1,0 +1,26 @@
+<CA:segregation xmlns:CA="cellular-automata">
+  <CA:dimensions>
+    <CA:width>3</CA:width>
+    <CA:height>3</CA:height>
+  </CA:dimensions>
+  <CA:num-states>3</CA:num-states>
+  <CA:configuration>
+    <CA:empty-spots>
+      <!--1 or more repetitions:-->
+      <CA:position>
+        <CA:x>3</CA:x>
+        <CA:y>3</CA:y>
+      </CA:position>
+    </CA:empty-spots>
+    <CA:person-A-spots>
+      <!--1 or more repetitions:-->
+      <CA:position>
+        <CA:x>3</CA:x>
+        <CA:y>3</CA:y>
+      </CA:position>
+    </CA:person-A-spots>
+  </CA:configuration>
+  <CA:parameters>
+    <CA:similar>1000.00</CA:similar>
+  </CA:parameters>
+</CA:segregation>
