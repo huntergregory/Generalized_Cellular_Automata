@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<automaton kind="fire" title="Fire Test Configuration">
+  <dimensions>
+    <width>10</width>
+    <height>10</height>
+  </dimensions>
+  <num-states>3</num-states>
+  <configuration>
+    <fire-locations>
+      <empty-spots>
+        <!--1 or more repetitions:-->
+        <position>
+          <x-pos>2</x-pos>
+          <y-pos>1</y-pos>
+        </position>
+      </empty-spots>
+      <burning-spots>
+        <!--1 or more repetitions:-->
+        <position>
+          <x-pos>5</x-pos>
+          <y-pos>5</y-pos>
+        </position>
+      </burning-spots>
+    </fire-locations>
+  </configuration>
+  <parameters>
+    <fire-parameters>
+      <probCatch>0.01</probCatch>
+    </fire-parameters>
+  </parameters>
+</automaton>

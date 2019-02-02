@@ -1,7 +1,5 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:CA="all-CA/elements-and-types">
-            elementFormDefault="qualified"
-            targetNamespace="all-CAs"> <!-- FIX target namespace -->
+            elementFormDefault="qualified"> <!-- FIX target namespace -->
 
 
     <!-- FIX, need to reference positions in another schema? -->
@@ -55,8 +53,8 @@
                                     <xsd:element name="fire-locations">
                                         <xsd:complexType>
                                             <xsd:sequence>
-                                                <xsd:element name="empty-spots" type="CA:positions"/> <!-- IMPORTANT to get this to work -->
-                                                <xsd:element name="burning-spots" type="CA:positions"/>
+                                                <xsd:element name="empty-spots" type="positions"/> <!-- IMPORTANT to get this to work -->
+                                                <xsd:element name="burning-spots" type="positions"/>
                                             </xsd:sequence>
                                         </xsd:complexType>
                                     </xsd:element>
@@ -64,8 +62,8 @@
                                     <xsd:element name="percolation-locations">
                                         <xsd:complexType>
                                             <xsd:sequence>
-                                                <xsd:element name="open" type="CA:positions"/>
-                                                <xsd:element name="percolated" type="CA:positions"/>
+                                                <xsd:element name="open" type="positions"/>
+                                                <xsd:element name="percolated" type="positions"/>
                                             </xsd:sequence>
                                         </xsd:complexType>
                                     </xsd:element>
@@ -91,8 +89,22 @@
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
-
             </xsd:sequence>
+            <xsd:attribute name="kind" type="xsd:string"/>
+            <xsd:attribute name="title" type="xsd:string"/>
         </xsd:complexType>
     </xsd:element>
+
+    <xsd:complexType name="positions">
+        <xsd:sequence>
+            <xsd:element name="position" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="xsd:int"/>
+                        <xsd:element name="y" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
 </xsd:schema>
