@@ -8,7 +8,7 @@
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="state-makeup-list">
             <xsd:complexContent>
-                <xsd:extension base="CA:state-makeup-list">
+                <xsd:extension base="state-makeup-list">
                     <xsd:sequence>
                         <xsd:element name="open" type="xsd:decimal" default="0.1"/>
                         <xsd:element name="percolating" type="xsd:decimal" default="0.1"/>
@@ -18,14 +18,14 @@
         </xsd:complexType>
         <xsd:complexType name="location-list">
             <xsd:complexContent>
-                <xsd:extension base="CA:location-list">
+                <xsd:extension base="location-list">
                     <xsd:sequence>
-                        <xsd:element name="open-spots" type="CA:positions"/>
-                        <xsd:element name="percolating-spots" type="CA:positions"/>
+                        <xsd:element name="open-spots" type="positions"/>
+                        <xsd:element name="percolating-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:redefine>
-    <xsd:element name="percolation" type="CA:automaton"/>
+    <xsd:element name="percolation" type="automaton"/>
 </xsd:schema>

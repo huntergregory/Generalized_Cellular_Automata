@@ -2,13 +2,11 @@
      Can choose configured locations for both states.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xmlns:CA="cellular-automata"
-            targetNamespace="cellular-automata">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="state-makeup-list">
             <xsd:complexContent>
-                <xsd:extension base="CA:state-makeup-list">
+                <xsd:extension base="state-makeup-list">
                     <xsd:sequence>
                         <xsd:element name="cells-on" type="xsd:decimal" default="0.1"/>
                     </xsd:sequence>
@@ -17,13 +15,13 @@
         </xsd:complexType>
         <xsd:complexType name="location-list">
             <xsd:complexContent>
-                <xsd:extension base="CA:location-list">
+                <xsd:extension base="location-list">
                     <xsd:sequence>
-                        <xsd:element name="cells-on" type="CA:positions"/>
+                        <xsd:element name="cells-on" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:redefine>
-    <xsd:element name="game-of-life" type="CA:automaton"/>
+    <xsd:element name="game-of-life" type="automaton"/>
 </xsd:schema>
