@@ -1,0 +1,38 @@
+<!-- Schema for a predator prey automaton.
+     Can choose configured locations for all three states.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xmlns:CA="cellular-automata"
+            targetNamespace="cellular-automata">
+    <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="state-makeup-list">
+            <xsd:complexContent>
+                <xsd:extension base="CA:state-makeup-list">
+                    <xsd:sequence>
+                        <xsd:element name=""/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="location-list">
+            <xsd:complexContent>
+                <xsd:extension base="CA:location-list">
+                    <xsd:sequence>
+                        <xsd:element name=""/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="parameter-list">
+            <xsd:complexContent>
+                <xsd:extension base="CA:parameter-list">
+                    <xsd:sequence>
+                        <xsd:element name=""/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:redefine>
+    <xsd:element name="predator-prey" type="CA:automaton"/>
+</xsd:schema>

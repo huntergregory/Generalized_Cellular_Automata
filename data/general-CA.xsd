@@ -1,0 +1,67 @@
+<!-- A general cellular automaton complex type that allows extension.
+        Steps to extend:
+          - create an xsd with the same schema header as this file (under the same namespace)
+          - redefine and extend all the "list" types below
+          - create a new element of type "general-CA"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xmlns:CA="cellular-automata"
+            targetNamespace="cellular-automata">
+
+    <xsd:complexType name="automaton">
+        <xsd:sequence>
+            <xsd:element name="dimensions">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="width" type="xsd:int"/>
+                        <xsd:element name="height" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="num-states" type="xsd:int"/>
+            <xsd:choice>
+                <xsd:element name="random" type="CA:state-makeup-list"/>
+                <xsd:element name="configuration" type="CA:location-list"/>
+            </xsd:choice>
+            <xsd:element name="parameters" type="CA:parameter-list"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- All list types below are placeholders that need to be overwritten -->
+
+    <!-- Rewrite for every CA type's schema.
+         Each item represents a percent of the grid occupied by a certain state.
+         Each item must have type decimal.
+         Omit the last state to let the grid infer it's composition.
+     -->
+    <xsd:complexType name="state-makeup-list"/>
+
+    <!-- Rewrite for all CA types' schemas.
+         Each item must have type "positions".
+         Omit the last state to let the grid infer it's composition.
+    -->
+    <xsd:complexType name="location-list"/>
+
+    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+         Each item must have type decimal.
+    -->
+    <xsd:complexType name="parameter-list"/>
+
+
+    <!-- Allows a list of position elements, each a parent to an x, y coordinate.
+         Use this in making a location-list.
+    -->
+    <xsd:complexType name="positions">
+        <xsd:sequence>
+            <xsd:element name="position" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="xsd:int"/>
+                        <xsd:element name="y" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

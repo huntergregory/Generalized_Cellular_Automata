@@ -1,0 +1,29 @@
+<!-- Schema for a percolation automaton.
+     Can choose random or configured locations for all three states.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xmlns:CA="cellular-automata"
+            targetNamespace="cellular-automata">
+    <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="state-makeup-list">
+            <xsd:complexContent>
+                <xsd:extension base="CA:state-makeup-list">
+                    <xsd:sequence>
+                        <xsd:element name="test1"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="location-list">
+            <xsd:complexContent>
+                <xsd:extension base="CA:location-list">
+                    <xsd:sequence>
+                        <xsd:element name="test2"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:redefine>
+    <xsd:element name="percolation" type="CA:automaton"/>
+</xsd:schema>
