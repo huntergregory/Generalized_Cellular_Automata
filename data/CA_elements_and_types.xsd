@@ -12,7 +12,6 @@
             </xsd:sequence>
     </xsd:complexType>
 
-
     <!-- All list types below are placeholders that need to be overwritten -->
 
     <!-- Rewrite for every CA type's schema.
