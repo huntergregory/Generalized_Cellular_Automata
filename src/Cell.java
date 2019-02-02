@@ -8,11 +8,13 @@ import java.util.HashMap;
 public class Cell {
     private Rectangle cellBody;
     private Color cellColor;
+    private int state;
 
-    public Cell(double xPos, double yPos, double size, Color color){
+    public Cell(double xPos, double yPos, double size, Color color, int State){
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setFill(color);
         cellColor = color;
+        state = State;
     }
 
     /**
@@ -48,6 +50,14 @@ public class Cell {
      */
     public Color getColor(){
         return cellColor;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int State) {
+        state = State;
     }
 
 }
