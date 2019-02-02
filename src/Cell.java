@@ -10,11 +10,8 @@ public class Cell {
     private Color cellColor;
     private int state;
 
-    public Cell(double xPos, double yPos, double size, Color color, int State){
+    public Cell(double yPos, double xPos, double size){
         cellBody = new Rectangle(xPos,yPos,size, size);
-        cellBody.setFill(color);
-        cellColor = color;
-        state = State;
     }
 
     /**
@@ -22,6 +19,7 @@ public class Cell {
      * @param color color to change the fill to
      */
     public void setColor(Color color){
+        cellColor = color;
         cellBody.setFill(color);
     }
 
