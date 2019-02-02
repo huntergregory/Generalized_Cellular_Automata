@@ -1,0 +1,16 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="thing" type="ProductType"/>
+
+    <xs:redefine schemaLocation="test-overriden.xsd">
+        <xs:complexType name="ProductType">
+            <xs:complexContent>
+                <xs:extension base="ProductType">
+                    <xs:sequence>
+                        <xs:element name="color" type="xs:string"/>
+                    </xs:sequence>
+                    <xs:attribute name="effDate" type="xs:date"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:redefine>
+</xs:schema>

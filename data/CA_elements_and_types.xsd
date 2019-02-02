@@ -1,5 +1,5 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            targetNamespace="all-CA/elements-and-types">
+            targetNamespace="all-CAs/elements-and-types">
 
     <xsd:complexType name="general-CA">
             <xsd:sequence>
@@ -37,8 +37,9 @@
             <xsd:element name="position" maxOccurs="unbounded">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="x-pos" type="xsd:int"/>
-                        <xsd:element name="y-pos" type="xsd:int"/></xsd:sequence>
+                        <xsd:element name="x" type="xsd:int"/>
+                        <xsd:element name="y" type="xsd:int"/>
+                    </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
         </xsd:sequence>
