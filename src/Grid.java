@@ -13,14 +13,28 @@ public abstract class Grid {
     /**
      * constructor
      * @param gridSize
-     * @param colorMap
+     * @param screenSize
      */
-    public Grid(int gridSize, double screenSize, HashMap<Integer, Color> colorMap){
+    public Grid(int gridSize, double screenSize){
         grid = new Cell[gridSize][gridSize];
-        setStateColorMap(colorMap);
+        initStateColorMap();
         cellSize = screenSize/gridSize;
     }
 
+
+    /**
+     * Abstract method called in the Grid constructor. Method must create a state-color map and call setStateColorMap.
+     */
+    abstract void initStateColorMap();
+
+
+    /**
+     * set color map that maps each state to a particular color
+     * @param colorMap
+     */
+    void setStateColorMap(HashMap<Integer, Color> colorMap) {
+        stateColorMap = colorMap;
+    }
 
 
     /**
@@ -34,16 +48,6 @@ public abstract class Grid {
      * Abstract method that will define algorithm for changing cell states. Will be defined explicitly in subclasses.
      */
     abstract void updateCells();
-
-
-    /**
-     * set color map that maps each state to a particular color
-     * @param colorMap
-     */
-    private void setStateColorMap(HashMap<Integer, Color> colorMap){
-        stateColorMap = colorMap;
-    }
-
 
 
     /**
