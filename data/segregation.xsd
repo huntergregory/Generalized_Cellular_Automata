@@ -1,5 +1,6 @@
 <!-- Schema for a segregation automaton.
      Can choose configured locations for all three states.
+     Can specify how similar each population is in the form of a decimal percent.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
@@ -10,7 +11,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:state-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="person-A" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -19,7 +21,16 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:location-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:choice>
+                            <xsd:sequence>
+                                <xsd:element name="empty-spots" type="CA:positions"/>
+                                <xsd:element name="person-A-spots" type="CA:positions"/>
+                            </xsd:sequence>
+                            <xsd:sequence>
+                                <xsd:element name="person-A-spots" type="CA:positions"/>
+                                <xsd:element name="person-B-spots" type="CA:positions"/>
+                            </xsd:sequence>
+                        </xsd:choice>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -28,7 +39,7 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:parameter-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:element name="similar" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

@@ -13,7 +13,6 @@
                     <xsd:sequence>
                         <xsd:element name="empty" type="xsd:decimal"/>
                         <xsd:element name="burning" type="xsd:decimal"/>
-                        <!-- grid will infer composition of last state -->
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -22,9 +21,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:location-list">
                     <xsd:sequence>
-                        <xsd:element name="empty-spots" type="CA:positions"/> <!-- IMPORTANT to get this to work -->
+                        <xsd:element name="empty-spots" type="CA:positions"/>
                         <xsd:element name="burning-spots" type="CA:positions"/>
-                        <!-- grid will infer composition of last state -->
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

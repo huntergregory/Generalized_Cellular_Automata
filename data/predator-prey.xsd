@@ -1,5 +1,6 @@
 <!-- Schema for a predator prey automaton.
      Can choose configured locations for all three states.
+     Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
@@ -10,7 +11,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:state-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="predator" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -19,7 +21,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:location-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:element name="empty-spots" type="CA:positions"/>
+                        <xsd:element name="predator-spots" type="CA:positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -28,7 +31,9 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:parameter-list">
                     <xsd:sequence>
-                        <xsd:element name=""/>
+                        <xsd:element name="prey-reproduce-time" type="xsd:int"/>
+                        <xsd:element name="predator-reproduce-time" type="xsd:int"/>
+                        <xsd:element name="predator-sustenance-time" type="xsd:int"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

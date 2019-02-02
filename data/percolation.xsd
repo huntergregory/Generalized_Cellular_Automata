@@ -10,7 +10,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:state-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="test1"/>
+                        <xsd:element name="open" type="xsd:decimal"/>
+                        <xsd:element name="percolating" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -19,7 +20,8 @@
             <xsd:complexContent>
                 <xsd:extension base="CA:location-list">
                     <xsd:sequence>
-                        <xsd:element name="test2"/>
+                        <xsd:element name="open-spots" type="CA:positions"/>
+                        <xsd:element name="percolating-spots" type="CA:positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
