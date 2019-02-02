@@ -1,0 +1,11 @@
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:CA="test1">
+<CA:thingy>
+  <THANG-el>
+    <number>100</number>
+    <name>string</name>
+    <size>string</size>
+    <country>anyType</country>
+  </THANG-el>
+</CA:thingy>
