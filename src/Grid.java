@@ -32,7 +32,7 @@ public abstract class Grid {
      * set color map that maps each state to a particular color
      * @param colorMap
      */
-    private void setStateColorMap(HashMap<Integer, Color> colorMap){
+    public void setStateColorMap(HashMap<Integer, Color> colorMap){
         stateColorMap = colorMap;
     }
 
@@ -54,7 +54,7 @@ public abstract class Grid {
      * Set grid randomly based on input composition (array of percentages)
      * @param composition array of percentages associated with each state
      */
-    public void setGridRandom(double[] composition, int screenSize){
+    public void setGridRandom(double[] composition){
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
         //fill grid randomly
@@ -130,6 +130,42 @@ public abstract class Grid {
     }
 
 
+    public ArrayList<Integer[]> getNeighbors(int row, int col){
+        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
+        if(row > 0){
+            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1){
+            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col > 0){
+            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col < grid.length-1){
+            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row > 0 && col > 0){
+            Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1 && col < grid.length-1){
+            Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1 && col > 0){
+            Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row > 0 && col < grid.length-1){
+            Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        return neighbors;
+    }
 
     /**
      * method to resize the grid
