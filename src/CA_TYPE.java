@@ -2,8 +2,11 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 public enum CA_TYPE {
-    FIRE("fire.xsd") { public String toString() { return "PercolationGrid"; } },
-    PERCOLATION("percolation.xsd") { public String toString() { return "PercolationGrid"; } };
+    FIRE("schemas/fire.xsd") { public String toString() { return "PercolationGrid"; } },
+    PERCOLATION("schemas/percolation.xsd") { public String toString() { return "PercolationGrid"; } },
+    GAME_OF_LIFE("schemas/game-of-life.xsd") { public String toString() { return "LifeGrid"; } },
+    PREDATOR_PREY("schemas/predator-prey.xsd") { public String toString() { return "PredatorPreyGrid"; } },
+    SEGREGATION("schemas/segregation.xsd") { public String toString() { return "SegregationGrid"; } };
 
     private String schemaFile;
     CA_TYPE(String schemaFile) {
