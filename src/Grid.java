@@ -119,6 +119,8 @@ public abstract class Grid {
 
 
 
+
+
     /**
      * Access cell at particular grid location and set its state
      * @param row
@@ -138,27 +140,41 @@ public abstract class Grid {
     abstract void changeGridSize();
 
 
-    /**
-     * Gets the neighborhood of a cell at specified position.
-     * @param row
-     * @param col
-     * @return array of neighboring Cells
-     * @throws IllegalArgumentException
-     */
-    Cell[] getNeighbors(int row, int col) throws IllegalArgumentException {
-        if (!isInBounds(row,col))
-            throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
-
-        ArrayList<Cell> neighbors = new ArrayList<>();
-        int[] deltaX = {-1, 1, 0, 0};
-        int[] deltaY = {0, 0, -1, 1};
-        for (int k=0; k<deltaX.length; k++) {
-            int neighborRow = row + deltaX[k];
-            int neighborCol = col + deltaY[k];
-            if (isInBounds(neighborRow, neighborCol))
-                neighbors.add(grid[neighborRow][neighborCol]);
+    public ArrayList<Integer[]> getNeighbors(int row, int col){
+        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
+        if(row > 0){
+            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
+            neighbors.add(neighbor);
         }
-        return neighbors.toArray(new Cell[0]);
+        if(row < grid.length-1){
+            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col > 0){
+            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col < grid.length-1){
+            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row > 0 && col > 0){
+            Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1 && col < grid.length-1){
+            Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1 && col > 0){
+            Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row > 0 && col < grid.length-1){
+            Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        return neighbors;
     }
 
 
