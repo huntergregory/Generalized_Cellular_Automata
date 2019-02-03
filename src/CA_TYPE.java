@@ -8,12 +8,12 @@ public enum CA_TYPE {
     PREDATOR_PREY("schemas/predator-prey.xsd") { public String toString() { return "PredatorPreyGrid"; } },
     SEGREGATION("schemas/segregation.xsd") { public String toString() { return "SegregationGrid"; } };
 
-    private String schemaFile;
+    private String mySchemaFile;
     CA_TYPE(String schemaFile) {
-        this.schemaFile = schemaFile;
+        mySchemaFile = schemaFile;
     }
 
-    public String getSchemaFile() { return schemaFile; }
+    public String getSchemaFile() { return mySchemaFile; }
 
     public Constructor<Grid> getRandomConstructor() {
         try {

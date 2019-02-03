@@ -128,10 +128,16 @@ public class XMLParser {
     }
 
     private String getResource(String filename) throws FileNotFoundException {
-        URL resource = getClass().getClassLoader().getResource(filename);
-        Objects.requireNonNull(resource);
+        try {
+            URL resource = getClass().getClassLoader().getResourceAsStream(filename);
+            System.out.println(resource==null);
+            Objects.requireNonNull(resource);
 
-        return resource.getFile();
+            return resource.getFile();
+        }
+        catch (FileNotFoundException e) {
+            throw new XMLException(e);
+        }
     }
 
     private DocumentBuilder getDocumentBuilder() {

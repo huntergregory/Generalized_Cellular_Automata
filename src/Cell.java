@@ -1,10 +1,6 @@
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.HashMap;
-
 public class Cell {
     private Rectangle cellBody;
     private Color cellColor;

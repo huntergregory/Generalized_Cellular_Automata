@@ -1,4 +1,3 @@
-
 public class XMLTestMain {
     static XMLParser myParser;
 
@@ -7,7 +6,9 @@ public class XMLTestMain {
     }
 
     public static void main(String[] args) {
+        XMLTestMain tester = new XMLTestMain();
         myParser.parseFile("automata/fire-test-config.xml");
+        System.out.println("here");
         System.out.println(myParser.getCAType());
         /*System.out.println(myParser.getConfiguration());
         System.out.println(myParser.getGridSize());

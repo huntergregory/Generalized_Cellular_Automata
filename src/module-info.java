@@ -5,5 +5,5 @@ module cellsociety.team09 {
     requires javafx.controls;
     requires javafx.media;
 
-    //exports xml;
+    exports XML;
 }
