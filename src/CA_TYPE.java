@@ -35,7 +35,9 @@ public enum CA_TYPE {
 
     private Class<Grid> getGridClass() {
         try {
-            return Class.forName("src/" + this.toString());
+            @SuppressWarnings("unchecked") //should always be Grid class
+            Class<Grid> gridClass = (Class<Grid>) Class.forName("src/" + this.toString());
+            return gridClass;
         }
         catch (ClassNotFoundException e) {
             return null;
