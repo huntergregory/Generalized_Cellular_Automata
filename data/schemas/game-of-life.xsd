@@ -8,7 +8,7 @@
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="cells-on" type="xsd:double"/>
+                        <xsd:element name="cells-on" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

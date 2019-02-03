@@ -8,8 +8,8 @@
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="open" type="xsd:double"/>
-                        <xsd:element name="percolating" type="xsd:double"/>
+                        <xsd:element name="open" type="xsd:decimal"/>
+                        <xsd:element name="percolating" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

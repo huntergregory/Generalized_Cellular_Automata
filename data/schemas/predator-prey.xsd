@@ -9,8 +9,8 @@
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:double">
-                        <xsd:element name="predator" type="xsd:double"/>
+                        <xsd:element name="empty" type="xsd:decimal">
+                        <xsd:element name="predator" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -29,8 +29,8 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="fish-breeding-age" type="xsd:double"/>
-                        <xsd:element name="shark-life-span" type="xsd:double"/>
+                        <xsd:element name="fish-breeding-age" type="xsd:decimal"/>
+                        <xsd:element name="shark-life-span" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

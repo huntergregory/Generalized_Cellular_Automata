@@ -9,8 +9,8 @@
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:double"/>
-                        <xsd:element name="person-A" type="xsd:double"/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="person-A" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -29,7 +29,7 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="similar" type="xsd:double"/>
+                        <xsd:element name="similar" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
