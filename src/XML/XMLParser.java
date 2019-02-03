@@ -1,3 +1,5 @@
+package XML;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -11,7 +13,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class XMLParser {
     /**
      * Stores necessary data from the given xml file
      * @param xmlFile
-     * @throws XMLException if xmlFile doesn't match a schema associated with a CA_TYPE
+     * @throws XMLException if xmlFile doesn't match a schema associated with a XML.CA_TYPE
      */
     public void parseFile(String xmlFile) throws XMLException {
         myRandomMakeup = new ArrayList<>();
@@ -127,17 +128,17 @@ public class XMLParser {
         }
     }
 
-    private String getResource(String filename) throws FileNotFoundException {
-        try {
-            URL resource = getClass().getClassLoader().getResourceAsStream(filename);
+    private String getResource(String filename) { //throws FileNotFoundException {
+        //try {
+            URL resource = getClass().getClassLoader().getResource(filename);
             System.out.println(resource==null);
             Objects.requireNonNull(resource);
 
             return resource.getFile();
-        }
+        /*}
         catch (FileNotFoundException e) {
-            throw new XMLException(e);
-        }
+            throw new XML.XMLException(e);
+        }*/
     }
 
     private DocumentBuilder getDocumentBuilder() {
@@ -150,7 +151,7 @@ public class XMLParser {
     }
 
     /**
-     * @return CA_TYPE of file parsed
+     * @return XML.CA_TYPE of file parsed
      */
     public CA_TYPE getCAType() { return myRootType; }
 
