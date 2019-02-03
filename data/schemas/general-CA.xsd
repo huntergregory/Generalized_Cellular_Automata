@@ -11,7 +11,7 @@
             <xsd:element name="size" type="xsd:int"/>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:choice>
-                <xsd:element name="random" type="random-makeup-list"/>
+                <xsd:element name="random" type="composition-list"/>
                 <xsd:element name="configured" type="location-list"/>
             </xsd:choice>
             <xsd:element name="parameters" type="parameter-list"/>
@@ -23,13 +23,13 @@
     <!-- Rewrite for every CA type's schema.
          Each item represents a percent of the grid occupied by a certain state.
          Each item must have type decimal.
-         Omit the last state to let the grid infer it's composition.
+         Make a state have a value of -1 for the Grid to infer its composition from those of the other states..
      -->
-    <xsd:complexType name="random-makeup-list"/>
+    <xsd:complexType name="composition-list"/>
 
     <!-- Rewrite for all CA types' schemas.
          Each item must have type "positions".
-         Omit the last state to let the grid infer it's composition.
+         Make a state have on position with a row and col value of -1 for the Grid to infer its positions from those of the other states.
     -->
     <xsd:complexType name="location-list"/>
 

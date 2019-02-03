@@ -4,12 +4,13 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="random-makeup-list">
+        <xsd:complexType name="composition-list">
             <xsd:complexContent>
-                <xsd:extension base="random-makeup-list">
+                <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="open" type="xsd:decimal"/>
-                        <xsd:element name="percolating" type="xsd:decimal"/>
+                        <xsd:element name="open-comp" type="xsd:decimal"/>
+                        <xsd:element name="percolating-comp" type="xsd:decimal"/>
+                        <xsd:element name="blocked-comp" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -20,6 +21,7 @@
                     <xsd:sequence>
                         <xsd:element name="open-spots" type="positions"/>
                         <xsd:element name="percolating-spots" type="positions"/>
+                        <xsd:element name="blocked-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
