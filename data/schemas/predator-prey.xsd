@@ -9,9 +9,9 @@
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty-comp" type="xsd:decimal"/>
-                        <xsd:element name="predator-comp" type="xsd:decimal"/>
-                        <xsd:element name="prey-comp" type="xsd:decimal"/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="predator" type="xsd:decimal"/>
+                        <xsd:element name="prey" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

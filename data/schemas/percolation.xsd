@@ -8,9 +8,9 @@
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="open-comp" type="xsd:decimal"/>
-                        <xsd:element name="percolating-comp" type="xsd:decimal"/>
-                        <xsd:element name="blocked-comp" type="xsd:decimal"/>
+                        <xsd:element name="open" type="xsd:decimal"/>
+                        <xsd:element name="percolating" type="xsd:decimal"/>
+                        <xsd:element name="blocked" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

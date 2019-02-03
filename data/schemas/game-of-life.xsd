@@ -8,8 +8,8 @@
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="on-comp" type="xsd:decimal"/>
-                        <xsd:element name="off-comp" type="xsd:decimal"/>
+                        <xsd:element name="on" type="xsd:decimal"/>
+                        <xsd:element name="off" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

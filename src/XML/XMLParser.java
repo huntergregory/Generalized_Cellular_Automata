@@ -94,7 +94,8 @@ public class XMLParser {
         try {
             var xmlDoc = DOCUMENT_BUILDER.parse(myXMLFile);
             myRoot = xmlDoc.getDocumentElement();
-        } catch (SAXException | IOException e) {
+        }
+        catch (SAXException | IOException e) {
             throw new XMLException(e);
         }
     }
