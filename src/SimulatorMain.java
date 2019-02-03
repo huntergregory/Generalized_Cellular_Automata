@@ -1,5 +1,10 @@
 import java.lang.reflect.Constructor;
 
+/**
+ *
+ * @author Dhanush Madabusi
+ * @coauthor Hunter Gregory
+ */
 public class SimulatorMain {
     public static final int GRID_DISPLAY_SIZE = 100;
 
