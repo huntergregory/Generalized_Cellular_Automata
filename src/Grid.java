@@ -7,6 +7,7 @@ public abstract class Grid {
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
     private Random rand = new Random();
+    private int gridSize;
     private double cellSize;
 
 
@@ -18,6 +19,7 @@ public abstract class Grid {
     public Grid(int gridSize, double screenSize){
         grid = new Cell[gridSize][gridSize];
         initStateColorMap();
+        this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
     }
 
@@ -48,7 +50,6 @@ public abstract class Grid {
      * Abstract method that will define algorithm for changing cell states. Will be defined explicitly in subclasses.
      */
     abstract void updateCells();
-
 
     /**
      * Set grid randomly based on input composition (array of percentages)
@@ -118,6 +119,8 @@ public abstract class Grid {
 
 
 
+
+
     /**
      * Access cell at particular grid location and set its state
      * @param row
@@ -128,6 +131,12 @@ public abstract class Grid {
         grid[row][column].setState(state);
         grid[row][column].setColor(stateColorMap.get(state));
     }
+    
+
+    /**
+     * method to resize the grid
+     */
+    abstract void changeGridSize();
 
 
     public ArrayList<Integer[]> getNeighbors(int row, int col){
@@ -167,11 +176,10 @@ public abstract class Grid {
         return neighbors;
     }
 
-    /**
-     * method to resize the grid
-     */
-    abstract void changeGridSize();
 
+    private boolean isInBounds(int r, int c) {
+        return r>=0 && r<gridSize && c>=0 && c<gridSize;
+    }
 
 
     /**
