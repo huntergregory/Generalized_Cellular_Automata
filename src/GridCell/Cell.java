@@ -1,3 +1,5 @@
+package GridCell;
+
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 

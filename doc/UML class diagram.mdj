@@ -379,7 +379,7 @@
 											"top": 143,
 											"width": 183,
 											"height": 13,
-											"text": "Grid"
+											"text": "GridCell.Grid"
 										},
 										{
 											"_type": "LabelView",
@@ -879,7 +879,7 @@
 											"top": 111,
 											"width": 92.498046875,
 											"height": 13,
-											"text": "Cell"
+											"text": "GridCell.Cell"
 										},
 										{
 											"_type": "LabelView",
@@ -1876,7 +1876,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Grid"
+					"name": "GridCell.Grid"
 				},
 				{
 					"_type": "UMLClass",
@@ -1884,7 +1884,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Cell"
+					"name": "GridCell.Cell"
 				},
 				{
 					"_type": "UMLClass",
@@ -1892,7 +1892,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Grid",
+					"name": "GridCell.Grid",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -1963,7 +1963,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Cell",
+					"name": "GridCell.Cell",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",

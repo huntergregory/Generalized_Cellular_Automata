@@ -1,3 +1,5 @@
+package GridCell;
+
 import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public abstract class Grid {
 
 
     /**
-     * Abstract method called in the Grid constructor. Method must create a state-color map and call setStateColorMap.
+     * Abstract method called in the GridCell.Grid constructor. Method must create a state-color map and call setStateColorMap.
      */
     abstract void initStateColorMap();
 

@@ -1,7 +1,8 @@
+package GridCell;
+
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 
 public class PredatorPrey extends Grid {

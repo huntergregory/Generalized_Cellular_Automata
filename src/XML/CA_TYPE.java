@@ -37,7 +37,7 @@ public enum CA_TYPE {
 
     private Class<Grid> getGridClass() {
         try {
-            @SuppressWarnings("unchecked") //should always be Grid class
+            @SuppressWarnings("unchecked") //should always be GridCell.Grid class
             Class<Grid> gridClass = (Class<Grid>) Class.forName("src/" + this.toString());
             return gridClass;
         }

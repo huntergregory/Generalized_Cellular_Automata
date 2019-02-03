@@ -180,7 +180,7 @@ public class XMLParser {
     public boolean getIsRandom() { return myIsRandom; }
 
     /**
-     * @return size of Grid for the xml file
+     * @return size of GridCell.Grid for the xml file
      */
     public int getGridSize() { return mySize; }
 }
