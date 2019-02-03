@@ -40,7 +40,7 @@ public class Segregation extends Grid {
             for (int j = 0; j < currentGrid.length; j++){
                 int myState = currentGrid[i][j].getState();
                 if (myState!= 0){
-                    ArrayList<Integer[]> neighbors = getNeighbors(i,j);
+                    ArrayList<Integer[]> neighbors = getNeighbors(i,j,true);
                     int numSameState = 0;
                     for (Integer[] cell : neighbors){
                         if (cell[2] == myState){
