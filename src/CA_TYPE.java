@@ -16,14 +16,29 @@ public enum CA_TYPE {
     public String getSchemaFile() { return schemaFile; }
 
     public Constructor<Grid> getRandomConstructor() {
-        return getGridClass().getConstructor(int.class, double.class, double[].class, int[].class);
+        try {
+            return getGridClass().getConstructor(int.class, double.class, double[].class, int[].class);
+        }
+        catch (NoSuchMethodException e) {
+            return null;
+        }
     }
 
     public Constructor<Grid> getConfiguredConstructor() {
-        return getGridClass().getConstructor(int.class, double.class, ArrayList.class, int[].class);
+        try {
+            return getGridClass().getConstructor(int.class, double.class, ArrayList.class, int[].class);
+        }
+        catch (NoSuchMethodException e) {
+            return null;
+        }
     }
 
     private Class<Grid> getGridClass() {
-        return Class.forName("src/" + this.toString());
+        try {
+            return Class.forName("src/" + this.toString());
+        }
+        catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 }
