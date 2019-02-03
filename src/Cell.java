@@ -10,6 +10,7 @@ public class Cell {
 
     public Cell(double yPos, double xPos, double size){
         cellBody = new Rectangle(xPos,yPos,size, size);
+        age = 0;
     }
 
     /**
