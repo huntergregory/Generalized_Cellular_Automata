@@ -5,9 +5,11 @@ public class Cell {
     private Rectangle cellBody;
     private Color cellColor;
     private int state;
+    private int age;
 
     public Cell(double yPos, double xPos, double size){
         cellBody = new Rectangle(xPos,yPos,size, size);
+        age = 0;
     }
 
     /**
@@ -53,5 +55,14 @@ public class Cell {
     public void setState(int State) {
         state = State;
     }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int newAge){
+        age = newAge;
+    }
+
 
 }
