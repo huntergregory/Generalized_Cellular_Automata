@@ -7,6 +7,7 @@ public abstract class Grid {
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
     private Random rand = new Random();
+    private int gridSize;
     private double cellSize;
 
 
@@ -18,6 +19,7 @@ public abstract class Grid {
     public Grid(int gridSize, double screenSize){
         grid = new Cell[gridSize][gridSize];
         initStateColorMap();
+        this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
     }
 
@@ -32,7 +34,7 @@ public abstract class Grid {
      * set color map that maps each state to a particular color
      * @param colorMap
      */
-    void setStateColorMap(HashMap<Integer, Color> colorMap) {
+    private void setStateColorMap(HashMap<Integer, Color> colorMap){
         stateColorMap = colorMap;
     }
 
@@ -48,7 +50,6 @@ public abstract class Grid {
      * Abstract method that will define algorithm for changing cell states. Will be defined explicitly in subclasses.
      */
     abstract void updateCells();
-
 
     /**
      * Set grid randomly based on input composition (array of percentages)
@@ -136,6 +137,34 @@ public abstract class Grid {
      */
     abstract void changeGridSize();
 
+
+    /**
+     * Gets the neighborhood of a cell at specified position.
+     * @param row
+     * @param col
+     * @return array of neighboring Cells
+     * @throws IllegalArgumentException
+     */
+    Cell[] getNeighbors(int row, int col) throws IllegalArgumentException {
+        if (!isInBounds(row,col))
+            throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
+
+        ArrayList<Cell> neighbors = new ArrayList<>();
+        int[] deltaX = {-1, 1, 0, 0};
+        int[] deltaY = {0, 0, -1, 1};
+        for (int k=0; k<deltaX.length; k++) {
+            int neighborRow = row + deltaX[k];
+            int neighborCol = col + deltaY[k];
+            if (isInBounds(neighborRow, neighborCol))
+                neighbors.add(grid[neighborRow][neighborCol]);
+        }
+        return neighbors.toArray(new Cell[0]);
+    }
+
+
+    private boolean isInBounds(int r, int c) {
+        return r>=0 && r<gridSize && c>=0 && c<gridSize;
+    }
 
 
     /**
