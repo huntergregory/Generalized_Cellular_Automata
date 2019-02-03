@@ -5,7 +5,7 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="state-makeup-list">
+        <xsd:complexType name="random-makeup-list">
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
@@ -29,7 +29,7 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="prey-breeding-age" type="xsd:double"/>
+                        <xsd:element name="fish-breeding-age" type="xsd:double"/>
                         <xsd:element name="shark-life-span" type="xsd:double"/>
                     </xsd:sequence>
                 </xsd:extension>

@@ -5,7 +5,7 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="state-makeup-list">
+        <xsd:complexType name="random-makeup-list">
             <xsd:complexContent>
                 <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
