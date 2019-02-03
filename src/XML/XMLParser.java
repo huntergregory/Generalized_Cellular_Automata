@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -41,6 +42,7 @@ public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
 
+    File myXMLFile;
     private CA_TYPE myRootType;
     private Element myRoot;
     private int mySize;
@@ -49,10 +51,12 @@ public class XMLParser {
     private ArrayList<Double> myRandomMakeup;             //only used if random
     private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
     private ArrayList<Integer> myParameters;
+    private HashMap<String, Integer[]> mySliderMap;
 
     public XMLParser() {
         SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         DOCUMENT_BUILDER = getDocumentBuilder();
+        resetInstanceVars();
     }
 
     /**
@@ -60,18 +64,11 @@ public class XMLParser {
      * @param xmlFile
      * @throws XMLException if xmlFile doesn't match a schema associated with a XML.CA_TYPE
      */
-    public void parseFile(String xmlFile) throws XMLException {
-        myRandomMakeup = new ArrayList<>();
-        myStateConfiguration = new ArrayList<>();
-        myParameters = new ArrayList<>();
-
-        for (CA_TYPE type : CA_TYPE.values()) {
-            if (fileIsType(xmlFile, type))
-                myRootType = type;
-        }
-
-        Document xmlDoc = beginParsing(xmlFile);
-        myRoot = xmlDoc.getDocumentElement();
+    public void parseFile(File xmlFile) throws XMLException {
+        myXMLFile = xmlFile;
+        resetInstanceVars();
+        assignRootType();
+        assignRoot();
         System.out.println(myRoot);
         assignSize();
         assignNumStates();
@@ -84,9 +81,19 @@ public class XMLParser {
         assignParameters();
     }
 
-    private Document beginParsing(String xmlFile) throws XMLException {
+    private void assignRootType() throws XMLException {
+        for (CA_TYPE type : CA_TYPE.values()) {
+            if (fileIsType(type))
+                myRootType = type;
+        }
+        if (myRootType == null)
+            throw new XMLException("File does not match any schema");
+    }
+
+    private void assignRoot() throws XMLException {
         try {
-            return DOCUMENT_BUILDER.parse(xmlFile);
+            var xmlDoc = DOCUMENT_BUILDER.parse(myXMLFile);
+            myRoot = xmlDoc.getDocumentElement();
         } catch (SAXException | IOException e) {
             throw new XMLException(e);
         }
@@ -116,29 +123,16 @@ public class XMLParser {
 
     }
 
-    private boolean fileIsType(String xmlFile, CA_TYPE type) {
+    private boolean fileIsType(CA_TYPE type) {
         try {
-            Schema schema = SCHEMAFACTORY.newSchema(new File(getResource(type.getSchemaFile())));
+            Schema schema = SCHEMAFACTORY.newSchema(type.getSchemaFile());
 
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(new File(getResource(xmlFile))));
+            validator.validate(new StreamSource(myXMLFile));
             return true;
         } catch (SAXException | IOException e) {
             return false;
         }
-    }
-
-    private String getResource(String filename) { //throws FileNotFoundException {
-        //try {
-            URL resource = getClass().getClassLoader().getResource(filename);
-            System.out.println(resource==null);
-            Objects.requireNonNull(resource);
-
-            return resource.getFile();
-        /*}
-        catch (FileNotFoundException e) {
-            throw new XML.XMLException(e);
-        }*/
     }
 
     private DocumentBuilder getDocumentBuilder() {
@@ -150,10 +144,27 @@ public class XMLParser {
         }
     }
 
+    private void resetInstanceVars() {
+        myRandomMakeup = new ArrayList<>();
+        myStateConfiguration = new ArrayList<>();
+        myParameters = new ArrayList<>();
+        mySliderMap = new HashMap<>();
+        myRoot = null;
+        myRootType = null;
+        mySize = 0;
+        myNumStates = 0;
+        myIsRandom = false;
+    }
+
     /**
      * @return XML.CA_TYPE of file parsed
      */
     public CA_TYPE getCAType() { return myRootType; }
+
+    /**
+     * @return a map of with Slider names as keys and Double arrays containing min and max slider values
+     */
+    public HashMap<String, Integer[]> getSliderNamesAndValues() { return mySliderMap; }
 
     /**
      * Get the configured positions for all states.

@@ -1,21 +1,39 @@
 package XML;
 
-public class XMLTestMain {
-    static XMLParser myParser;
+import javafx.application.Application;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-    XMLTestMain() {
+import java.io.File;
+
+public class XMLTestMain extends Application {
+    public static final String DATA_FILE_EXTENSION = "*.xml";
+    public XMLParser myParser;
+    public FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
+
+    public XMLTestMain() {
         myParser = new XMLParser();
     }
 
-    public static void main(String[] args) {
+    public void start(Stage primaryStage) {
         XMLTestMain tester = new XMLTestMain();
-        myParser.parseFile("automata/fire-test-config.xml");
+        var xmlFile = tester.myChooser.showOpenDialog(primaryStage);
+        tester.myParser.parseFile(xmlFile);
         System.out.println("here");
-        System.out.println(myParser.getCAType());
+        System.out.println(tester.myParser.getCAType());
         /*System.out.println(myParser.getConfiguration());
         System.out.println(myParser.getGridSize());
         System.out.println(myParser.getIsRandom());
         System.out.println(myParser.getParameters());
         System.out.println(myParser.getRandomMakeup());*/
+    }
+
+    private FileChooser makeChooser (String extensionAccepted) {
+        var result = new FileChooser();
+        result.setTitle("Open Data File");
+        // pick a reasonable place to start searching for files
+        result.setInitialDirectory(new File(System.getProperty("user.dir")));
+        result.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("Text Files", extensionAccepted));
+        return result;
     }
 }

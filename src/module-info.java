@@ -6,4 +6,5 @@ module cellsociety.team09 {
     requires javafx.media;
 
     exports XML;
+    exports GridCell;
 }
