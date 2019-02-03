@@ -16,6 +16,7 @@
             </xsd:choice>
             <xsd:element name="parameters" type="parameter-list"/>
         </xsd:sequence>
+        <xsd:attribute name="title" type="xsd:string" use="required"/>
     </xsd:complexType>
 
     <!-- All list types below are placeholders that need to be overwritten -->

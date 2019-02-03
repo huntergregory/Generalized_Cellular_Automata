@@ -1,4 +1,4 @@
-<fire>
+<fire title="Test configured fire">
   <size>10</size>
   <num-states>3</num-states>
   <configured>

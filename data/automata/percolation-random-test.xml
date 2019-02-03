@@ -1,4 +1,4 @@
-<percolation>
+<percolation title="Test random perc">
   <size>10</size>
   <num-states>3</num-states>
   <random>
