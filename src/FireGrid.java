@@ -38,7 +38,7 @@ public class FireGrid extends Grid {
 
     @Override
     void updateCells() {
-
+        Cell[][] gridCopy = new Cell[getGrid().length][getGrid()[0].length];
     }
 
     @Override
