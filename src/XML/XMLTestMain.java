@@ -18,14 +18,16 @@ public class XMLTestMain extends Application {
     public void start(Stage primaryStage) {
         XMLTestMain tester = new XMLTestMain();
         var xmlFile = tester.myChooser.showOpenDialog(primaryStage);
+        if (xmlFile == null)
+            return;
         tester.myParser.parseFile(xmlFile);
-        System.out.println("here");
         System.out.println(tester.myParser.getCAType());
+        System.out.println(tester.myParser.getGridSize());
+        System.out.println(tester.myParser.getNumStates());
+        System.out.println(tester.myParser.getIsRandom());
         /*System.out.println(myParser.getConfiguration());
-        System.out.println(myParser.getGridSize());
-        System.out.println(myParser.getIsRandom());
         System.out.println(myParser.getParameters());
-        System.out.println(myParser.getRandomMakeup());*/
+        System.out.println(myParser.getRandomComposition());*/
     }
 
     private FileChooser makeChooser (String extensionAccepted) {

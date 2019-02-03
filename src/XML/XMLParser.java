@@ -1,7 +1,7 @@
 package XML;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -14,10 +14,8 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -41,6 +39,12 @@ Element order:
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
+    public static final String RANDOM_TAG = "random";
+    public static final String CONFIGURED_TAG = "configured";
+    public static final int SIZE_INDEX = 0;
+    public static final int NUM_STATES_INDEX = 1;
+    public static final int STATES_INDEX = 2;
+    public static final int PARAMS_INDEX = 3;
 
     File myXMLFile;
     private CA_TYPE myRootType;
@@ -48,10 +52,10 @@ public class XMLParser {
     private int mySize;
     private int myNumStates;
     private boolean myIsRandom;
-    private ArrayList<Double> myRandomMakeup;             //only used if random
+    private ArrayList<Double> myRandomComposition;             //only used if random
     private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
     private ArrayList<Integer> myParameters;
-    private HashMap<String, Integer[]> mySliderMap;
+    private LinkedHashMap<String, Integer[]> mySliderMap; //ordered map so that states a params displayed in same order as xml file
 
     public XMLParser() {
         SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -70,15 +74,16 @@ public class XMLParser {
         assignRootType();
         assignRoot();
         System.out.println(myRoot);
-        assignSize();
-        assignNumStates();
-        assignMyIsRandom();
+        NodeList elements = myRoot.getElementsByTagName("*"); //matches all tags
+        mySize = getIntFromNodeList(elements, SIZE_INDEX);
+        myNumStates = getIntFromNodeList(elements, NUM_STATES_INDEX);
+        assignMyIsRandom(elements);
         if (myIsRandom)
-            assignRandomMakeup();
+            assignCompAndUpdateSliders();
         else
             assignConfiguration();
 
-        assignParameters();
+        assignParamsAndUpdateSliders();
     }
 
     private void assignRootType() throws XMLException {
@@ -87,7 +92,7 @@ public class XMLParser {
                 myRootType = type;
         }
         if (myRootType == null)
-            throw new XMLException("File does not match any schema");
+            throw new XMLException("File does not match any automaton's schema");
     }
 
     private void assignRoot() throws XMLException {
@@ -100,19 +105,12 @@ public class XMLParser {
         }
     }
 
-    private void assignSize() {
-
+    private void assignMyIsRandom(NodeList list) {
+        var element = (Element) list.item(STATES_INDEX);
+        myIsRandom = RANDOM_TAG.equals(element.getTagName());
     }
 
-    private void assignNumStates() {
-
-    }
-
-    private void assignMyIsRandom() {
-
-    }
-
-    private void assignRandomMakeup() {
+    private void assignCompAndUpdateSliders() {
 
     }
 
@@ -120,7 +118,7 @@ public class XMLParser {
 
     }
 
-    private void assignParameters() {
+    private void assignParamsAndUpdateSliders() {
 
     }
 
@@ -136,6 +134,10 @@ public class XMLParser {
         }
     }
 
+    private int getIntFromNodeList(NodeList list, int index) {
+        return Integer.parseInt(list.item(index).getTextContent());
+    }
+
     private DocumentBuilder getDocumentBuilder() {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -146,10 +148,10 @@ public class XMLParser {
     }
 
     private void resetInstanceVars() {
-        myRandomMakeup = new ArrayList<>();
+        myRandomComposition = new ArrayList<>();
         myStateConfiguration = new ArrayList<>();
         myParameters = new ArrayList<>();
-        mySliderMap = new HashMap<>();
+        mySliderMap = new LinkedHashMap<>();
         myRoot = null;
         myRootType = null;
         mySize = 0;
@@ -163,9 +165,9 @@ public class XMLParser {
     public CA_TYPE getCAType() { return myRootType; }
 
     /**
-     * @return a map of with Slider names as keys and Double arrays containing min and max slider values
+     * @return an ordered map with Slider names as keys and Double arrays containing min and max slider values
      */
-    public HashMap<String, Integer[]> getSliderNamesAndValues() { return mySliderMap; }
+    public LinkedHashMap<String, Integer[]> getSliderNamesAndValues() { return mySliderMap; }
 
     /**
      * Get the configured positions for all states.
@@ -179,7 +181,7 @@ public class XMLParser {
      * @return an array of Doubles. The last state's composition will be -1 to indicate that it's composition
      *         should be inferred.
      */
-    public Double[] getRandomMakeup() { return myRandomMakeup.toArray(new Double[0]); }
+    public Double[] getRandomComposition() { return myRandomComposition.toArray(new Double[0]); }
 
     /**
      * @return an array of Doubles representing special parameters for the CA
@@ -195,4 +197,9 @@ public class XMLParser {
      * @return size of GridCell.Grid for the xml file
      */
     public int getGridSize() { return mySize; }
+
+    /**
+     * @return number of states for the xmlFile
+     */
+    public int getNumStates() { return myNumStates; }
 }
