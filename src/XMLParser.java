@@ -1,6 +1,9 @@
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -11,7 +14,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -21,8 +23,11 @@ import java.util.Objects;
  * @author Hunter Gregory
  */
 public class XMLParser {
-    private SchemaFactory mySchemaFactory;
+    private final SchemaFactory SCHEMAFACTORY;
+    private final DocumentBuilder DOCUMENT_BUILDER;
+
     private String myXMLFile;
+    private CA_TYPE rootType;
     private int mySize;
     private int myNumStates;
     private boolean myIsRandom;
@@ -30,17 +35,18 @@ public class XMLParser {
     private ArrayList<Integer[]> myStateConfigurations;   //only used if configured
     private ArrayList<Integer> myParameters; //FIX make parameters ints
 
-    public XMLParser(String xmlFile) {
-        mySchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    public XMLParser() {
+        SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        DOCUMENT_BUILDER = getDocumentBuilder();
     }
 
-    public Grid parseFile(String xmlFile) {
+    /**
+     * Stores necessary data from the given xml file
+     * @param xmlFile
+     * @throws XMLException if xmlFile doesn't match a schema associated with a CA_TYPE
+     */
+    public void parseFile(String xmlFile) throws XMLException {
         myXMLFile = xmlFile;
-        readFile();
-        return extractGrid();
-    }
-
-    private void readFile() {
         myRandomMakeup = new ArrayList<>();
         myStateConfigurations = new ArrayList<>();
         myParameters = new ArrayList<>();
@@ -48,25 +54,9 @@ public class XMLParser {
 
     }
 
-
-    private Grid extractGrid() {
-        for (CA_TYPE type : CA_TYPE.values()) {
-            if (fileIsSchema(type)) {
-                if (myIsRandom) {
-                    Constructor<Grid> constructor = type.getRandomConstructor();
-                    return constructor.newInstance(mySize, Main.GRID_DISPLAY_SIZE, myRandomMakeup, myParameters);
-                }
-                Constructor<Grid> constructor = type.getConfiguredConstructor();
-                return constructor.newInstance(mySize, Main.GRID_DISPLAY_SIZE, myStateConfigurations, myParameters);
-            }
-        }
-        return null; //shouldn't get to here
-    }
-
     private boolean fileIsSchema(CA_TYPE type) {
-        mySchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         try {
-            Schema schema = mySchemaFactory.newSchema(new File(getResource(type.getSchemaFile())));
+            Schema schema = SCHEMAFACTORY.newSchema(new File(getResource(type.getSchemaFile())));
 
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(new File(getResource(myXMLFile))));
@@ -83,4 +73,41 @@ public class XMLParser {
         return resource.getFile();
     }
 
+    private DocumentBuilder getDocumentBuilder() {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e) {
+            throw new XMLException(e);
+        }
+    }
+
+    /**
+     * Get the configured positions for all states.
+     * @return list of integer arrays in the form (row, col, state). The last state's row and col will be -1 to indicate
+     *          that it's composition should be inferred.
+     */
+    public ArrayList<Integer[]> getConfiguration() { return myStateConfigurations; }
+
+    /**
+     * Get the percent composition for each state.
+     * @return an array of integers. The last state's composition will be -1 to indicate that it's composition
+     *         should be inferred.
+     */
+    public Double[] getRandomMakeup() { return myRandomMakeup.toArray(new Double[0]); }
+
+    /**
+     * @return an array of Integers representing special parameters for the CA
+     */
+    public Integer[] getParameters() { return myParameters.toArray(new Integer[0]); }
+
+    /**
+     * @return true if the xml file is for a random-position CA
+     */
+    public boolean getIsRandom() { return myIsRandom; }
+
+    /**
+     * @return size of Grid for the xml file
+     */
+    public int getGridSize() { return mySize; }
 }
