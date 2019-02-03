@@ -2,16 +2,14 @@
      Can choose random or configured locations for all three states.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xmlns:CA="cellular-automata"
-            targetNamespace="cellular-automata">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="state-makeup-list">
             <xsd:complexContent>
-                <xsd:extension base="state-makeup-list">
+                <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="open" type="xsd:decimal" default="0.1"/>
-                        <xsd:element name="percolating" type="xsd:decimal" default="0.1"/>
+                        <xsd:element name="open" type="xsd:double"/>
+                        <xsd:element name="percolating" type="xsd:double"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

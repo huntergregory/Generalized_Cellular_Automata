@@ -8,18 +8,11 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:complexType name="automaton">
         <xsd:sequence>
-            <xsd:element name="dimensions">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="width" type="xsd:int"/>
-                        <xsd:element name="height" type="xsd:int"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
+            <xsd:element name="size" type="xsd:int"/>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:choice>
                 <xsd:element name="random" type="random-makeup-list"/>
-                <xsd:element name="configuration" type="location-list"/>
+                <xsd:element name="configured" type="location-list"/>
             </xsd:choice>
             <xsd:element name="parameters" type="parameter-list"/>
         </xsd:sequence>
@@ -54,8 +47,8 @@
             <xsd:element name="position" maxOccurs="unbounded">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="x" type="xsd:int"/>
-                        <xsd:element name="y" type="xsd:int"/>
+                        <xsd:element name="row" type="xsd:int"/>
+                        <xsd:element name="col" type="xsd:int"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

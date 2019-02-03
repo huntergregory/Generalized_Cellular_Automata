@@ -3,16 +3,14 @@
      Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xmlns:CA="cellular-automata"
-            targetNamespace="cellular-automata">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="state-makeup-list">
             <xsd:complexContent>
-                <xsd:extension base="state-makeup-list">
+                <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal" default="0.1"/>
-                        <xsd:element name="predator" type="xsd:decimal" default="0.3"/>
+                        <xsd:element name="empty" type="xsd:double">
+                        <xsd:element name="predator" type="xsd:double"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -31,9 +29,8 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="prey-reproduce-time" type="xsd:int"/>
-                        <xsd:element name="predator-reproduce-time" type="xsd:int"/>
-                        <xsd:element name="predator-sustenance-time" type="xsd:int"/>
+                        <xsd:element name="prey-breeding-age" type="xsd:double"/>
+                        <xsd:element name="shark-life-span" type="xsd:double"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

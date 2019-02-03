@@ -2,13 +2,13 @@
      Can choose configured locations for both states.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="state-makeup-list">
             <xsd:complexContent>
-                <xsd:extension base="state-makeup-list">
+                <xsd:extension base="random-makeup-list">
                     <xsd:sequence>
-                        <xsd:element name="cells-on" type="xsd:decimal" default="0.1"/>
+                        <xsd:element name="cells-on" type="xsd:double"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
