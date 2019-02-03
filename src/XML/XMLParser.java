@@ -1,6 +1,7 @@
 package XML;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -79,7 +80,7 @@ public class XMLParser {
         myNumStates = getIntFromNodeList(elements, NUM_STATES_INDEX);
         assignMyIsRandom(elements);
         if (myIsRandom)
-            assignCompAndUpdateSliders();
+            assignCompAndUpdateSliders(elements);
         else
             assignConfiguration();
 
@@ -105,13 +106,19 @@ public class XMLParser {
         }
     }
 
-    private void assignMyIsRandom(NodeList list) {
-        var element = (Element) list.item(STATES_INDEX);
+    private void assignMyIsRandom(NodeList elements) {
+        var element = (Element) elements.item(STATES_INDEX);
         myIsRandom = RANDOM_TAG.equals(element.getTagName());
     }
 
-    private void assignCompAndUpdateSliders() {
-
+    private void assignCompAndUpdateSliders(NodeList elements) {
+        Element randomTag = (Element) elements.item(STATES_INDEX);
+        NodeList compositions = randomTag.getElementsByTagName("*");
+        int k=0; // foreach not allowed for NodeList
+        while (k < compositions.getLength()) {
+            myRandomComposition.add(getDoubleFromNodeList(compositions, k));
+            k++;
+        }
     }
 
     private void assignConfiguration() {
@@ -136,6 +143,10 @@ public class XMLParser {
 
     private int getIntFromNodeList(NodeList list, int index) {
         return Integer.parseInt(list.item(index).getTextContent());
+    }
+
+    private double getDoubleFromNodeList(NodeList list, int index) {
+        return Double.parseDouble(list.item(index).getTextContent());
     }
 
     private DocumentBuilder getDocumentBuilder() {
