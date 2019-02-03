@@ -1,3 +1,5 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -38,8 +40,8 @@ public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
 
-    private String myXMLFile;
     private CA_TYPE myRootType;
+    private Element myRoot;
     private int mySize;
     private int myNumStates;
     private boolean myIsRandom;
@@ -58,18 +60,21 @@ public class XMLParser {
      * @throws XMLException if xmlFile doesn't match a schema associated with a CA_TYPE
      */
     public void parseFile(String xmlFile) throws XMLException {
-        myXMLFile = xmlFile;
         myRandomMakeup = new ArrayList<>();
         myStateConfiguration = new ArrayList<>();
         myParameters = new ArrayList<>();
 
         for (CA_TYPE type : CA_TYPE.values()) {
-            if (fileIsType(type))
+            if (fileIsType(xmlFile, type))
                 myRootType = type;
         }
 
-
-
+        Document xmlDoc = beginParsing(xmlFile);
+        myRoot = xmlDoc.getDocumentElement();
+        System.out.println(myRoot);
+        assignSize();
+        assignNumStates();
+        assignMyIsRandom();
         if (myIsRandom)
             assignRandomMakeup();
         else
@@ -78,12 +83,44 @@ public class XMLParser {
         assignParameters();
     }
 
-    private boolean fileIsType(CA_TYPE type) {
+    private Document beginParsing(String xmlFile) throws XMLException {
+        try {
+            return DOCUMENT_BUILDER.parse(xmlFile);
+        } catch (SAXException | IOException e) {
+            throw new XMLException(e);
+        }
+    }
+
+    private void assignSize() {
+
+    }
+
+    private void assignNumStates() {
+
+    }
+
+    private void assignMyIsRandom() {
+
+    }
+
+    private void assignRandomMakeup() {
+
+    }
+
+    private void assignConfiguration() {
+
+    }
+
+    private void assignParameters() {
+
+    }
+
+    private boolean fileIsType(String xmlFile, CA_TYPE type) {
         try {
             Schema schema = SCHEMAFACTORY.newSchema(new File(getResource(type.getSchemaFile())));
 
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(new File(getResource(myXMLFile))));
+            validator.validate(new StreamSource(new File(getResource(xmlFile))));
             return true;
         } catch (SAXException | IOException e) {
             return false;
@@ -128,7 +165,7 @@ public class XMLParser {
     /**
      * @return an array of Doubles representing special parameters for the CA
      */
-    public Double[] getParameters() { return myParameters.toArray(new Integer[0]); }
+    public Double[] getParameters() { return myParameters.toArray(new Double[0]); }
 
     /**
      * @return true if the xml file is for a random-position CA
