@@ -11,29 +11,41 @@ import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  *
- * Validation inspired by Wayan Saryada's article.
+ * Schema validation inspired by Wayan Saryada's article.
  * @see <a href="https://kodejava.org/how-do-i-validate-xml-against-xsd-in-java/">Wayan Saryada's</a> article
  * @author Hunter Gregory
  */
+
+/*
+Element order:
+    - size
+    - numStates
+    - random OR configured
+        - for random:
+            - sequence of unspecified tags with int
+        - for configured:
+            - sequence of unspecified tags each with sequence of position tags each with row and col tags
+    - parameters (might have no children if empty)
+ */
+
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
 
     private String myXMLFile;
-    private CA_TYPE rootType;
+    private CA_TYPE myRootType;
     private int mySize;
     private int myNumStates;
     private boolean myIsRandom;
     private ArrayList<Double> myRandomMakeup;             //only used if random
-    private ArrayList<Integer[]> myStateConfigurations;   //only used if configured
-    private ArrayList<Integer> myParameters; //FIX make parameters ints
+    private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
+    private ArrayList<Integer> myParameters;
 
     public XMLParser() {
         SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -48,13 +60,25 @@ public class XMLParser {
     public void parseFile(String xmlFile) throws XMLException {
         myXMLFile = xmlFile;
         myRandomMakeup = new ArrayList<>();
-        myStateConfigurations = new ArrayList<>();
+        myStateConfiguration = new ArrayList<>();
         myParameters = new ArrayList<>();
 
+        for (CA_TYPE type : CA_TYPE.values()) {
+            if (fileIsType(type))
+                myRootType = type;
+        }
 
+
+
+        if (myIsRandom)
+            assignRandomMakeup();
+        else
+            assignConfiguration();
+
+        assignParameters();
     }
 
-    private boolean fileIsSchema(CA_TYPE type) {
+    private boolean fileIsType(CA_TYPE type) {
         try {
             Schema schema = SCHEMAFACTORY.newSchema(new File(getResource(type.getSchemaFile())));
 
@@ -83,23 +107,28 @@ public class XMLParser {
     }
 
     /**
+     * @return CA_TYPE of file parsed
+     */
+    public CA_TYPE getCAType() { return myRootType; }
+
+    /**
      * Get the configured positions for all states.
      * @return list of integer arrays in the form (row, col, state). The last state's row and col will be -1 to indicate
      *          that it's composition should be inferred.
      */
-    public ArrayList<Integer[]> getConfiguration() { return myStateConfigurations; }
+    public ArrayList<Integer[]> getConfiguration() { return myStateConfiguration; }
 
     /**
      * Get the percent composition for each state.
-     * @return an array of integers. The last state's composition will be -1 to indicate that it's composition
+     * @return an array of Doubles. The last state's composition will be -1 to indicate that it's composition
      *         should be inferred.
      */
     public Double[] getRandomMakeup() { return myRandomMakeup.toArray(new Double[0]); }
 
     /**
-     * @return an array of Integers representing special parameters for the CA
+     * @return an array of Doubles representing special parameters for the CA
      */
-    public Integer[] getParameters() { return myParameters.toArray(new Integer[0]); }
+    public Double[] getParameters() { return myParameters.toArray(new Integer[0]); }
 
     /**
      * @return true if the xml file is for a random-position CA
