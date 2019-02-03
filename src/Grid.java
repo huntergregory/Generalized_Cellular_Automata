@@ -42,7 +42,7 @@ public abstract class Grid {
     /**
      * Abstract method to get any additional parameters required by specific simulation types
      */
-    abstract void setAdditionalParams();
+    abstract void setAdditionalParams(double[] params);
 
 
 
@@ -131,12 +131,7 @@ public abstract class Grid {
         grid[row][column].setState(state);
         grid[row][column].setColor(stateColorMap.get(state));
     }
-
-
-    /**
-     * method to resize the grid
-     */
-    abstract void changeGridSize();
+    
 
 
     public ArrayList<Integer[]> getNeighbors(int row, int col){

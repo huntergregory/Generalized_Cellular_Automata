@@ -9,7 +9,6 @@ public class Segregation extends Grid {
 
     public Segregation(int gridSize, double screenSize){
         super(gridSize,screenSize);
-
     }
 
     public void setGridStates(double[] composition){
@@ -27,8 +26,8 @@ public class Segregation extends Grid {
     }
 
     @Override
-    public void setAdditionalParams(){
-
+    public void setAdditionalParams(double[] params){
+        happyPercent = params[0];
     }
 
     @Override
@@ -69,9 +68,5 @@ public class Segregation extends Grid {
         setGrid(currentGrid);
     }
 
-    @Override
-    public void changeGridSize(){
-
-    }
 
 }
