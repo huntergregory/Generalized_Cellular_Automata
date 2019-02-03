@@ -23,6 +23,7 @@ public class XMLTestMain extends Application {
         if (xmlFile == null)
             return;
         tester.myParser.parseFile(xmlFile);
+        System.out.println();
         System.out.println(tester.myParser.getCAType());
         System.out.println(tester.myParser.getGridSize());
         System.out.println(tester.myParser.getNumStates());

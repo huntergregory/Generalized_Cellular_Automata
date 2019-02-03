@@ -37,6 +37,7 @@ Element order:
     - parameters (might have no children if empty)
  */
 
+//FIX CHECK TO SEE IF POSITIONS ARE IN BOUNDS AND IF COMPOSITIONS ARE BETWEEN 0-1 AND ADD UP
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
@@ -74,15 +75,14 @@ public class XMLParser {
         resetInstanceVars();
         assignRootType();
         assignRoot();
-        System.out.println(myRoot);
         NodeList elements = myRoot.getElementsByTagName("*"); //matches all tags
         mySize = getIntFromNodeList(elements, SIZE_INDEX);
         myNumStates = getIntFromNodeList(elements, NUM_STATES_INDEX);
-        assignMyIsRandom(elements);
+        myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, STATES_INDEX));
         if (myIsRandom)
             assignCompAndUpdateSliders(elements);
         else
-            assignConfiguration();
+            assignConfiguration(elements);
 
         assignParamsAndUpdateSliders();
     }
@@ -106,11 +106,6 @@ public class XMLParser {
         }
     }
 
-    private void assignMyIsRandom(NodeList elements) {
-        var element = (Element) elements.item(STATES_INDEX);
-        myIsRandom = RANDOM_TAG.equals(element.getTagName());
-    }
-
     private void assignCompAndUpdateSliders(NodeList elements) {
         Element randomTag = (Element) elements.item(STATES_INDEX);
         NodeList compositions = randomTag.getElementsByTagName("*");
@@ -121,8 +116,51 @@ public class XMLParser {
         }
     }
 
-    private void assignConfiguration() {
+    private void assignConfiguration(NodeList elements) {
+        Element configuredTag = (Element) elements.item(STATES_INDEX);
+        NodeList config = configuredTag.getElementsByTagName("*");
+        int k=0;
+        int numState=0;
+        while(k<config.getLength()) {
+            int j=0;
+            if (!itemIsState(config.item(k))) {
+                k++;
+                continue;
+            }
+            Element state = (Element) config.item(k);
+            NodeList positions = state.getElementsByTagName("position");
+            while(j<positions.getLength()) {
+                myStateConfiguration.add(getCoords(positions, j, numState));
+                j++;
+            }
+            k++;
+            numState++;
+        }
+    }
 
+    // Throws exception if coordinates out of bounds
+    private Integer[] getCoords(NodeList positions, int positionIndex, int numState) throws XMLException {
+        Element position = (Element) positions.item(positionIndex);
+        NodeList rowColState = position.getElementsByTagName("*");
+        int row = getIntFromNodeList(rowColState, 0);
+        int col = getIntFromNodeList(rowColState, 1);
+        validateInBounds(row, col, numState);
+        return new Integer[]{row, col, numState};
+    }
+
+    private void validateInBounds(int row, int col, int numState) throws XMLException {
+        if ((!(row == -1 && col==-1) && (row<0 || col<0)) || row>=mySize || col>=mySize)
+            throw new XMLException("The location (%d, %d) for state %d is out of bounds for grid size %d", row, col, numState, mySize);
+    }
+
+    private boolean itemIsState(Node item) {
+        String itemName = ((Element) item).getTagName();
+        String[] nonStateNames = {"position", "row", "col"};
+        for (String badName : nonStateNames) {
+            if (itemName.equals(badName))
+                return false;
+        }
+        return true;
     }
 
     private void assignParamsAndUpdateSliders() {
@@ -139,6 +177,12 @@ public class XMLParser {
         } catch (SAXException | IOException e) {
             return false;
         }
+    }
+
+
+    private String getTagNameFromNodeList(NodeList list, int index) {
+        var element = (Element) list.item(index);
+        return element.getTagName();
     }
 
     private int getIntFromNodeList(NodeList list, int index) {
