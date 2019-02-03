@@ -1,0 +1,30 @@
+<fire>
+  <size>3</size>
+  <num-states>3</num-states>
+  <configured>
+    <empty-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </empty-spots>
+    <burning-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </burning-spots>
+    <green-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </green-spots>
+  </configured>
+  <parameters>
+    <probCatch>1000.00</probCatch>
+  </parameters>
+</fire>

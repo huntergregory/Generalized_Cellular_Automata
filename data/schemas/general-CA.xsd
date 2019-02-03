@@ -23,13 +23,15 @@
     <!-- Rewrite for every CA type's schema.
          Each item represents a percent of the grid occupied by a certain state.
          Each item must have type decimal.
-         Make a state have a value of -1 for the Grid to infer its composition from those of the other states..
+         Make a state have a value of -1 for the Grid to infer its composition from those of the other states.
+            Likely to cause problems in the Grid class if -1 isn't used or if -1 is used multiple times.
      -->
     <xsd:complexType name="composition-list"/>
 
     <!-- Rewrite for all CA types' schemas.
          Each item must have type "positions".
-         Make a state have on position with a row and col value of -1 for the Grid to infer its positions from those of the other states.
+         Make a state have on position with a row and col value of -1 for the Grid to infer its positions from those of
+            the other states. Likely to cause problems in the Grid class if -1 isn't used or if -1 is used multiple times.
     -->
     <xsd:complexType name="location-list"/>
 
