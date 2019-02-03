@@ -18,7 +18,7 @@
             </xsd:element>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:choice>
-                <xsd:element name="random" type="state-makeup-list"/>
+                <xsd:element name="random" type="random-makeup-list"/>
                 <xsd:element name="configuration" type="location-list"/>
             </xsd:choice>
             <xsd:element name="parameters" type="parameter-list"/>
@@ -32,7 +32,7 @@
          Each item must have type decimal.
          Omit the last state to let the grid infer it's composition.
      -->
-    <xsd:complexType name="state-makeup-list"/>
+    <xsd:complexType name="random-makeup-list"/>
 
     <!-- Rewrite for all CA types' schemas.
          Each item must have type "positions".
