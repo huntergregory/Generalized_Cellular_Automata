@@ -131,7 +131,7 @@ public abstract class Grid {
         grid[row][column].setState(state);
         grid[row][column].setColor(stateColorMap.get(state));
     }
-    
+
 
     /**
      * method to resize the grid
