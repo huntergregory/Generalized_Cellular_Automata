@@ -1464,7 +1464,7 @@
 											"top": 311,
 											"width": 296.2451171875,
 											"height": 13,
-											"text": "GridSubclass - e.g. FireGrid"
+											"text": "GridSubclass - e.g. GridCell.FireGrid"
 										},
 										{
 											"_type": "LabelView",
@@ -2058,7 +2058,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "GridSubclass - e.g. FireGrid",
+					"name": "GridSubclass - e.g. GridCell.FireGrid",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",

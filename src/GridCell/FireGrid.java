@@ -1,3 +1,5 @@
+package GridCell;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -20,6 +22,11 @@ public class FireGrid extends Grid {
     public FireGrid(int gridSize, double screenSize, double probCatch) {
         super(gridSize, screenSize);
         this.probCatch = probCatch;
+    }
+
+    @Override
+    public void setAdditionalParams(Double[] params) {
+
     }
 
     @Override
