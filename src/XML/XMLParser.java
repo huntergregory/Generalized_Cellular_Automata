@@ -98,7 +98,7 @@ public class XMLParser {
         myElementsIndex++;
     }
 
-    private void assignCompAndUpdateSliders(NodeList elements) {
+    private void assignCompAndUpdateSliders(NodeList elements) throws XMLException {
         Element randomTag = (Element) elements.item(myElementsIndex);
         NodeList compositions = randomTag.getElementsByTagName("*");
         int k=0; // foreach not allowed for NodeList
@@ -109,6 +109,7 @@ public class XMLParser {
             mySliderMap.put(getTagNameFromNodeList(compositions,k), extrema);
             k++;
         }
+        validateComp();
     }
 
     private void assignConfiguration(NodeList elements) {
@@ -145,7 +146,7 @@ public class XMLParser {
         }
     }
 
-    private void addSliderFromNodeList(NodeList parameters, int index) {
+    private void addSliderFromNodeList(NodeList parameters, int index) throws XMLException {
         String tagName = getTagNameFromNodeList(parameters, index);
         String min = getAttributeFromNodeList(parameters, index, "min");
         String max = getAttributeFromNodeList(parameters, index, "max");
@@ -193,6 +194,20 @@ public class XMLParser {
             return true;
         } catch (SAXException | IOException e) {
             return false;
+        }
+    }
+
+    private void validateComp() throws XMLException {
+        double totalComp = 0;
+        int negativeCount = 0;
+        for (int k=0; k<myRandomComposition.size(); k++) {
+            if (myRandomComposition.get(k) == -1 && negativeCount==0) {
+                negativeCount ++;
+                continue;
+            }
+            totalComp += myRandomComposition.get(k);
+            if (totalComp > 1.0 || negativeCount==2)
+                throw new XMLException("Error in composition values");
         }
     }
 

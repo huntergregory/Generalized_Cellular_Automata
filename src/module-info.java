@@ -7,4 +7,5 @@ module cellsociety.team09 {
 
     exports XML;
     exports GridCell;
+    exports Simulation;
 }

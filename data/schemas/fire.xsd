@@ -33,6 +33,8 @@
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
                         <xsd:element name="probCatch" type="parameter"/>
+                        <xsd:element name="probLightning" type="parameter"/>
+                        <xsd:element name="probGrow" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
