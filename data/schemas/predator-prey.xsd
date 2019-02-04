@@ -31,8 +31,8 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="fish-breeding-age" type="xsd:decimal"/>
-                        <xsd:element name="shark-breeding-age" type="xsd:decimal"/>
+                        <xsd:element name="fish-breeding-age" type="parameter"/>
+                        <xsd:element name="shark-breeding-age" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

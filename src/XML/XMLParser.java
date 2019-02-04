@@ -57,7 +57,7 @@ public class XMLParser {
     private ArrayList<Double> myRandomComposition;             //only used if random
     private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
     private ArrayList<Integer> myParameters;
-    private LinkedHashMap<String, Integer[]> mySliderMap; //ordered map so that states a params displayed in same order as xml file
+    private LinkedHashMap<String, Double[]> mySliderMap; //ordered map so that states and params are displayed in same order as xml file
 
     public XMLParser() {
         SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -110,8 +110,11 @@ public class XMLParser {
         Element randomTag = (Element) elements.item(STATES_INDEX);
         NodeList compositions = randomTag.getElementsByTagName("*");
         int k=0; // foreach not allowed for NodeList
+        Integer[]
         while (k < compositions.getLength()) {
             myRandomComposition.add(getDoubleFromNodeList(compositions, k));
+            Double[] extrema = {0.0, 1.0};
+            mySliderMap.put(getTagNameFromNodeList(compositions,k), extrema);
             k++;
         }
     }
@@ -222,7 +225,7 @@ public class XMLParser {
     /**
      * @return an ordered map with Slider names as keys and Double arrays containing min and max slider values
      */
-    public LinkedHashMap<String, Integer[]> getSliderNamesAndValues() { return mySliderMap; }
+    public LinkedHashMap<String, Double[]> getSliderNamesAndValues() { return mySliderMap; }
 
     /**
      * Get the configured positions for all states.

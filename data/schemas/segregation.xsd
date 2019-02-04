@@ -31,7 +31,7 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="similar" type="xsd:decimal"/>
+                        <xsd:element name="similar" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

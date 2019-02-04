@@ -32,7 +32,7 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="probCatch" type="xsd:decimal"/>
+                        <xsd:element name="probCatch" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

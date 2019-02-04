@@ -37,10 +37,9 @@
     <xsd:complexType name="location-list"/>
 
     <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
-         Each item must have type decimal.
+         Each item must have type parameter
     -->
     <xsd:complexType name="parameter-list"/>
-
 
     <!-- Allows a list of position elements, each a parent to an x, y coordinate.
          Use this in making a location-list.
@@ -56,5 +55,15 @@
                 </xsd:complexType>
             </xsd:element>
         </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
+    <xsd:complexType name="parameter">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:decimal">
+                <xsd:attribute name="min" type="xsd:decimal" use="required"/>
+                <xsd:attribute name="max" type="xsd:decimal" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
     </xsd:complexType>
 </xsd:schema>
