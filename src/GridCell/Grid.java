@@ -88,14 +88,19 @@ public abstract class Grid {
      */
     private int[] calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
-        int[] stateCounts = new int[composition.length+1];
+        int[] stateCounts = new int[composition.length];
         int sum = 0;
+        int inferredState = -1;
         for (int i = 0; i < composition.length; i++){
-            int numCells = (int)(gridSize*composition[i]);
-            stateCounts[i] = numCells;
-            sum += numCells;
+            if (composition[i] != -1){
+                int numCells = (int)(gridSize*composition[i]);
+                stateCounts[i] = numCells;
+                sum += numCells;
+            }else{
+                inferredState = i;
+            }
         }
-        stateCounts[stateCounts.length-1] = gridSize - sum;
+        stateCounts[inferredState] = gridSize - sum;
         return stateCounts;
     }
 
