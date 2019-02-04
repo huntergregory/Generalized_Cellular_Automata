@@ -98,10 +98,17 @@ public abstract class Grid {
                 sum += numCells;
             }else{
                 inferredState = i;
+                stateCounts[i] = 0;
             }
         }
-        stateCounts[inferredState] = gridSize - sum;
-        return stateCounts;
+        if (inferredState == -1){
+            sum -= stateCounts[stateCounts.length-1];
+            stateCounts[stateCounts.length-1] = gridSize - sum;
+        }else{
+            stateCounts[inferredState] = gridSize - sum;
+            return stateCounts;
+        }
+        
     }
 
 
