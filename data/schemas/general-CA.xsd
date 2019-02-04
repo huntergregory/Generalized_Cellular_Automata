@@ -3,6 +3,8 @@
           - <include> this xsd in the one you're creating
           - <redefine> and extend all the "list" types below
           - create a new element of type "automaton"
+
+     If you're making a configured automaton, make sure that all the positions would fit in the minimum size grid.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
