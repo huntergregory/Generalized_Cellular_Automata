@@ -119,15 +119,4 @@ public class FireGrid extends Grid {
             System.out.println("Lightning!");
         }
     }
-
-    private Cell[][] getGridCopy() {
-        Cell[][] grid = getGrid();
-        int size = grid.length;
-        Cell[][] gridCopy = new Cell[size][size];
-        for(int k = 0; k<size; k++) {
-            Cell[] row = grid[k];
-            System.arraycopy(row, 0, gridCopy[k], 0, size);
-        }
-        return gridCopy;
-    }
 }

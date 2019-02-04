@@ -241,6 +241,24 @@ public abstract class Grid {
         return rand.nextDouble();
     }
 
+    /**
+     * Creates a copy of the current grid
+     * @return Cell grid copy
+     */
+    public Cell[][] getGridCopy() {
+        Cell[][] grid = getGrid();
+        int size = grid.length;
+        Cell[][] gridCopy = new Cell[size][size];
+        for(int k = 0; k<size; k++) {
+            Cell[] row = grid[k];
+            System.arraycopy(row, 0, gridCopy[k], 0, size);
+        }
+        return gridCopy;
+    }
+
+    /**
+     * Prints the current grid's states. Useful for debugging
+     */
     public void printGrid() {
         System.out.println("Printing Grid");
         for (int r=0; r<grid.length; r++) {
