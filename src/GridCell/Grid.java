@@ -29,7 +29,7 @@ public abstract class Grid {
     /**
      * Abstract method called in the GridCell.Grid constructor. Method must create a state-color map and call setStateColorMap.
      */
-    abstract void initStateColorMap();
+    public abstract void initStateColorMap();
 
 
     /**
@@ -44,14 +44,14 @@ public abstract class Grid {
     /**
      * Abstract method to get any additional parameters required by specific simulation types
      */
-    abstract void setAdditionalParams(double[] params);
+    public abstract void setAdditionalParams(Double[] params);
 
 
 
     /**
      * Abstract method that will define algorithm for changing cell states. Will be defined explicitly in subclasses.
      */
-    abstract void updateCells();
+    public abstract void updateCells();
 
     /**
      * Set grid randomly based on input composition (array of percentages)
