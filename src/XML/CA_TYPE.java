@@ -28,7 +28,7 @@ public enum CA_TYPE {
      */
     public Constructor<Grid> getRandomConstructor() {
         try {
-            return getGridClass().getConstructor(int.class, double.class, double[].class, int[].class);
+            return getGridClass().getConstructor(int.class, double.class, Double[].class);
         }
         catch (NoSuchMethodException e) {
             return null;
@@ -41,7 +41,7 @@ public enum CA_TYPE {
      */
     public Constructor<Grid> getConfiguredConstructor() {
         try {
-            return getGridClass().getConstructor(int.class, double.class, ArrayList.class, int[].class);
+            return getGridClass().getConstructor(int.class, double.class, ArrayList.class);
         }
         catch (NoSuchMethodException e) {
             return null;

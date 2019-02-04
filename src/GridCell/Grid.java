@@ -175,6 +175,29 @@ public abstract class Grid {
         return neighbors;
     }
 
+    /**
+     * Gets the neighborhood of a cell at specified position.
+     * @param row
+     * @param col
+     * @return array of neighboring Cells
+     * @throws IllegalArgumentException
+     */
+    Cell[] getNeighbors(int row, int col) throws IllegalArgumentException {
+        if (!isInBounds(row,col))
+            throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
+
+        ArrayList<Cell> neighbors = new ArrayList<>();
+        int[] deltaX = {-1, 1, 0, 0};
+        int[] deltaY = {0, 0, -1, 1};
+        for (int k=0; k<deltaX.length; k++) {
+            int neighborRow = row + deltaX[k];
+            int neighborCol = col + deltaY[k];
+            if (isInBounds(neighborRow, neighborCol))
+                neighbors.add(grid[neighborRow][neighborCol]);
+        }
+        return neighbors.toArray(new Cell[0]);
+    }
+
 
     private boolean isInBounds(int r, int c) {
         return r>=0 && r<gridSize && c>=0 && c<gridSize;
