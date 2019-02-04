@@ -21,10 +21,17 @@ public class XMLTestMain extends Application {
     public void start(Stage primaryStage) {
         XMLTestMain tester = new XMLTestMain();
         var xmlFile = tester.myChooser.showOpenDialog(primaryStage);
-        if (xmlFile == null)
+        if (xmlFile == null) //in case someone clicks cancel
             return;
         tester.myParser.parseFile(xmlFile);
-        System.out.println();
+        printShit(tester);
+    }
+
+    /**
+     * This demonstrates how to use all the getter methods of XMLParser. It also is good for debugging
+     * @param tester
+     */
+    private void printShit(XMLTestMain tester) {
         System.out.println(tester.myParser.getCAType());
         System.out.println("Grid size: " + tester.myParser.getGridSize());
         System.out.println("Number of states: " + tester.myParser.getNumStates());
