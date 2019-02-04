@@ -1,5 +1,5 @@
 <percolation title="Test random perc">
-  <size>10</size>
+  <size min="10" max="30">10</size>
   <num-states>3</num-states>
   <random>
     <open>0.1</open>

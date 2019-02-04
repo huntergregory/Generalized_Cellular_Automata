@@ -49,9 +49,8 @@ public class XMLParser {
     public static final int PARAMS_INDEX = 3;
 
     File myXMLFile;
-    private int myElementsIndex;
+    private int myElementsIndex; //increment after passing an element in order to know where the parameters start
     private CA_TYPE myRootType;
-    private Element myRoot;
     private int mySize;
     private int myNumStates;
     private boolean myIsRandom;
@@ -69,16 +68,14 @@ public class XMLParser {
     /**
      * Stores necessary data from the given xml file
      * @param xmlFile
-     * @throws XMLException if xmlFile doesn't match a schema associated with a XML.CA_TYPE
+     * @throws XMLException
      */
     public void parseFile(File xmlFile) throws XMLException {
         myXMLFile = xmlFile;
         resetInstanceVars();
         assignRootType();
-        assignRoot();
-        NodeList elements = myRoot.getElementsByTagName("*"); //matches all tags
-        mySize = getIntFromNodeList(elements, myElementsIndex);
-        myElementsIndex++;
+        NodeList elements = getRoot().getElementsByTagName("*"); //matches all tags
+        assignSizeAndSizeSlider(elements);
         myNumStates = getIntFromNodeList(elements, myElementsIndex);
         myElementsIndex++;
         myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, myElementsIndex));
@@ -100,14 +97,20 @@ public class XMLParser {
             throw new XMLException("File does not match any automaton's schema");
     }
 
-    private void assignRoot() throws XMLException {
+    private Element getRoot() throws XMLException {
         try {
             var xmlDoc = DOCUMENT_BUILDER.parse(myXMLFile);
-            myRoot = xmlDoc.getDocumentElement();
+            return xmlDoc.getDocumentElement();
         }
         catch (SAXException | IOException e) {
             throw new XMLException(e);
         }
+    }
+
+    private void assignSizeAndSizeSlider(NodeList elements) {
+        mySize = getIntFromNodeList(elements, myElementsIndex);
+        addSliderFromNodeList(elements, myElementsIndex);
+        myElementsIndex++;
     }
 
     private void assignCompAndUpdateSliders(NodeList elements) {
@@ -146,6 +149,27 @@ public class XMLParser {
         }
     }
 
+    private void assignParamsAndUpdateSliders(NodeList elements) {
+        NodeList parameters = ((Element) elements.item(myElementsIndex)).getElementsByTagName("*");
+        int k=0;
+        //no need to increment myElementsIndex anymore
+        while (k<parameters.getLength()) {
+            myParameters.add(getDoubleFromNodeList(parameters, k));
+            addSliderFromNodeList(parameters, k);
+            k++;
+        }
+    }
+
+    private void addSliderFromNodeList(NodeList parameters, int index) {
+        String tagName = getTagNameFromNodeList(parameters, index);
+        String min = getAttributeFromNodeList(parameters, index, "min");
+        String max = getAttributeFromNodeList(parameters, index, "max");
+        Double[] extrema = { Double.parseDouble(min), Double.parseDouble(max) };
+        double value = getDoubleFromNodeList(parameters, index);
+        validateInRange(value, extrema[0], extrema[1]);
+        mySliderMap.put(tagName, extrema);
+    }
+
     // Throws exception if coordinates out of bounds
     private Integer[] getCoords(NodeList positions, int positionIndex, int numState) throws XMLException {
         Element position = (Element) positions.item(positionIndex);
@@ -171,21 +195,6 @@ public class XMLParser {
         return true;
     }
 
-    private void assignParamsAndUpdateSliders(NodeList elements) {
-        NodeList parameters = ((Element) elements.item(myElementsIndex)).getElementsByTagName("*");
-        int k=0;
-        //no need to increment myElementsIndex anymore
-        while (k<parameters.getLength()) {
-            myParameters.add(getDoubleFromNodeList(parameters, k));
-            String paramName = getTagNameFromNodeList(parameters, k);
-            String min = getAttributeFromNodeList(parameters, k, "min");
-            String max = getAttributeFromNodeList(parameters, k, "max");
-            Double[] extrema = { Double.parseDouble(min), Double.parseDouble(max) };
-            mySliderMap.put(paramName, extrema);
-            k++;
-        }
-    }
-
     private String getAttributeFromNodeList(NodeList list, int index, String name) {
         return ((Element) list.item(index)).getAttribute(name);
     }
@@ -202,6 +211,10 @@ public class XMLParser {
         }
     }
 
+    private void validateInRange(double value, double min, double max) throws XMLException {
+        if (value < min || value > max)
+            throw new XMLException("Value %f was not in range [%f,%f]", value, min, max);
+    }
 
     private String getTagNameFromNodeList(NodeList list, int index) {
         var element = (Element) list.item(index);
@@ -230,7 +243,6 @@ public class XMLParser {
         myStateConfiguration = new ArrayList<>();
         myParameters = new ArrayList<>();
         mySliderMap = new LinkedHashMap<>();
-        myRoot = null;
         myRootType = null;
         mySize = 0;
         myNumStates = 0;
