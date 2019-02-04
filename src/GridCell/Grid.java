@@ -57,19 +57,19 @@ public abstract class Grid {
      * Set grid randomly based on input composition (array of percentages)
      * @param composition array of percentages associated with each state
      */
-    public void setGridRandom(double[] composition){
+    public void setGridRandom(Double[] composition){
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
         //fill grid randomly
         for (int i = 0; i < grid.length; i++){
             for (int j = 0; j < grid[0].length; j++){
                 boolean availableState = false;
-                int index = random(4);
+                int index = randomInt(4);
                 while(!availableState){
                     if (stateCounts[index]>0){
                         availableState = true;
                     }else{
-                        index = random(4);
+                        index = randomInt(4);
                     }
                 }
                 grid[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
@@ -227,10 +227,17 @@ public abstract class Grid {
     /**
      * Return in between 0 and bound-1 (inclusive)
      * @param bound
-     * @return
+     * @return random integer
      */
-    private int random(int bound){
+    public int randomInt(int bound){
         return rand.nextInt(bound);
     }
 
+    /**
+     * Return a number picked from a uniform distribution between 0.0 and 1.0.
+     * @return random double
+     */
+    private double randomDouble() {
+        return rand.nextDouble();
+    }
 }

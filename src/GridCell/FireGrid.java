@@ -8,29 +8,32 @@ import java.util.Map;
 
 /**
  * A Grid subclass that represents a wildfire spreading through a forest.
+ * The simulation can have explicit configured positions for all states, or it can have a random composition
  * Based on the Duke CS project.
  * @see <a href="https://www2.cs.duke.edu/courses/spring19/compsci308/assign/02_cellsociety/nifty/shiflet-fire/">Spreading of Fire</a>
  * @author Hunter Gregory
  */
 public class FireGrid extends Grid {
-    public static final Integer EMPTY = 0;
-    public static final Integer BURNING = 1;
-    public static final Integer GREEN = 2;
+    //States
+    public static final int EMPTY = 0;
+    public static final int BURNING = 1;
+    public static final int GREEN = 2;
+    //Parameters
+    public static final int PROB_CATCH = 0;
+    public static final int PROB_LIGHTNING = 1;
+    public static final int PROB_GROW = 2;
+    //public static final
+    //ADD MORE
 
-    private double probCatch;
+    private Double[] parameters;
 
-    public FireGrid(int gridSize, double screenSize, double probCatch) {
+    public FireGrid(int gridSize, double screenSize, Double[] randomComp) {
         super(gridSize, screenSize);
-        this.probCatch = probCatch;
+        setGridRandom(randomComp);
     }
 
     @Override
-    public void setAdditionalParams(Double[] params) {
-
-    }
-
-    @Override
-    void initStateColorMap() {
+    public void initStateColorMap() {
         HashMap<Integer, Color> map = new HashMap<>();
         map.put(EMPTY, Color.YELLOW);
         map.put(BURNING, Color.RED);
@@ -39,8 +42,8 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    void setAdditionalParams() {
-        //FIX or delete??
+    public void setAdditionalParams(Double[] params) {
+
     }
 
     @Override
