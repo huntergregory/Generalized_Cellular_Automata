@@ -182,13 +182,13 @@ public abstract class Grid {
      * @return array of neighboring Cells
      * @throws IllegalArgumentException
      */
-    Cell[] getNeighborCells(int row, int col) throws IllegalArgumentException {
+    Cell[] getNeighborCells(int row, int col, boolean eightNeighbors) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
 
         ArrayList<Cell> neighbors = new ArrayList<>();
-        int[] deltaX = {-1, 1, 0, 0};
-        int[] deltaY = {0, 0, -1, 1};
+        var deltaX = eightNeighbors ? new int[]{-1, -1, -1, 1, 1, 1, 0, 0} : new int[]{-1, 1, 0, 0};
+        var deltaY = eightNeighbors ? new int[]{0, 1, -1, 0, 1, -1, 1, -1} : new int[]{0, 0, -1, 1};
         for (int k=0; k<deltaX.length; k++) {
             int neighborRow = row + deltaX[k];
             int neighborCol = col + deltaY[k];
