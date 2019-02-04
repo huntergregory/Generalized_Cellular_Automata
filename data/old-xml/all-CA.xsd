@@ -1,9 +1,0 @@
-<!-- One file that includes all CA schema so that the automaton can reference the namespace. -->
-<!-- If you add a new CA type's schema, you must include it's URI here -->
-
-<xsd:schema elementFormDefault="qualified"
-            targetNamespace="all-CA"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <xsd:include schemaLocation="fire.xsd"/>
-
-</xsd:schema>

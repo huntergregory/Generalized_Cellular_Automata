@@ -1,3 +1,5 @@
+package GridCell;
+
 import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.ArrayList;
@@ -25,16 +27,16 @@ public abstract class Grid {
 
 
     /**
-     * Abstract method called in the Grid constructor. Method must create a state-color map and call setStateColorMap.
+     * Abstract method called in the GridCell.Grid constructor. Method must create a state-color map and call setStateColorMap.
      */
-    abstract void initStateColorMap();
+    public abstract void initStateColorMap();
 
 
     /**
      * set color map that maps each state to a particular color
      * @param colorMap
      */
-    private void setStateColorMap(HashMap<Integer, Color> colorMap){
+    public void setStateColorMap(HashMap<Integer, Color> colorMap){
         stateColorMap = colorMap;
     }
 
@@ -42,20 +44,20 @@ public abstract class Grid {
     /**
      * Abstract method to get any additional parameters required by specific simulation types
      */
-    abstract void setAdditionalParams();
+    public abstract void setAdditionalParams(Double[] params);
 
 
 
     /**
      * Abstract method that will define algorithm for changing cell states. Will be defined explicitly in subclasses.
      */
-    abstract void updateCells();
+    public abstract void updateCells();
 
     /**
      * Set grid randomly based on input composition (array of percentages)
      * @param composition array of percentages associated with each state
      */
-    public void setGridRandom(double[] composition, int screenSize){
+    public void setGridRandom(double[] composition){
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
         //fill grid randomly
@@ -119,6 +121,8 @@ public abstract class Grid {
 
 
 
+
+
     /**
      * Access cell at particular grid location and set its state
      * @param row
@@ -129,14 +133,47 @@ public abstract class Grid {
         grid[row][column].setState(state);
         grid[row][column].setColor(stateColorMap.get(state));
     }
+    
 
 
-
-    /**
-     * method to resize the grid
-     */
-    abstract void changeGridSize();
-
+    public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
+        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
+        if(row > 0){
+            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
+            neighbors.add(neighbor);
+        }
+        if(row < grid.length-1){
+            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col > 0){
+            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
+            neighbors.add(neighbor);
+        }
+        if(col < grid.length-1){
+            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
+            neighbors.add(neighbor);
+        }
+        if (eightNeighbors){
+            if(row > 0 && col > 0){
+                Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
+                neighbors.add(neighbor);
+            }
+            if(row < grid.length-1 && col < grid.length-1){
+                Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
+                neighbors.add(neighbor);
+            }
+            if(row < grid.length-1 && col > 0){
+                Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
+                neighbors.add(neighbor);
+            }
+            if(row > 0 && col < grid.length-1){
+                Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
+                neighbors.add(neighbor);
+            }
+        }
+        return neighbors;
+    }
 
     /**
      * Gets the neighborhood of a cell at specified position.

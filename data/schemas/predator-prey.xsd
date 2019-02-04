@@ -3,16 +3,15 @@
      Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xmlns:CA="cellular-automata"
-            targetNamespace="cellular-automata">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="state-makeup-list">
+        <xsd:complexType name="composition-list">
             <xsd:complexContent>
-                <xsd:extension base="state-makeup-list">
+                <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal" default="0.1"/>
-                        <xsd:element name="predator" type="xsd:decimal" default="0.3"/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="predator" type="xsd:decimal"/>
+                        <xsd:element name="prey" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -23,6 +22,7 @@
                     <xsd:sequence>
                         <xsd:element name="empty-spots" type="positions"/>
                         <xsd:element name="predator-spots" type="positions"/>
+                        <xsd:element name="prey-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -31,9 +31,8 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="prey-reproduce-time" type="xsd:int"/>
-                        <xsd:element name="predator-reproduce-time" type="xsd:int"/>
-                        <xsd:element name="predator-sustenance-time" type="xsd:int"/>
+                        <xsd:element name="fish-breeding-age" type="parameter"/>
+                        <xsd:element name="shark-breeding-age" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
