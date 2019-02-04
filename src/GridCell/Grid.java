@@ -86,7 +86,7 @@ public abstract class Grid {
      * @param composition array of percentages associated with each state
      * @return array of number of cells per state
      */
-    private int[] calcCellsPerState(double[] composition){
+    private int[] calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
         int[] stateCounts = new int[composition.length+1];
         int sum = 0;

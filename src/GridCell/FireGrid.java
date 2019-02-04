@@ -14,18 +14,13 @@ import java.util.Map;
  * @author Hunter Gregory
  */
 public class FireGrid extends Grid {
-    //States
     public static final int EMPTY = 0;
     public static final int BURNING = 1;
     public static final int GREEN = 2;
-    //Parameters
-    public static final int PROB_CATCH = 0;
-    public static final int PROB_LIGHTNING = 1;
-    public static final int PROB_GROW = 2;
-    //public static final
-    //ADD MORE
 
-    private Double[] parameters;
+    private double probCatch;
+    private double probLightning;
+    private double probGrow;
 
     public FireGrid(int gridSize, double screenSize, Double[] randomComp) {
         super(gridSize, screenSize);
@@ -43,16 +38,13 @@ public class FireGrid extends Grid {
 
     @Override
     public void setAdditionalParams(Double[] params) {
-
+        probCatch = params[0];
+        probLightning = params[1];
+        probGrow = params[2];
     }
 
     @Override
-    void updateCells() {
+    public void updateCells() {
         Cell[][] gridCopy = new Cell[getGrid().length][getGrid()[0].length];
-    }
-
-    @Override
-    void changeGridSize() {
-        //FIX
     }
 }
