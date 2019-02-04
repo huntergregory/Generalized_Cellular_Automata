@@ -26,6 +26,6 @@
     </green-spots>
   </configured>
   <parameters>
-    <probCatch>0.2</probCatch>
+    <probCatch min="0" max="1">0.2</probCatch>
   </parameters>
 </fire>

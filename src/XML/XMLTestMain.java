@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class XMLTestMain extends Application {
     public static final String DATA_FILE_EXTENSION = "*.xml";
@@ -25,29 +26,35 @@ public class XMLTestMain extends Application {
         tester.myParser.parseFile(xmlFile);
         System.out.println();
         System.out.println(tester.myParser.getCAType());
-        System.out.println(tester.myParser.getGridSize());
-        System.out.println(tester.myParser.getNumStates());
-        System.out.println(tester.myParser.getIsRandom());
-        printAllInDubArray(tester.myParser.getRandomComposition());
+        System.out.println("Grid size: " + tester.myParser.getGridSize());
+        System.out.println("Number of states: " + tester.myParser.getNumStates());
+        System.out.println("Grid is randomly composed? " + tester.myParser.getIsRandom());
+        printAllInDubArray(tester.myParser.getRandomComposition(), "random composition of states");
         printAllPositions(tester.myParser.getConfiguration());
-        printAllInDubArray(tester.myParser.getParameters());
+        printAllInDubArray(tester.myParser.getParameters(), "initial values of parameters");
         printSliders(tester.myParser.getSliderNamesAndValues());
     }
 
-    private void printSliders(LinkedHashMap<String,Integer[]> map) {
-        //FIx
+    private void printSliders(LinkedHashMap<String,Double[]> map) {
+        System.out.println("Printing slider information for grid");
+        for (String key : map.keySet()) {
+            Double[] extrema = map.get(key);
+            System.out.printf("Slider %s with min=%f and max=%f\n", key, extrema[0], extrema[1]);
+        }
     }
 
-    private void printAllInDubArray(Double[] array) {
+    private void printAllInDubArray(Double[] array, String reason) {
+        System.out.println("Printing doubles for " + reason);
         for (Double dub : array)
             System.out.println(dub);
     }
 
     private void printAllPositions(ArrayList<Integer[]> list) {
         int x = 0; int y=0; int state=0;
+        System.out.println("Printing configuration");
         for (Integer[] coords : list) {
             x=coords[0]; y=coords[1]; state=coords[2];
-            System.out.printf("(%d, %d) in state %d\n", x, y, state);
+            System.out.printf("Location (%d, %d) for state %d\n", x, y, state);
         }
     }
 

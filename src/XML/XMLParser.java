@@ -49,6 +49,7 @@ public class XMLParser {
     public static final int PARAMS_INDEX = 3;
 
     File myXMLFile;
+    private int myElementsIndex;
     private CA_TYPE myRootType;
     private Element myRoot;
     private int mySize;
@@ -56,7 +57,7 @@ public class XMLParser {
     private boolean myIsRandom;
     private ArrayList<Double> myRandomComposition;             //only used if random
     private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
-    private ArrayList<Integer> myParameters;
+    private ArrayList<Double> myParameters;
     private LinkedHashMap<String, Double[]> mySliderMap; //ordered map so that states and params are displayed in same order as xml file
 
     public XMLParser() {
@@ -76,15 +77,18 @@ public class XMLParser {
         assignRootType();
         assignRoot();
         NodeList elements = myRoot.getElementsByTagName("*"); //matches all tags
-        mySize = getIntFromNodeList(elements, SIZE_INDEX);
-        myNumStates = getIntFromNodeList(elements, NUM_STATES_INDEX);
-        myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, STATES_INDEX));
+        mySize = getIntFromNodeList(elements, myElementsIndex);
+        myElementsIndex++;
+        myNumStates = getIntFromNodeList(elements, myElementsIndex);
+        myElementsIndex++;
+        myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, myElementsIndex));
         if (myIsRandom)
             assignCompAndUpdateSliders(elements);
         else
             assignConfiguration(elements);
 
-        assignParamsAndUpdateSliders();
+        myElementsIndex++;
+        assignParamsAndUpdateSliders(elements);
     }
 
     private void assignRootType() throws XMLException {
@@ -107,11 +111,11 @@ public class XMLParser {
     }
 
     private void assignCompAndUpdateSliders(NodeList elements) {
-        Element randomTag = (Element) elements.item(STATES_INDEX);
+        Element randomTag = (Element) elements.item(myElementsIndex);
         NodeList compositions = randomTag.getElementsByTagName("*");
         int k=0; // foreach not allowed for NodeList
-        Integer[]
         while (k < compositions.getLength()) {
+            myElementsIndex++;
             myRandomComposition.add(getDoubleFromNodeList(compositions, k));
             Double[] extrema = {0.0, 1.0};
             mySliderMap.put(getTagNameFromNodeList(compositions,k), extrema);
@@ -125,6 +129,7 @@ public class XMLParser {
         int k=0;
         int numState=0;
         while(k<config.getLength()) {
+            myElementsIndex++;
             int j=0;
             if (!itemIsState(config.item(k))) {
                 k++;
@@ -166,8 +171,23 @@ public class XMLParser {
         return true;
     }
 
-    private void assignParamsAndUpdateSliders() {
+    private void assignParamsAndUpdateSliders(NodeList elements) {
+        NodeList parameters = ((Element) elements.item(myElementsIndex)).getElementsByTagName("*");
+        int k=0;
+        //no need to increment myElementsIndex anymore
+        while (k<parameters.getLength()) {
+            myParameters.add(getDoubleFromNodeList(parameters, k));
+            String paramName = getTagNameFromNodeList(parameters, k);
+            String min = getAttributeFromNodeList(parameters, k, "min");
+            String max = getAttributeFromNodeList(parameters, k, "max");
+            Double[] extrema = { Double.parseDouble(min), Double.parseDouble(max) };
+            mySliderMap.put(paramName, extrema);
+            k++;
+        }
+    }
 
+    private String getAttributeFromNodeList(NodeList list, int index, String name) {
+        return ((Element) list.item(index)).getAttribute(name);
     }
 
     private boolean fileIsType(CA_TYPE type) {
@@ -215,6 +235,7 @@ public class XMLParser {
         mySize = 0;
         myNumStates = 0;
         myIsRandom = false;
+        myElementsIndex = 0;
     }
 
     /**
