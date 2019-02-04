@@ -1,0 +1,42 @@
+<!-- Schema for a predator prey automaton.
+     Can choose configured locations for all three states.
+     Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="composition-list">
+            <xsd:complexContent>
+                <xsd:extension base="composition-list">
+                    <xsd:sequence>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="predator" type="xsd:decimal"/>
+                        <xsd:element name="prey" type="xsd:decimal"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="location-list">
+            <xsd:complexContent>
+                <xsd:extension base="location-list">
+                    <xsd:sequence>
+                        <xsd:element name="empty-spots" type="positions"/>
+                        <xsd:element name="predator-spots" type="positions"/>
+                        <xsd:element name="prey-spots" type="positions"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="parameter-list">
+            <xsd:complexContent>
+                <xsd:extension base="parameter-list">
+                    <xsd:sequence>
+                        <xsd:element name="fish-breeding-age" type="parameter"/>
+                        <xsd:element name="shark-breeding-age" type="parameter"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:redefine>
+    <xsd:element name="predator-prey" type="automaton"/>
+</xsd:schema>

@@ -1,0 +1,29 @@
+<!-- Schema for a game of life automaton.
+     Can choose configured locations for both states.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="composition-list">
+            <xsd:complexContent>
+                <xsd:extension base="composition-list">
+                    <xsd:sequence>
+                        <xsd:element name="on" type="xsd:decimal"/>
+                        <xsd:element name="off" type="xsd:decimal"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+        <xsd:complexType name="location-list">
+            <xsd:complexContent>
+                <xsd:extension base="location-list">
+                    <xsd:sequence>
+                        <xsd:element name="on-spots" type="positions"/>
+                        <xsd:element name="off-spots" type="positions"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:redefine>
+    <xsd:element name="game-of-life" type="automaton"/>
+</xsd:schema>

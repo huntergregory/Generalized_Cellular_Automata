@@ -1,0 +1,31 @@
+<fire title="Test configured fire">
+  <size>10</size>
+  <num-states>3</num-states>
+  <configured>
+    <empty-spots>
+      <position>
+        <row>2</row>
+        <col>3</col>
+      </position>
+      <position>
+        <row>1</row>
+        <col>0</col>
+      </position>
+    </empty-spots>
+    <burning-spots>
+      <position>
+        <row>4</row>
+        <col>5</col>
+      </position>
+    </burning-spots>
+    <green-spots>
+      <position>
+        <row>-1</row>
+        <col>-1</col>
+      </position>
+    </green-spots>
+  </configured>
+  <parameters>
+    <probCatch min="0" max="1">0.2</probCatch>
+  </parameters>
+</fire>

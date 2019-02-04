@@ -1,0 +1,10 @@
+<percolation title="Test random perc">
+  <size>10</size>
+  <num-states>3</num-states>
+  <random>
+    <open>0.1</open>
+    <percolating>0.1</percolating>
+    <blocked>-1</blocked>
+  </random>
+  <parameters/>
+</percolation>

@@ -1,0 +1,69 @@
+<!-- A general cellular automaton complex type that allows extension.
+        Steps to extend:
+          - <include> this xsd in the one you're creating
+          - <redefine> and extend all the "list" types below
+          - create a new element of type "automaton"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="automaton">
+        <xsd:sequence>
+            <xsd:element name="size" type="xsd:int"/>
+            <xsd:element name="num-states" type="xsd:int"/>
+            <xsd:choice>
+                <xsd:element name="random" type="composition-list"/>
+                <xsd:element name="configured" type="location-list"/>
+            </xsd:choice>
+            <xsd:element name="parameters" type="parameter-list"/>
+        </xsd:sequence>
+        <xsd:attribute name="title" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <!-- All list types below are placeholders that need to be overwritten -->
+
+    <!-- Rewrite for every CA type's schema.
+         Each item represents a percent of the grid occupied by a certain state.
+         Each item must have type decimal.
+         Make a state have a value of -1 for the GridCell.Grid to infer its composition from those of the other states.
+            Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
+     -->
+    <xsd:complexType name="composition-list"/>
+
+    <!-- Rewrite for all CA types' schemas.
+         Each item must have type "positions".
+         Make a state have on position with a row and col value of -1 for the GridCell.Grid to infer its positions from those of
+            the other states. Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
+    -->
+    <xsd:complexType name="location-list"/>
+
+    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+         Each item must have type parameter
+    -->
+    <xsd:complexType name="parameter-list"/>
+
+    <!-- Allows a list of position elements, each a parent to an x, y coordinate.
+         Use this in making a location-list.
+    -->
+    <xsd:complexType name="positions">
+        <xsd:sequence>
+            <xsd:element name="position" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="row" type="xsd:int"/>
+                        <xsd:element name="col" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
+    <xsd:complexType name="parameter">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:decimal">
+                <xsd:attribute name="min" type="xsd:decimal" use="required"/>
+                <xsd:attribute name="max" type="xsd:decimal" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+</xsd:schema>

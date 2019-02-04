@@ -1,0 +1,29 @@
+<!-- Extendable general cellular automaton where states are randomly assigned positions.
+        Steps to extend:
+          - <include> this xsd in the one you're creating
+          - <redefine> and extend all the "list" types below
+          - create a new element of type "automaton"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="random-automaton">
+        <xsd:sequence>
+            <xsd:element name="size" type="xsd:int"/>
+            <xsd:element name="num-states" type="xsd:int"/>
+            <xsd:element name="state-makeup" type="state-makeup-list">
+            <xsd:element name="parameters" type="parameter-list"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Rewrite for every CA type's schema.
+         Each item represents a percent of the grid occupied by a certain state.
+         Each item must have type decimal.
+         Omit the last state to let the grid infer it's composition.
+     -->
+    <xsd:complexType name="state-makeup-list"/>
+
+    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+         Each item must have type decimal.
+    -->
+    <xsd:complexType name="parameter-list"/>
+</xsd:schema>
