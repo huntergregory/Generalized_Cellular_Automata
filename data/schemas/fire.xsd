@@ -11,8 +11,8 @@
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
                         <xsd:element name="empty" type="xsd:decimal"/>
-                        <xsd:element name="burning" type="xsd:decimal"/>
                         <xsd:element name="green" type="xsd:decimal"/>
+                        <xsd:element name="burning" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -22,8 +22,8 @@
                 <xsd:extension base="location-list">
                     <xsd:sequence>
                         <xsd:element name="empty-spots" type="positions"/>
-                        <xsd:element name="burning-spots" type="positions"/>
                         <xsd:element name="green-spots" type="positions"/>
+                        <xsd:element name="burning-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -34,6 +34,7 @@
                     <xsd:sequence>
                         <xsd:element name="probCatch" type="parameter"/>
                         <xsd:element name="probLightning" type="parameter"/>
+                        <xsd:element name="burnTime" type="parameter"/>
                         <xsd:element name="probGrow" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
