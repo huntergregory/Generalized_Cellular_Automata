@@ -3,15 +3,16 @@
      Can also choose the probability that a tree will catch fire given its neighbors are ablaze.
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:include schemaLocation="general-CA.xsd"/>
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="state-makeup-list">
+        <xsd:complexType name="composition-list">
             <xsd:complexContent>
-                <xsd:extension base="state-makeup-list">
+                <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal" default="0.1"/>
-                        <xsd:element name="burning" type="xsd:decimal" default="0.1"/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="burning" type="xsd:decimal"/>
+                        <xsd:element name="green" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -22,6 +23,7 @@
                     <xsd:sequence>
                         <xsd:element name="empty-spots" type="positions"/>
                         <xsd:element name="burning-spots" type="positions"/>
+                        <xsd:element name="green-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -30,7 +32,7 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="probCatch" type="xsd:int"/> <!-- NOTICE int now instead of decimal -->
+                        <xsd:element name="probCatch" type="parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

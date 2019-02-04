@@ -18,7 +18,7 @@ Each type includes its initial state
     - Game of Life
         - ??
 
-    - Segregation
+    - GridCell.Segregation
         - Similar
         - percent blue ppl
         - percent empty
