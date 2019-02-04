@@ -12,10 +12,12 @@ import java.util.Map;
 public class XMLTestMain extends Application {
     public static final String DATA_FILE_EXTENSION = "*.xml";
     public XMLParser myParser;
-    public FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
+    public FileChooser myChooser;
 
     public XMLTestMain() {
         myParser = new XMLParser();
+        myChooser = makeChooser(DATA_FILE_EXTENSION);
+        myChooser.setInitialDirectory(new File("data/automata"));
     }
 
     public void start(Stage primaryStage) {

@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/*
 public class Segregation extends Grid {
 
     private double happyPercent;
@@ -72,3 +73,4 @@ public class Segregation extends Grid {
 
 
 }
+*/

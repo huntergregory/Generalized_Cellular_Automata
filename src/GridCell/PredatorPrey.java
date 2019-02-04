@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/*
 public class PredatorPrey extends Grid {
     private double fishBreedingAge;
     private double sharkBreedingAge;
@@ -123,3 +124,4 @@ public class PredatorPrey extends Grid {
         grid[y2][x2].setColor(stateColorMap.get(state2));
     }
 }
+*/
