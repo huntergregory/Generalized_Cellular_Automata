@@ -209,6 +209,9 @@ public class XMLParser {
             if (totalComp > 1.0 || negativeCount==2)
                 throw new XMLException("Error in composition values");
         }
+
+        if (totalComp != 1 && negativeCount == 0)
+            throw new XMLException("Error in composition values");
     }
 
     private void validateInRange(double value, double min, double max) throws XMLException {
