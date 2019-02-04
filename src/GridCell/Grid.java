@@ -240,4 +240,14 @@ public abstract class Grid {
     private double randomDouble() {
         return rand.nextDouble();
     }
+
+    public void printGrid(Cell[][] grid) {
+        System.out.println("Printing Grid");
+        for (int r=0; r<grid.length; r++) {
+            for (int c=0; c<grid.length; c++) {
+                System.out.println(grid[r][c].getState());
+            }
+        }
+        System.out.println();
+    }
 }

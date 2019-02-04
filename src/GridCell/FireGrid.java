@@ -3,6 +3,7 @@ package GridCell;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,23 @@ public class FireGrid extends Grid {
     private double probLightning;
     private double probGrow;
 
+    /**
+     * Create a FireGrid that initializes states in explicit positions based on the configuration.
+     * @param gridSize
+     * @param screenSize
+     * @param configuration
+     */
+    public FireGrid(int gridSize, double screenSize, ArrayList<Integer[]> configuration) {
+        super(gridSize, screenSize);
+        setGridSpecific(configuration);
+    }
+
+    /**
+     * Create a FireGrid that initializes states randomly based on their percent composition.
+     * @param gridSize
+     * @param screenSize
+     * @param randomComp
+     */
     public FireGrid(int gridSize, double screenSize, Double[] randomComp) {
         super(gridSize, screenSize);
         setGridRandom(randomComp);
@@ -45,6 +63,19 @@ public class FireGrid extends Grid {
 
     @Override
     public void updateCells() {
-        Cell[][] gridCopy = new Cell[getGrid().length][getGrid()[0].length];
+        Cell[][] gridCopy = getGridCopy();
+        printGrid(getGrid());
+        printGrid(gridCopy);
+    }
+
+    private Cell[][] getGridCopy() {
+        Cell[][] grid = getGrid();
+        int size = grid.length;
+        Cell[][] gridCopy = new Cell[size][size];
+        for(int k = 0; k<size; k++) {
+            Cell[] row = grid[k];
+            System.arraycopy(row, 0, gridCopy[k], 0, size);
+        }
+        return gridCopy;
     }
 }
