@@ -45,7 +45,17 @@ public class SimulatorMain extends Application {
             System.out.println("Problem with instantiating grid");
         }
 
-        myGrid.updateCells();
+        simulateTransitions(10);
+    }
+
+    private void simulateTransitions(int numTransitions) {
+        System.out.println("Initial State");
+        myGrid.printGrid();
+        for (int k=0; k<numTransitions;k++) {
+            myGrid.updateCells();
+            System.out.println("Round " + (k + 1));
+            myGrid.printGrid();
+        }
     }
 
     private void getNewGrid(File xmlFile) throws InstantiationException {
@@ -101,7 +111,6 @@ public class SimulatorMain extends Application {
 
     /**
      * This demonstrates how to use all the getter methods of XMLParser. It also is good for debugging
-     * @param tester
      */
     private void printShit() {
         System.out.println(myParser.getCAType());

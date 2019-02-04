@@ -64,12 +64,12 @@ public abstract class Grid {
         for (int i = 0; i < grid.length; i++){
             for (int j = 0; j < grid[0].length; j++){
                 boolean availableState = false;
-                int index = randomInt(4);
+                int index = getRandomInt(4);
                 while(!availableState){
                     if (stateCounts[index]>0){
                         availableState = true;
                     }else{
-                        index = randomInt(4);
+                        index = getRandomInt(4);
                     }
                 }
                 grid[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
@@ -182,7 +182,7 @@ public abstract class Grid {
      * @return array of neighboring Cells
      * @throws IllegalArgumentException
      */
-    Cell[] getNeighbors(int row, int col) throws IllegalArgumentException {
+    Cell[] getNeighborCells(int row, int col) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
 
@@ -229,7 +229,7 @@ public abstract class Grid {
      * @param bound
      * @return random integer
      */
-    public int randomInt(int bound){
+    public int getRandomInt(int bound){
         return rand.nextInt(bound);
     }
 
@@ -237,11 +237,11 @@ public abstract class Grid {
      * Return a number picked from a uniform distribution between 0.0 and 1.0.
      * @return random double
      */
-    private double randomDouble() {
+    public double getRandomDouble() {
         return rand.nextDouble();
     }
 
-    public void printGrid(Cell[][] grid) {
+    public void printGrid() {
         System.out.println("Printing Grid");
         for (int r=0; r<grid.length; r++) {
             for (int c=0; c<grid.length; c++) {
