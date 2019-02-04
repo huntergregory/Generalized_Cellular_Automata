@@ -245,8 +245,9 @@ public abstract class Grid {
         System.out.println("Printing Grid");
         for (int r=0; r<grid.length; r++) {
             for (int c=0; c<grid.length; c++) {
-                System.out.println(grid[r][c].getState());
+                System.out.print(grid[r][c].getState());
             }
+            System.out.println();
         }
         System.out.println();
     }

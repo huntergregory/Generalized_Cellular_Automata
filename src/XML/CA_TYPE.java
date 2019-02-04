@@ -1,20 +1,22 @@
 package XML;
-import GridCell.Grid;
+import GridCell.*;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 public enum CA_TYPE {
-    FIRE("data/schemas/fire.xsd") { public String toString() { return "PercolationGrid"; } },
-    PERCOLATION("data/schemas/percolation.xsd") { public String toString() { return "PercolationGrid"; } },
-    GAME_OF_LIFE("data/schemas/game-of-life.xsd") { public String toString() { return "LifeGrid"; } },
-    PREDATOR_PREY("data/schemas/predator-prey.xsd") { public String toString() { return "PredatorPreyGrid"; } },
-    SEGREGATION("data/schemas/segregation.xsd") { public String toString() { return "SegregationGrid"; } };
+    FIRE("data/schemas/fire.xsd", FireGrid.class);
+    /*PERCOLATION("data/schemas/percolation.xsd", PercolationGrid.class),
+    GAME_OF_LIFE("data/schemas/game-of-life.xsd", LifeGrid.class),
+    PREDATOR_PREY("data/schemas/predator-prey.xsd", PredatorPrey.class),
+    SEGREGATION("data/schemas/segregation.xsd", SegregationGrid.class);*/
 
     private File mySchemaFile;
-    CA_TYPE(String schemaFile) {
+    private Class<? extends Grid> myGridClass;
+    CA_TYPE(String schemaFile, Class<? extends Grid> gridClass) {
         mySchemaFile = new File(schemaFile);
+        myGridClass = gridClass;
     }
 
     /**
@@ -24,11 +26,12 @@ public enum CA_TYPE {
 
     /**
      * Uses reflection to return the constructor associated with a Grid that configures states randomly.
-     * @return Grid constructor associated with this type. Use newInstance(Object...initargs) to invoke the constructor.
+     * Use newInstance(int, double, Double[]) to invoke the constructor.
+     * @return Grid constructor or null if an error occurred.
      */
-    public Constructor<Grid> getRandomConstructor() {
+    public Constructor<? extends Grid> getRandomConstructor() {
         try {
-            return getGridClass().getConstructor(int.class, double.class, Double[].class);
+            return myGridClass.getConstructor(int.class, double.class, Double[].class);
         }
         catch (NoSuchMethodException e) {
             return null;
@@ -37,24 +40,14 @@ public enum CA_TYPE {
 
     /**
      * Uses reflection to return the constructor associated with a Grid that configures states based on explicit positions.
-     * @return Grid constructor associated with this type. Use newInstance(Object...initargs) to invoke the constructor.
+     * Use newInstance(int, double, ArrayList<Double[]>) to invoke the constructor.
+     * @return Grid constructor or null if an error occurred.
      */
-    public Constructor<Grid> getConfiguredConstructor() {
+    public Constructor<? extends Grid> getConfiguredConstructor() {
         try {
-            return getGridClass().getConstructor(int.class, double.class, ArrayList.class);
+            return myGridClass.getConstructor(int.class, double.class, ArrayList.class);
         }
         catch (NoSuchMethodException e) {
-            return null;
-        }
-    }
-
-    private Class<Grid> getGridClass() {
-        try {
-            @SuppressWarnings("unchecked")
-            Class<Grid> gridClass = (Class<Grid>) Class.forName("src/" + this.toString());
-            return gridClass;
-        }
-        catch (ClassNotFoundException e) {
             return null;
         }
     }
