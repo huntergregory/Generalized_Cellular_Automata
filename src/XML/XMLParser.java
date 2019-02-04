@@ -19,34 +19,19 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
- *
+ * Parses automaton XML files associated with any schema with a corresponding CA_TYPE enumeration.
+ * Gathers information from one of these files, and has the ability to share the information.
+ * Checks for errors in the xml file such as:
+ *      - xml file doesn't conform to an automaton schema
+ *      - values given to elements are out of bounds
  * Schema validation inspired by Wayan Saryada's article.
  * @see <a href="https://kodejava.org/how-do-i-validate-xml-against-xsd-in-java/">Wayan Saryada's</a> article
  * @author Hunter Gregory
  */
-
-/*
-Element order:
-    - size
-    - numStates
-    - random OR configured
-        - for random:
-            - sequence of unspecified tags with int
-        - for configured:
-            - sequence of unspecified tags each with sequence of position tags each with row and col tags
-    - parameters (might have no children if empty)
- */
-
-//FIX CHECK TO SEE IF POSITIONS ARE IN BOUNDS AND IF COMPOSITIONS ARE BETWEEN 0-1 AND ADD UP
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
     public static final String RANDOM_TAG = "random";
-    public static final String CONFIGURED_TAG = "configured";
-    public static final int SIZE_INDEX = 0;
-    public static final int NUM_STATES_INDEX = 1;
-    public static final int STATES_INDEX = 2;
-    public static final int PARAMS_INDEX = 3;
 
     File myXMLFile;
     private int myElementsIndex; //increment after passing an element in order to know where the parameters start
@@ -127,7 +112,7 @@ public class XMLParser {
     }
 
     private void assignConfiguration(NodeList elements) {
-        Element configuredTag = (Element) elements.item(STATES_INDEX);
+        Element configuredTag = (Element) elements.item(myElementsIndex);
         NodeList config = configuredTag.getElementsByTagName("*");
         int k=0;
         int numState=0;
