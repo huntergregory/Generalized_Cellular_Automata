@@ -48,6 +48,10 @@ public class SimulatorMain extends Application {
         simulateTransitions(10);
     }
 
+    /**
+     * DEBUGGING, prints grids for specified # of transitions
+     * @param numTransitions
+     */
     private void simulateTransitions(int numTransitions) {
         System.out.println("Initial State");
         myGrid.printGrid();

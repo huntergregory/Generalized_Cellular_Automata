@@ -1,5 +1,5 @@
 <!-- Schema for a segregation automaton.
-     Can choose configured locations for all three states.
+     Can choose random or configured locations for all three states.
      Can specify how similar each population is in the form of a decimal percent.
 -->
 

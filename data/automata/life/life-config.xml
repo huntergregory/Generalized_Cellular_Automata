@@ -1,0 +1,35 @@
+<game-of-life title="string">
+  <size min="3" max="30">10</size>
+  <num-states>2</num-states>
+  <configured>
+    <populated-spots>
+      <position>
+        <row>2</row>
+        <col>3</col>
+      </position>
+      <position>
+        <row>3</row>
+        <col>4</col>
+      </position>
+      <position>
+        <row>4</row>
+        <col>2</col>
+      </position>
+      <position>
+        <row>4</row>
+        <col>3</col>
+      </position>
+      <position>
+        <row>4</row>
+        <col>4</col>
+      </position>
+    </populated-spots>
+    <empty-spots>
+      <position>
+        <row>-1</row>
+        <col>-1</col>
+      </position>
+    </empty-spots>
+  </configured>
+  <parameters/>
+</game-of-life>

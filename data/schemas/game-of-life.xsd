@@ -1,5 +1,5 @@
 <!-- Schema for a game of life automaton.
-     Can choose configured locations for both states.
+     Should choose configured locations for the two states.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -8,8 +8,8 @@
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="on" type="xsd:decimal"/>
-                        <xsd:element name="off" type="xsd:decimal"/>
+                        <xsd:element name="populated" type="xsd:decimal"/>
+                        <xsd:element name="empty" type="xsd:decimal"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
@@ -18,8 +18,8 @@
             <xsd:complexContent>
                 <xsd:extension base="location-list">
                     <xsd:sequence>
-                        <xsd:element name="on-spots" type="positions"/>
-                        <xsd:element name="off-spots" type="positions"/>
+                        <xsd:element name="populated-spots" type="positions"/>
+                        <xsd:element name="empty-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

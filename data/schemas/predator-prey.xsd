@@ -1,5 +1,5 @@
 <!-- Schema for a predator prey automaton.
-     Can choose configured locations for all three states.
+     Can choose random or configured locations for all three states.
      Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
 -->
 

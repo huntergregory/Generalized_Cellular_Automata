@@ -6,9 +6,9 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 public enum CA_TYPE {
+    GAME_OF_LIFE("data/schemas/game-of-life.xsd", LifeGrid.class),
     FIRE("data/schemas/fire.xsd", FireGrid.class);
     /*PERCOLATION("data/schemas/percolation.xsd", PercolationGrid.class),
-    GAME_OF_LIFE("data/schemas/game-of-life.xsd", LifeGrid.class),
     PREDATOR_PREY("data/schemas/predator-prey.xsd", PredatorPrey.class),
     SEGREGATION("data/schemas/segregation.xsd", SegregationGrid.class);*/
 
