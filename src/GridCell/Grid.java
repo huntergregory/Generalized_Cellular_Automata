@@ -220,11 +220,19 @@ public abstract class Grid {
 
 
     /**
-     * Return the grid of cells so that it can interact with methods in other classes
-     * @return
+     * Return a copy of the grid of cells so that it can interact with methods in other classes
+     * @return grid of cells
      */
-    public Cell[][] getGrid(){
-        return grid;
+    public Cell[][] getGrid() {
+        int size = grid.length;
+        Cell[][] gridCopy = new Cell[size][size];
+        for (int r=0; r<size; r++) {
+            for (int c=0; c<size; c++) {
+                Cell cell = grid[r][c];
+                gridCopy[r][c] = cell.getCopy();
+            }
+        }
+        return gridCopy;
     }
 
 
@@ -236,7 +244,6 @@ public abstract class Grid {
     public void setGrid(Cell[][] cells){
         grid = cells;
     }
-
 
 
     /**
@@ -254,21 +261,6 @@ public abstract class Grid {
      */
     public double getRandomDouble() {
         return rand.nextDouble();
-    }
-
-    /**
-     * Creates a copy of the current grid
-     * @return Cell grid copy
-     */
-    public Cell[][] getGridCopy() {
-        Cell[][] grid = getGrid();
-        int size = grid.length;
-        Cell[][] gridCopy = new Cell[size][size];
-        for(int k = 0; k<size; k++) {
-            Cell[] row = grid[k];
-            System.arraycopy(row, 0, gridCopy[k], 0, size);
-        }
-        return gridCopy;
     }
 
     /**
