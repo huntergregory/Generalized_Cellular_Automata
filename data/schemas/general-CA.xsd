@@ -14,8 +14,8 @@
                 <xsd:complexType>
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:int">
-                            <xsd:attribute name="min" type="xsd:int" use="required" fixed="3"/>
-                            <xsd:attribute name="max" type="xsd:int" use="required" fixed="30"/>
+                            <xsd:attribute name="min" type="xsd:int" use="required"/>
+                            <xsd:attribute name="max" type="xsd:int" use="required"/>
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>

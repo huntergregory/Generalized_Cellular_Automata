@@ -1,0 +1,43 @@
+<game-of-life title="Small Exploder">
+    <size min="17" max="30">17</size>
+    <num-states>2</num-states>
+    <configured>
+        <populated-spots>
+            <position>
+                <row>6</row>
+                <col>8</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>7</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>8</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>9</col>
+            </position>
+            <position>
+                <row>8</row>
+                <col>7</col>
+            </position>
+            <position>
+                <row>8</row>
+                <col>9</col>
+            </position>
+            <position>
+                <row>9</row>
+                <col>8</col>
+            </position>
+        </populated-spots>
+        <empty-spots>
+            <position>
+                <row>-1</row>
+                <col>-1</col>
+            </position>
+        </empty-spots>
+    </configured>
+    <parameters/>
+</game-of-life>
