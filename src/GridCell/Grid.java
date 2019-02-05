@@ -5,6 +5,10 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ *
+ * @author
+ */
 public abstract class Grid {
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
@@ -64,7 +68,7 @@ public abstract class Grid {
         for (int i = 0; i < grid.length; i++){
             for (int j = 0; j < grid[0].length; j++){
                 boolean availableState = false;
-                int index = getRandomInt(4);
+                int index = getRandomInt(composition.length);
                 while(!availableState){
                     if (stateCounts[index]>0){
                         availableState = true;
@@ -88,15 +92,27 @@ public abstract class Grid {
      */
     private int[] calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
-        int[] stateCounts = new int[composition.length+1];
+        int[] stateCounts = new int[composition.length];
         int sum = 0;
+        int inferredState = -1;
         for (int i = 0; i < composition.length; i++){
-            int numCells = (int)(gridSize*composition[i]);
-            stateCounts[i] = numCells;
-            sum += numCells;
+            if (composition[i] != -1){
+                int numCells = (int)(gridSize*composition[i]);
+                stateCounts[i] = numCells;
+                sum += numCells;
+            }else{
+                inferredState = i;
+                stateCounts[i] = 0;
+            }
         }
-        stateCounts[stateCounts.length-1] = gridSize - sum;
-        return stateCounts;
+        if (inferredState == -1){
+            sum -= stateCounts[stateCounts.length-1];
+            stateCounts[stateCounts.length-1] = gridSize - sum;
+        }else{
+            stateCounts[inferredState] = gridSize - sum;
+            return stateCounts;
+        }
+        
     }
 
 
