@@ -42,7 +42,7 @@ public class SimulatorMain extends Application {
             getNewGrid(xmlFile);
         }
         catch (InstantiationException e) {
-            System.out.println("Problem with instantiating grid");
+            System.out.println(e.getMessage());
         }
 
         simulateTransitions(10);

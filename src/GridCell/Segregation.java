@@ -10,11 +10,8 @@ public class Segregation extends Grid {
     private double happyPercent;
     private HashMap<Integer,Color> stateColorMap;
 
-    public Segregation(int gridSize, double screenSize){
+    public Segregation(int gridSize, double screenSize, Double[] composition) {
         super(gridSize,screenSize);
-    }
-
-    public void setGridStates(Double[] composition){
         setGridRandom(composition);
     }
 

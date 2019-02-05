@@ -11,11 +11,8 @@ public class PredatorPrey extends Grid {
     private double sharkBreedingAge;
     private HashMap<Integer, Color> stateColorMap;
 
-    public PredatorPrey(int gridSize, double screenSize){
+    public PredatorPrey(int gridSize, double screenSize, Double[] composition){
         super(gridSize,screenSize);
-    }
-
-    public void setGridStates(Double[] composition){
         setGridRandom(composition);
     }
 
