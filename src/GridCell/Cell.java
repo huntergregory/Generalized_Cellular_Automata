@@ -3,13 +3,14 @@ package GridCell;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
-public class Cell extends Rectangle{
+public class Cell {
+    private Rectangle cellBody;
     private Color cellColor;
     private int state;
     private int age;
 
     public Cell(double yPos, double xPos, double size){
-        super(xPos, yPos, size, size);
+        cellBody = new Rectangle(xPos,yPos,size, size);
         age = 0;
     }
 
@@ -19,7 +20,7 @@ public class Cell extends Rectangle{
      */
     public void setColor(Color color){
         cellColor = color;
-        this.setFill(color);
+        cellBody.setFill(color);
     }
 
     /**
@@ -28,8 +29,8 @@ public class Cell extends Rectangle{
      * @param yPos new y position
      */
     public void setPos(double xPos, double yPos){
-        this.setX(xPos);
-        this.setY(yPos);
+        cellBody.setX(xPos);
+        cellBody.setY(yPos);
     }
 
     /**
@@ -37,8 +38,8 @@ public class Cell extends Rectangle{
      * @param size new size
      */
     public void setSize(double size){
-        this.setHeight(size);
-        this.setWidth(size);
+        cellBody.setHeight(size);
+        cellBody.setWidth(size);
     }
 
     /**
@@ -53,8 +54,8 @@ public class Cell extends Rectangle{
         return state;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setState(int State) {
+        state = State;
     }
 
     public int getAge(){
