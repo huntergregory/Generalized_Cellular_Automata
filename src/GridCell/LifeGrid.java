@@ -52,28 +52,44 @@ public class LifeGrid extends Grid {
 
     @Override
     public void updateCells() {
-        Cell[][] gridCopy = getGridCopy();
-        Cell[][] newGrid = getGrid();
+        Cell[][] newGrid = getGrid(); // this method returns a copy of the grid, so these two variables reference different cells
+        Cell[][] oldGrid = getGrid();
 
-        int size = newGrid.length;
+        int size = oldGrid.length;
         for (int r=0; r<size; r++) {
             for (int c=0; c<size; c++) {
-                updateCell(gridCopy[r][c], newGrid[r][c], getNeighbors(r, c, true));
+                updateCell(oldGrid[r][c], newGrid[r][c], getNeighbors(r, c, true));
                 System.out.println("for " + r + " and col " + c);
             }
         }
+        setGrid(newGrid);
     }
 
-    private void updateCell(Cell currentCell, Cell newCell, ArrayList<Integer[]> neighborCoords) {
+    private void updateCell(Cell oldCell, Cell newCell, ArrayList<Integer[]> neighborCoords) {
         int numPopulatedNeighbors = 0;
         for (Integer[] neighborCoord : neighborCoords) {
+            int row = neighborCoord[0]; int col = neighborCoord[1]; int state = neighborCoord[2];
+            System.out.println("Neighbor is at row " + row + "and col" + col + " and has state " + state);
             if (neighborCoord[2] == POPULATED) //gets the state from the (row, col, state) coordinate
                 numPopulatedNeighbors ++;
         }
 
-        if (currentCell.getState() == EMPTY && numPopulatedNeighbors == 3)
+        if (oldCell.getState() == EMPTY && numPopulatedNeighbors == 3) {
             newCell.setState(POPULATED);
-        else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4)
+            System.out.printf("populating the empty spot ");
+        }
+        else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4) {
             newCell.setState(EMPTY);
+            if (oldCell.getState() == POPULATED) System.out.printf("emptying the populated spot ");
+        }
     }
 }
+//at 2,1.
+// N: 2,2, 1    g
+// N:1, 2, 0    x
+// N:1,1,1      g
+// N: 1,0,1     g
+// N: 2,0 1      g
+// N: 3, 0, 1   g
+// N: 3, 1, 0   g
+// N: 3,2, 0    g

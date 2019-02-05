@@ -275,7 +275,6 @@ public abstract class Grid {
      * Prints the current grid's states. Useful for debugging
      */
     public void printGrid() {
-        System.out.println("Printing Grid");
         for (int r=0; r<grid.length; r++) {
             for (int c=0; c<grid.length; c++) {
                 System.out.print(grid[r][c].getState());

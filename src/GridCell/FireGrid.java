@@ -2,6 +2,7 @@ package GridCell;
 
 import javafx.scene.paint.Color;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -68,54 +69,55 @@ public class FireGrid extends Grid {
 
     @Override
     public void updateCells() {
-        Cell[][] gridCopy = getGridCopy();
-        Cell[][] newGrid = getGrid();
+        Cell[][] newGrid = getGrid(); // this method returns a copy of the grid, so these two variables reference different cells
+        Cell[][] oldGrid = getGrid();
 
-        int size = newGrid.length;
+        int size = oldGrid.length;
         for (int r=0; r<size; r++) {
             for (int c=0; c<size; c++) {
-                Cell currentCell = gridCopy[r][c];
+                Cell currentCell = oldGrid[r][c];
+                Cell newCell = newGrid[r][c];
                 if (currentCell.getState() == EMPTY) {
-                    updateEmptyCell(currentCell);
+                    updateEmptyCell(newCell);
                     continue;
                 }
                 if (currentCell.getState() == BURNING) {
-                    updateBurningCell(currentCell);
+                    updateBurningCell(newCell);
                     continue;
                 }
-                updateGreenCell(r, c, currentCell);
+                updateGreenCell(newCell, getNeighbors(r,c,false));
             }
         }
     }
 
-    private void updateEmptyCell(Cell currentCell) {
+    private void updateEmptyCell(Cell newCell) {
         if (getRandomDouble() <= probGrow) {
-            currentCell.setState(GREEN);
+            newCell.setState(GREEN);
             System.out.println("Growing!");
         }
     }
 
-    private void updateBurningCell(Cell currentCell) {
-        currentCell.setAge(1 + currentCell.getAge());
-        if (currentCell.getAge() >= burnTime)
-            currentCell.setState(EMPTY);
+    private void updateBurningCell(Cell newCell) {
+        newCell.setAge(1 + newCell.getAge());
+        if (newCell.getAge() >= burnTime)
+            newCell.setState(EMPTY);
     }
 
-    private void updateGreenCell(int r, int c, Cell currentCell) {
+    private void updateGreenCell(Cell newCell, ArrayList<Integer[]> neighborCoords) {
         //double probTransition = probLightning * probCatch;
         double probTransition = 0;
-        for (Integer[] neighborCoord : getNeighbors(r,c, false)) {
+        for (Integer[] neighborCoord : neighborCoords) {
             if (neighborCoord[2] == BURNING) { //gets the state from the (row, col, state) coordinate
                 probTransition += probCatch;
             }
         }
         double dub = getRandomDouble();
         if (dub <= probTransition) {
-            currentCell.setState(BURNING);
+            newCell.setState(BURNING);
             System.out.println("Neighbor burnt me!");
         }
         else if (dub <= probTransition + probLightning * probCatch) {
-            currentCell.setState(BURNING);
+            newCell.setState(BURNING);
             System.out.println("Lightning!");
         }
     }
