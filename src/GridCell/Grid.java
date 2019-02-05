@@ -112,7 +112,7 @@ public abstract class Grid {
             stateCounts[inferredState] = gridSize - sum;
             return stateCounts;
         }
-        
+
     }
 
 
