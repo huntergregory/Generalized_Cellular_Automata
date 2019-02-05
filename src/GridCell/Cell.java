@@ -43,6 +43,17 @@ public class Cell {
     }
 
     /**
+     * @return copy of this Cell
+     */
+    public Cell getCopy() {
+        Cell copiedCell = new Cell(cellBody.getY(), cellBody.getX(), cellBody.getHeight());
+        copiedCell.setColor(cellColor);
+        copiedCell.setAge(age);
+        copiedCell.setState(state);
+        return copiedCell;
+    }
+
+    /**
      * Return color of the cell
      * @return
      */
