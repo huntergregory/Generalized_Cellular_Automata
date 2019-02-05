@@ -1,0 +1,13 @@
+<predator-prey title="Sharks and Minnows">
+  <size min="5" max="30">5</size>
+  <num-states>3</num-states>
+  <random>
+    <empty>0.2</empty>
+    <predator>0.3</predator>
+    <prey>-1</prey>
+  </random>
+  <parameters>
+    <fish-breeding-age min="2" max="6">3</fish-breeding-age>
+    <shark-breeding-age min="2" max="6">4</shark-breeding-age>
+  </parameters>
+</predator-prey>
