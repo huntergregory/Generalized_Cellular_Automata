@@ -83,8 +83,6 @@ public class SimulatorMain extends Application {
         if (myParser.getIsRandom()) {
             Constructor<? extends Grid> constructor = newType.getRandomConstructor();
             try {
-                for (double dub : myParser.getRandomComposition())
-                    System.out.println(dub);
                 myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getRandomComposition());
                 return true;
             }
