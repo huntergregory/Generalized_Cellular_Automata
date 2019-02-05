@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*
+
 public class PredatorPrey extends Grid {
     private double fishBreedingAge;
     private double sharkBreedingAge;
@@ -15,7 +15,7 @@ public class PredatorPrey extends Grid {
         super(gridSize,screenSize);
     }
 
-    public void setGridStates(double[] composition){
+    public void setGridStates(Double[] composition){
         setGridRandom(composition);
     }
 
@@ -30,7 +30,7 @@ public class PredatorPrey extends Grid {
     }
 
     @Override
-    public void setAdditionalParams(double[] params){
+    public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
         sharkBreedingAge = params[1];
     }
@@ -124,4 +124,4 @@ public class PredatorPrey extends Grid {
         grid[y2][x2].setColor(stateColorMap.get(state2));
     }
 }
-*/
+
