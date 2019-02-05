@@ -130,7 +130,7 @@ public abstract class Grid {
         }
         for (Integer[] point : coordinates){
             if (point[0] != -1) {
-                setCellState(point[1],point[0],point[2]);
+                setCellState(point[0],point[1],point[2]);
             }
         }
     }
