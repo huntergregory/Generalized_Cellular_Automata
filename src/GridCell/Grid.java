@@ -68,7 +68,7 @@ public abstract class Grid {
         for (int i = 0; i < grid.length; i++){
             for (int j = 0; j < grid[0].length; j++){
                 boolean availableState = false;
-                int index = getRandomInt(4);
+                int index = getRandomInt(composition.length);
                 while(!availableState){
                     if (stateCounts[index]>0){
                         availableState = true;
