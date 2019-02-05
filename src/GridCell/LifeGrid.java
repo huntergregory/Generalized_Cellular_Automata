@@ -57,25 +57,23 @@ public class LifeGrid extends Grid {
 
         int size = newGrid.length;
         for (int r=0; r<size; r++) {
-            for (int c=0; c<size; c++)
-                updateCell(gridCopy[r][c], newGrid[r][c], getNeighborCells(r,c, true));
+            for (int c=0; c<size; c++) {
+                updateCell(gridCopy[r][c], newGrid[r][c], getNeighbors(r, c, true));
+                System.out.println("for " + r + " and col " + c);
+            }
         }
     }
 
-    private void updateCell(Cell currentCell, Cell newCell, Cell[] neighbors) {
+    private void updateCell(Cell currentCell, Cell newCell, ArrayList<Integer[]> neighborCoords) {
         int numPopulatedNeighbors = 0;
-        for (Cell neighbor : neighbors) {
-            if (neighbor.getState() == POPULATED)
+        for (Integer[] neighborCoord : neighborCoords) {
+            if (neighborCoord[2] == POPULATED) //gets the state from the (row, col, state) coordinate
                 numPopulatedNeighbors ++;
         }
 
-        if (currentCell.getState() == EMPTY) {
-            if (numPopulatedNeighbors == 3)
-                newCell.setState(POPULATED);
-            return;
-        }
-
-        if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4)
+        if (currentCell.getState() == EMPTY && numPopulatedNeighbors == 3)
+            newCell.setState(POPULATED);
+        else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4)
             newCell.setState(EMPTY);
     }
 }

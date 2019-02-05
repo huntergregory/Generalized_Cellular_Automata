@@ -104,8 +104,8 @@ public class FireGrid extends Grid {
     private void updateGreenCell(int r, int c, Cell currentCell) {
         //double probTransition = probLightning * probCatch;
         double probTransition = 0;
-        for (Cell neighbor : getNeighborCells(r,c, false)) {
-            if (neighbor.getState() == BURNING) {
+        for (Integer[] neighborCoord : getNeighbors(r,c, false)) {
+            if (neighborCoord[2] == BURNING) { //gets the state from the (row, col, state) coordinate
                 probTransition += probCatch;
             }
         }

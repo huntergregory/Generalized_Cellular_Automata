@@ -142,11 +142,11 @@ public class SimulatorMain extends Application {
     }
 
     private void printAllPositions(ArrayList<Integer[]> list) {
-        int x = 0; int y=0; int state=0;
+        int row = 0; int col=0; int state=0;
         System.out.println("Printing configuration");
         for (Integer[] coords : list) {
-            x=coords[0]; y=coords[1]; state=coords[2];
-            System.out.printf("Location (%d, %d) for state %d\n", x, y, state);
+            row=coords[0]; col=coords[1]; state=coords[2];
+            System.out.printf("Location row %d, col %d for state %d\n", row, col, state);
         }
     }
 }
