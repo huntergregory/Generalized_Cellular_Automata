@@ -15,6 +15,8 @@ public class LifeGrid extends Grid {
     public static final int EMPTY = 1;
     public static final int POPULATED = 0;
 
+    private HashMap<Integer, Color> myStateColorMap;
+
     /**
      * Create a LifeGrid that initializes states in explicit positions based on the configuration.
      * @param gridSize
@@ -39,10 +41,15 @@ public class LifeGrid extends Grid {
 
     @Override
     public void initStateColorMap() {
-        HashMap<Integer, Color> map = new HashMap<>();
-        map.put(EMPTY, Color.GREY);
-        map.put(POPULATED, Color.YELLOW);
-        setStateColorMap(map);
+        myStateColorMap = new HashMap<>();
+        myStateColorMap.put(EMPTY, Color.GREY);
+        myStateColorMap.put(POPULATED, Color.YELLOW);
+        setStateColorMap(myStateColorMap);
+    }
+
+    @Override
+    public void initSliderMap(){
+
     }
 
     @Override
@@ -68,19 +75,22 @@ public class LifeGrid extends Grid {
     private void updateCell(Cell oldCell, Cell newCell, ArrayList<Integer[]> neighborCoords) {
         int numPopulatedNeighbors = 0;
         for (Integer[] neighborCoord : neighborCoords) {
-            int row = neighborCoord[0]; int col = neighborCoord[1]; int state = neighborCoord[2];
-            //System.out.println("Neighbor is at row " + row + "and col" + col + " and has state " + state);
             if (neighborCoord[2] == POPULATED) //gets the state from the (row, col, state) coordinate
                 numPopulatedNeighbors ++;
         }
 
         if (oldCell.getState() == EMPTY && numPopulatedNeighbors == 3) {
-            newCell.setState(POPULATED);
-            //System.out.printf("populating the empty spot ");
+            setCellState(newCell, POPULATED);
+            System.out.println("populating the empty spot ");
         }
         else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4) {
-            newCell.setState(EMPTY);
-            //if (oldCell.getState() == POPULATED) System.out.printf("emptying the populated spot ");
+            setCellState(newCell, EMPTY);
+            if (oldCell.getState() == POPULATED) System.out.println("emptying the populated spot ");
         }
+    }
+
+    private void setCellState(Cell cell, int state) {
+        cell.setState(state);
+        cell.setColor(myStateColorMap.get(state));
     }
 }
