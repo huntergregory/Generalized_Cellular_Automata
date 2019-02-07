@@ -3,6 +3,7 @@ package GridCell;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -12,7 +13,6 @@ import java.util.Random;
 public class Segregation extends Grid {
 
     private double happyPercent;
-    private HashMap<Integer,Color> stateColorMap;
 
     public Segregation(int gridSize, double screenSize, Double[] composition) {
         super(gridSize,screenSize);
@@ -28,8 +28,15 @@ public class Segregation extends Grid {
         colorMap.put(0,Color.WHITE);
         colorMap.put(1,Color.RED);
         colorMap.put(2,Color.BLUE);
-        stateColorMap = colorMap;
         setStateColorMap(colorMap);
+    }
+
+    @Override
+    public void initSliderMap(){
+        sliderMap = new LinkedHashMap<>();
+        sliderMap.put("Similar", new Double[]{0.0, 0.1});
+        sliderMap.put("Red/Blue", new Double[]{0.0, 0.1});
+        sliderMap.put("Empty", new Double[]{0.0, 0.1});
     }
 
     @Override
@@ -73,7 +80,9 @@ public class Segregation extends Grid {
             Integer[] emptySpot = empty.remove(emptyIndex);
             //switch random empty spot
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
+            currentGrid[emptySpot[0]][emptySpot[1]].setColor(getStateColorMap().get(person[2]));
             currentGrid[person[0]][person[1]].setState(0);
+            currentGrid[person[0]][person[1]].setColor(getStateColorMap().get(0));
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
         }
