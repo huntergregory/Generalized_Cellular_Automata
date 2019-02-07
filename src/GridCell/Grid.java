@@ -245,6 +245,12 @@ public abstract class Grid {
 
 
     /**
+     * Get the map of states to colors
+     * @return map
+     */
+    public HashMap<Integer, Color> getStateColorMap() {return stateColorMap; }
+
+    /**
      * Return in between 0 and bound-1 (inclusive)
      * @param bound
      * @return random integer

@@ -75,12 +75,17 @@ public class LifeGrid extends Grid {
         }
 
         if (oldCell.getState() == EMPTY && numPopulatedNeighbors == 3) {
-            newCell.setState(POPULATED);
+            setCellState(newCell, POPULATED);
             //System.out.printf("populating the empty spot ");
         }
         else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4) {
-            newCell.setState(EMPTY);
+            setCellState(newCell, EMPTY);
             //if (oldCell.getState() == POPULATED) System.out.printf("emptying the populated spot ");
         }
+    }
+
+    private void setCellState(Cell cell, int state) {
+        cell.setState(state);
+        cell.setColor(getStateColorMap().get(state));
     }
 }
