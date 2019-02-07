@@ -51,7 +51,9 @@ public class SimulatorMain extends Application {
 
     @Override
     public void start(Stage stage) {
-        handleXMLFile(stage);
+        if (!handleXMLFile(stage)){
+            return;
+        }
 
         Scene scene = setUpScene();
         stage.setScene(scene);
@@ -68,7 +70,7 @@ public class SimulatorMain extends Application {
 
     private Scene setUpScene() {
         root = new Group();
-        Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT, Color.BLANCHEDALMOND);
+        Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT, Color.BEIGE);
         ObservableList rootList = root.getChildren();
         cellGroup = initializeCellGroup();
         rootList.addAll(cellGroup);
@@ -76,7 +78,7 @@ public class SimulatorMain extends Application {
     }
 
     private void simulationStep(Stage stage) {
-        if (stepCounter % 60 == 0) {
+        if (stepCounter % 120 == 0) {
             handleGridUpdate();
             stepCounter = 0;
         }
@@ -107,17 +109,20 @@ public class SimulatorMain extends Application {
         root.getChildren().add(cellGroup);
     }
 
-    public void handleXMLFile(Stage stage){
-        var xmlFile = myChooser.showOpenDialog(stage);
-        if (xmlFile == null) //in case someone clicks cancel
+    private boolean handleXMLFile(Stage stage){
+        File xmlFile = myChooser.showOpenDialog(stage);
+        if (xmlFile == null) { //in case someone clicks cancel
             Platform.exit();
-
-        try {
-            getNewGrid(xmlFile);
+            return false;
         }
-        catch (InstantiationException e) {
-            System.out.println(e.getMessage());
+        else {
+            try {
+                getNewGrid(xmlFile);
+            } catch (InstantiationException e) {
+                System.out.println(e.getMessage());
+            }
         }
+        return true;
     }
 
     /**
