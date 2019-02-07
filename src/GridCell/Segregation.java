@@ -74,7 +74,9 @@ public class Segregation extends Grid {
             int emptyIndex = rand.nextInt(empty.size()-1);
             Integer[] emptySpot = empty.remove(emptyIndex);
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
+            currentGrid[emptySpot[0]][emptySpot[1]].setColor(stateColorMap.get(person[2]));
             currentGrid[person[0]][person[1]].setState(0);
+            currentGrid[person[0]][person[1]].setColor(stateColorMap.get(0));
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
         }
