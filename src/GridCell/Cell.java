@@ -9,8 +9,9 @@ public class Cell {
     private int state;
     private int age;
 
-    public Cell(double yPos, double xPos, double size){
+    public Cell(double xPos, double yPos, double size){
         cellBody = new Rectangle(xPos,yPos,size, size);
+        cellBody.setStroke(Color.BLACK);
         age = 0;
     }
 
@@ -51,6 +52,10 @@ public class Cell {
         copiedCell.setAge(age);
         copiedCell.setState(state);
         return copiedCell;
+    }
+
+    public Rectangle getCellBody() {
+        return cellBody;
     }
 
     /**

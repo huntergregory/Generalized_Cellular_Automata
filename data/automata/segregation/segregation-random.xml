@@ -1,5 +1,5 @@
 <segregation title="Segregation">
-  <size min="5" max="30">6</size>
+  <size min="10" max="50">20</size>
   <num-states>3</num-states>
   <random>
     <empty>0.1</empty>

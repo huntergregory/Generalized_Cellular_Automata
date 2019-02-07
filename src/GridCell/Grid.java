@@ -1,6 +1,7 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
+
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ public abstract class Grid {
     private Random rand = new Random();
     private int gridSize;
     private double cellSize;
+    private static final double GRID_PADDING = 40.0;
 
 
     /**
@@ -61,8 +63,8 @@ public abstract class Grid {
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
         //fill grid randomly
-        for (int i = 0; i < grid.length; i++){
-            for (int j = 0; j < grid[0].length; j++){
+        for (int row = 0; row < grid.length; row++){
+            for (int col = 0; col < grid[0].length; col++){
                 boolean availableState = false;
                 int index = getRandomInt(composition.length);
                 while(!availableState){
@@ -72,8 +74,8 @@ public abstract class Grid {
                         index = getRandomInt(composition.length);
                     }
                 }
-                grid[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
-                setCellState(i,j,index);
+                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                setCellState(row,col,index);
                 stateCounts[index]--;
             }
         }
@@ -117,10 +119,10 @@ public abstract class Grid {
      */
     public void setGridSpecific(ArrayList<Integer[]> coordinates){
         int remainingState = coordinates.get(coordinates.size()-1)[2];
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                grid[i][j] = new Cell(i*cellSize, j*cellSize,cellSize);
-                setCellState(i,j,remainingState);
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                setCellState(row,col,remainingState);
             }
         }
         for (Integer[] point : coordinates){
