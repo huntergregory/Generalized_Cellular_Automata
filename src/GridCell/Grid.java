@@ -67,11 +67,11 @@ public abstract class Grid {
     public void setGridRandom(Double[] composition){
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
-        System.out.println("state counts:");
-        for (int a : stateCounts){
-            System.out.print(a+",");
-        }
-        System.out.println("gridlength: "+grid.length);
+//        System.out.println("state counts:");
+//        for (int a : stateCounts){
+//            System.out.print(a+",");
+//        }
+//        System.out.println("gridlength: "+grid.length);
         //fill grid randomly
         for (int row = 0; row < grid.length; row++){
             for (int col = 0; col < grid[0].length; col++){
@@ -84,7 +84,7 @@ public abstract class Grid {
                         index = getRandomInt(composition.length);
                     }
                 }
-                System.out.println("col#: "+col+" state: "+index);
+//                System.out.println("col#: "+col+" state: "+index);
                 grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
                 setCellState(row,col,index);
                 stateCounts[index]--;

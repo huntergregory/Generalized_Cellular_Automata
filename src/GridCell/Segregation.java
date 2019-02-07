@@ -67,12 +67,11 @@ public class Segregation extends Grid {
         //move unhappy cells
         while (!unhappy.isEmpty()){
             Random rand = new Random();
-//            System.out.println("empty:"+empty.size());
-//            System.out.println("unhappy:"+unhappy.size());
             //unhappy person and empty spot
             Integer[] person = unhappy.remove(0);
             int emptyIndex = rand.nextInt(empty.size()-1);
             Integer[] emptySpot = empty.remove(emptyIndex);
+            //switch random empty spot
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
             currentGrid[emptySpot[0]][emptySpot[1]].setColor(stateColorMap.get(person[2]));
             currentGrid[person[0]][person[1]].setState(0);

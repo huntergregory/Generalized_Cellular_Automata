@@ -11,11 +11,13 @@ public class Cell {
     private Color cellColor;
     private int state;
     private int age;
+    private double energy;
 
     public Cell(double xPos, double yPos, double size){
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
         age = 0;
+        energy = 0;
     }
 
     /**
@@ -88,6 +90,15 @@ public class Cell {
     public void setAge(int newAge){
         age = newAge;
     }
+
+    public double getEnergy(){
+        return energy;
+    }
+
+    public void setEnergy(double newEnergy){
+        energy = newEnergy;
+    }
+
 
 
 }

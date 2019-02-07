@@ -12,6 +12,8 @@ import java.util.HashMap;
 public class PredatorPrey extends Grid {
     private double fishBreedingAge;
     private double sharkBreedingAge;
+    private double energyPerFish;
+    private double sharkEnergy;
     private HashMap<Integer, Color> stateColorMap;
 
     public PredatorPrey(int gridSize, double screenSize, Double[] composition){
@@ -33,6 +35,16 @@ public class PredatorPrey extends Grid {
     public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
         sharkBreedingAge = params[1];
+        sharkEnergy = 5;//params[2];
+        energyPerFish = 2;//params[3];
+        Cell[][] currentGrid = getGrid();
+        for (Cell[] row : currentGrid){
+            for (Cell cell : row){
+                cell.setEnergy(sharkEnergy);
+            }
+        }
+        setGrid(currentGrid);
+
     }
 
     @Override
@@ -80,6 +92,17 @@ public class PredatorPrey extends Grid {
         for (Integer[] shark : sharks) {
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1],false);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
+            double sharkEnergy = currentGrid[shark[0]][shark[1]].getEnergy();
+            //if not enough energy, expire
+            if (sharkEnergy <= 0 && currentGrid[shark[0]][shark[1]].getState() == 2){
+                currentGrid[shark[0]][shark[1]].setState(0);
+                currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(0));
+                currentGrid[shark[0]][shark[1]].setEnergy(sharkEnergy);
+                currentGrid[shark[0]][shark[1]].setAge(0);
+            }else {
+                //decrease energy by one
+                currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
+            }
             //try to reproduce
             if (currentGrid[shark[0]][shark[1]].getAge() >= sharkBreedingAge){
                 for (Integer[] neighbor : neighbors){
@@ -98,8 +121,9 @@ public class PredatorPrey extends Grid {
             boolean foundFish = false;
             for (Integer[] neighbor : neighbors){
                 if (currentGrid[neighbor[0]][neighbor[1]].getState() == 1){
-                    //eat fish
+                    //eat fish and replenish energy
                     switchSpots(currentGrid,neighbor[0],neighbor[1],2,shark[0],shark[1],0);
+                    currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()+energyPerFish);
                     foundFish = true;
                 }else if (currentGrid[neighbor[0]][neighbor[1]].getState() == 0){
                     emptyNeighbors.add(neighbor);
@@ -113,6 +137,8 @@ public class PredatorPrey extends Grid {
                 }
             }
             currentGrid[shark[0]][shark[1]].setAge(currentGrid[shark[0]][shark[1]].getAge()+1);
+
+
         }
         setGrid(currentGrid);
     }
