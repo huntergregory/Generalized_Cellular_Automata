@@ -31,8 +31,10 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="fish-breeding-age" type="parameter"/>
-                        <xsd:element name="shark-breeding-age" type="parameter"/>
+                        <xsd:element name="fish-breeding-age" type="double-parameter"/>
+                        <xsd:element name="shark-breeding-age" type="double-parameter"/>
+                        <xsd:element name="fish-energy" type="double-parameter"/>
+                        <xsd:element name="shark-energy" type="int-parameter"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

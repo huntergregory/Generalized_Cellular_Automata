@@ -69,11 +69,21 @@
     </xsd:complexType>
 
     <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
-    <xsd:complexType name="parameter">
+    <xsd:complexType name="double-parameter">
         <xsd:simpleContent>
             <xsd:extension base="xsd:decimal">
                 <xsd:attribute name="min" type="xsd:decimal" use="required"/>
                 <xsd:attribute name="max" type="xsd:decimal" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
+    <xsd:complexType name="int-parameter">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:int">
+                <xsd:attribute name="min" type="xsd:int" use="required"/>
+                <xsd:attribute name="max" type="xsd:int" use="required"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
