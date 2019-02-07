@@ -11,23 +11,22 @@ import java.util.Random;
  */
 
 public class Segregation extends Grid {
+    public static final int EMPTY = 0;
+    public static final int PERSON_A = 1;
+    public static final int PERSON_B = 2;
 
     private double happyPercent;
 
-    public Segregation(int gridSize, double screenSize, Double[] composition) {
+    public Segregation(int gridSize, double screenSize) {
         super(gridSize,screenSize);
-    }
-
-    public void setGridStates(Double[] composition){
-        setGridRandom(composition);
     }
 
     @Override
     public void initStateColorMap(){
         HashMap<Integer, Color > colorMap = new HashMap<Integer,Color>();
-        colorMap.put(0,Color.WHITE);
-        colorMap.put(1,Color.RED);
-        colorMap.put(2,Color.BLUE);
+        colorMap.put(EMPTY,Color.WHITE);
+        colorMap.put(PERSON_A,Color.RED);
+        colorMap.put(PERSON_B,Color.BLUE);
         setStateColorMap(colorMap);
     }
 
@@ -53,7 +52,7 @@ public class Segregation extends Grid {
         for (int i = 0; i < currentGrid.length; i++){
             for (int j = 0; j < currentGrid.length; j++){
                 int myState = currentGrid[i][j].getState();
-                if (myState!= 0){
+                if (myState!= EMPTY){
                     ArrayList<Integer[]> neighbors = getNeighbors(i,j,true);
                     int numSameState = 0;
                     for (Integer[] cell : neighbors){
@@ -81,8 +80,8 @@ public class Segregation extends Grid {
             //switch random empty spot
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
             currentGrid[emptySpot[0]][emptySpot[1]].setColor(getStateColorMap().get(person[2]));
-            currentGrid[person[0]][person[1]].setState(0);
-            currentGrid[person[0]][person[1]].setColor(getStateColorMap().get(0));
+            currentGrid[person[0]][person[1]].setState(EMPTY);
+            currentGrid[person[0]][person[1]].setColor(getStateColorMap().get(EMPTY));
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
         }
