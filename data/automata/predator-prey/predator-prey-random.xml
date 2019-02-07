@@ -9,5 +9,7 @@
   <parameters>
     <fish-breeding-age min="2" max="6">3</fish-breeding-age>
     <shark-breeding-age min="2" max="6">4</shark-breeding-age>
+    <fish-energy min="2" max="5">3</fish-energy>
+    <shark-energy min="2" max="5">3</shark-energy>
   </parameters>
 </predator-prey>
