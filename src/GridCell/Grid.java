@@ -12,7 +12,8 @@ public abstract class Grid {
     private Random rand = new Random();
     private int gridSize;
     private double cellSize;
-    private static final double GRID_PADDING = 40.0;
+    public static final double GRID_PADDING = 25.0;
+    private Double[] curComposition;
 
 
     /**
@@ -60,6 +61,7 @@ public abstract class Grid {
      * @param composition array of percentages associated with each state
      */
     public void setGridRandom(Double[] composition){
+        setCurrentComposition(composition);
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
         //fill grid randomly
@@ -81,6 +83,18 @@ public abstract class Grid {
         }
     }
 
+    private void setCurrentComposition(Double[] composition) {
+        double total = 0.0;
+        for (int i = 0; i < composition.length - 1; i++){
+            total += composition[i];
+        }
+        composition[composition.length - 1] = 1 - total;
+        curComposition = composition;
+    }
+
+    public Double [] getCurComposition(){
+        return curComposition;
+    }
 
 
     /**
@@ -241,6 +255,10 @@ public abstract class Grid {
      */
     public void setGrid(Cell[][] cells){
         grid = cells;
+    }
+
+    public int getGridSize(){
+        return gridSize;
     }
 
 

@@ -8,7 +8,6 @@ import java.util.HashMap;
 public class Segregation extends Grid {
 
     private double happyPercent;
-    private HashMap<Integer,Color> stateColorMap;
 
     public Segregation(int gridSize, double screenSize, Double[] composition) {
         super(gridSize,screenSize);
@@ -21,7 +20,6 @@ public class Segregation extends Grid {
         colorMap.put(0,Color.WHITE);
         colorMap.put(1,Color.RED);
         colorMap.put(2,Color.BLUE);
-        stateColorMap = colorMap;
         setStateColorMap(colorMap);
     }
 
