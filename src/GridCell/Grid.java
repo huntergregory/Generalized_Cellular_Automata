@@ -2,6 +2,7 @@ package GridCell;
 
 import javafx.scene.paint.Color;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public abstract class Grid {
     private double cellSize;
     public static final double GRID_PADDING = 25.0;
     private Double[] curComposition;
+    LinkedHashMap<String, Double[]> sliderMap;
 
 
     /**
@@ -39,7 +41,6 @@ public abstract class Grid {
      */
     public abstract void initStateColorMap();
 
-
     /**
      * set color map that maps each state to a particular color
      * @param colorMap
@@ -50,6 +51,12 @@ public abstract class Grid {
 
     public HashMap<Integer, Color> getStateColorMap() {
         return stateColorMap;
+    }
+
+    public abstract void initSliderMap();
+
+    public LinkedHashMap<String, Double[]> getSliderMap(){
+        return sliderMap;
     }
 
     /**

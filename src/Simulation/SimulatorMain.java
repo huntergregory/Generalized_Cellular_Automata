@@ -44,6 +44,8 @@ public class SimulatorMain extends Application {
     private Group cellGroup;
     private int stepCounter = 0;
     private boolean pauseSim;
+    private Button stopButton;
+    private Button startButton;
 
     public SimulatorMain() {
         myType = null;
@@ -88,7 +90,7 @@ public class SimulatorMain extends Application {
 
     private void simulationStep(Stage stage) {
         if (!pauseSim) {
-            if (stepCounter % 120 == 0) {
+            if (stepCounter % 40 == 0) {
                 handleGridUpdate();
                 stepCounter = 0;
             }
@@ -233,10 +235,12 @@ public class SimulatorMain extends Application {
         }
         resetCellGroup();
         pauseSim = true;
+        stopButton.setDisable(true);
+        startButton.setDisable(false);
     }
 
     private Button createStartButton() {
-        Button startButton = new Button("Start");
+        startButton = new Button("Start");
         startButton.setPrefWidth(BUTTON_WIDTH);
         startButton.setPrefHeight(BUTTON_HEIGHT);
         startButton.setLayoutX(Grid.GRID_PADDING);
@@ -255,10 +259,12 @@ public class SimulatorMain extends Application {
     private void handleStart() {
         pauseSim = false;
         System.out.println("Start");
+        stopButton.setDisable(false);
+        startButton.setDisable(true);
     }
 
     private Button createStopButton() {
-        Button stopButton = new Button("Stop");
+        stopButton = new Button("Stop");
         stopButton.setPrefWidth(BUTTON_WIDTH);
         stopButton.setPrefHeight(BUTTON_HEIGHT);
         stopButton.setLayoutX(Grid.GRID_PADDING);
@@ -271,12 +277,15 @@ public class SimulatorMain extends Application {
         stopButton.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
                 "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%); " +
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1; -fx-text-fill: black; -fx-font-size: 14;");
+        stopButton.setDisable(true);
         return stopButton;
     }
 
     private void handleStop() {
         pauseSim = true;
         System.out.println("Stop");
+        startButton.setDisable(false);
+        stopButton.setDisable(true);
     }
 
     private Button createStepButton() {
@@ -299,14 +308,19 @@ public class SimulatorMain extends Application {
     private void handleStep() {
         pauseSim = true;
         handleGridUpdate();
+        stopButton.setDisable(true);
+        startButton.setDisable(false);
         System.out.println("Step");
     }
 
     private Group initializeSliderGroup() {
         var sliderGroup = new Group();
         ObservableList sliderList = sliderGroup.getChildren();
-        var sliderMap = myParser.getSliderNamesAndValues();
-        sliderList.addAll();
+        var sliderMap = myGrid.getSliderMap();
+        for (String key : sliderMap.keySet()){
+
+
+        }
         return sliderGroup;
     }
 
