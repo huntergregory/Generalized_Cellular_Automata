@@ -50,7 +50,7 @@ public class Cell {
      * @return copy of this Cell
      */
     public Cell getCopy() {
-        Cell copiedCell = new Cell(cellBody.getY(), cellBody.getX(), cellBody.getHeight());
+        Cell copiedCell = new Cell(cellBody.getX(), cellBody.getY(), cellBody.getHeight());
         copiedCell.setColor(cellColor);
         copiedCell.setAge(age);
         copiedCell.setState(state);
