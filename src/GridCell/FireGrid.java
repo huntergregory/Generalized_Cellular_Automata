@@ -27,6 +27,7 @@ public class FireGrid extends Grid {
     private double probLightning;
     private double burnTime;
     private double probGrow;
+    private HashMap<Integer, Color> myStateColorMap;
 
     /**
      * Create a FireGrid that initializes states in explicit positions based on the configuration.
@@ -52,11 +53,12 @@ public class FireGrid extends Grid {
 
     @Override
     public void initStateColorMap() {
-        HashMap<Integer, Color> map = new HashMap<>();
-        map.put(EMPTY, Color.YELLOW);
-        map.put(GREEN, Color.GREEN);
-        map.put(BURNING, Color.RED);
-        setStateColorMap(map);
+        myStateColorMap = new HashMap<>();
+        myStateColorMap.put(EMPTY, Color.YELLOW);
+        myStateColorMap.put(GREEN, Color.GREEN);
+        myStateColorMap.put(BURNING, Color.RED);
+        setStateColorMap(myStateColorMap);
+
     }
 
     @Override
@@ -124,6 +126,6 @@ public class FireGrid extends Grid {
 
     private void setCellState(Cell cell, int state) {
         cell.setState(state);
-        cell.setColor(getStateColorMap().get(state));
+        cell.setColor(myStateColorMap.get(state));
     }
 }

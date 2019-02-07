@@ -15,6 +15,8 @@ public class LifeGrid extends Grid {
     public static final int EMPTY = 1;
     public static final int POPULATED = 0;
 
+    private HashMap<Integer, Color> myStateColorMap;
+
     /**
      * Create a LifeGrid that initializes states in explicit positions based on the configuration.
      * @param gridSize
@@ -39,10 +41,10 @@ public class LifeGrid extends Grid {
 
     @Override
     public void initStateColorMap() {
-        HashMap<Integer, Color> map = new HashMap<>();
-        map.put(EMPTY, Color.GREY);
-        map.put(POPULATED, Color.YELLOW);
-        setStateColorMap(map);
+        myStateColorMap = new HashMap<>();
+        myStateColorMap.put(EMPTY, Color.GREY);
+        myStateColorMap.put(POPULATED, Color.YELLOW);
+        setStateColorMap(myStateColorMap);
     }
 
     @Override
@@ -86,6 +88,6 @@ public class LifeGrid extends Grid {
 
     private void setCellState(Cell cell, int state) {
         cell.setState(state);
-        cell.setColor(getStateColorMap().get(state));
+        cell.setColor(myStateColorMap.get(state));
     }
 }
