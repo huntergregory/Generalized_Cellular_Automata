@@ -58,9 +58,9 @@ public class Segregation extends Grid {
             }
         }
         //move unhappy cells
-        while (!unhappy.isEmpty()){
-            Integer[] person = unhappy.get(0);
-            Integer[] emptySpot = empty.get(0);
+        while (!unhappy.isEmpty() && !empty.isEmpty()){
+            Integer[] person = unhappy.remove(0);
+            Integer[] emptySpot = empty.remove(0);
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
