@@ -32,6 +32,11 @@ public class PredatorPrey extends Grid {
     }
 
     @Override
+    public void initSliderMap(){
+
+    }
+
+    @Override
     public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
         sharkBreedingAge = params[1];

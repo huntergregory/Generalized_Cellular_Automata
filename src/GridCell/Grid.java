@@ -2,6 +2,7 @@ package GridCell;
 
 import javafx.scene.paint.Color;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ public abstract class Grid {
     private Random rand = new Random();
     private int gridSize;
     private double cellSize;
-    private static final double GRID_PADDING = 40.0;
+    public static final double GRID_PADDING = 25.0;
+    private Double[] curComposition;
+    LinkedHashMap<String, Double[]> sliderMap;
 
 
     /**
@@ -38,7 +41,6 @@ public abstract class Grid {
      */
     public abstract void initStateColorMap();
 
-
     /**
      * set color map that maps each state to a particular color
      * @param colorMap
@@ -47,6 +49,15 @@ public abstract class Grid {
         stateColorMap = colorMap;
     }
 
+    public HashMap<Integer, Color> getStateColorMap() {
+        return stateColorMap;
+    }
+
+    public abstract void initSliderMap();
+
+    public LinkedHashMap<String, Double[]> getSliderMap(){
+        return sliderMap;
+    }
 
     /**
      * Abstract method to get any additional parameters required by specific simulation types
@@ -65,6 +76,7 @@ public abstract class Grid {
      * @param composition array of percentages associated with each state
      */
     public void setGridRandom(Double[] composition){
+        setCurrentComposition(composition);
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
 //        System.out.println("state counts:");
@@ -92,6 +104,18 @@ public abstract class Grid {
         }
     }
 
+    private void setCurrentComposition(Double[] composition) {
+        double total = 0.0;
+        for (int i = 0; i < composition.length - 1; i++){
+            total += composition[i];
+        }
+        composition[composition.length - 1] = 1 - total;
+        curComposition = composition;
+    }
+
+    public Double [] getCurComposition(){
+        return curComposition;
+    }
 
 
     /**
@@ -251,6 +275,10 @@ public abstract class Grid {
      */
     public void setGrid(Cell[][] cells){
         grid = cells;
+    }
+
+    public int getGridSize(){
+        return gridSize;
     }
 
 
