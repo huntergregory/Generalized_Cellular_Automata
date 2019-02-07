@@ -315,12 +315,12 @@ public class SimulatorMain extends Application {
 
     private Group initializeSliderGroup() {
         var sliderGroup = new Group();
-        ObservableList sliderList = sliderGroup.getChildren();
-        var sliderMap = myGrid.getSliderMap();
-        for (String key : sliderMap.keySet()){
-
-
-        }
+//        ObservableList sliderList = sliderGroup.getChildren();
+//        var sliderMap = myGrid.getSliderMap();
+//        for (String key : sliderMap.keySet()){
+//
+//
+//        }
         return sliderGroup;
     }
 
