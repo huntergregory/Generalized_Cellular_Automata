@@ -56,6 +56,7 @@ public class Cell {
         copiedCell.setColor(cellColor);
         copiedCell.setAge(age);
         copiedCell.setState(state);
+        copiedCell.setEnergy(energy);
         return copiedCell;
     }
 
