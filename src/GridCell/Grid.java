@@ -48,6 +48,9 @@ public abstract class Grid {
         stateColorMap = colorMap;
     }
 
+    public HashMap<Integer, Color> getStateColorMap() {
+        return stateColorMap;
+    }
 
     /**
      * Abstract method to get any additional parameters required by specific simulation types
