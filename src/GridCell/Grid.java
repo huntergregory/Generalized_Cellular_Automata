@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author Connor Ghazaleh
+ */
 public abstract class Grid {
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
@@ -21,7 +24,9 @@ public abstract class Grid {
      * @param screenSize
      */
     public Grid(int gridSize, double screenSize){
+        System.out.println("Called constructor on size: "+gridSize);
         grid = new Cell[gridSize][gridSize];
+        System.out.println("Grid of size: "+grid.length);
         initStateColorMap();
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
@@ -62,6 +67,11 @@ public abstract class Grid {
     public void setGridRandom(Double[] composition){
         //make array of number of cells per state
         int[] stateCounts = calcCellsPerState(composition);
+        System.out.println("state counts:");
+        for (int a : stateCounts){
+            System.out.print(a+",");
+        }
+        System.out.println("gridlength: "+grid.length);
         //fill grid randomly
         for (int row = 0; row < grid.length; row++){
             for (int col = 0; col < grid[0].length; col++){
@@ -74,6 +84,7 @@ public abstract class Grid {
                         index = getRandomInt(composition.length);
                     }
                 }
+                System.out.println("col#: "+col+" state: "+index);
                 grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
                 setCellState(row,col,index);
                 stateCounts[index]--;
@@ -226,8 +237,7 @@ public abstract class Grid {
         Cell[][] gridCopy = new Cell[size][size];
         for (int r=0; r<size; r++) {
             for (int c=0; c<size; c++) {
-                Cell cell = grid[r][c];
-                gridCopy[r][c] = cell.getCopy();
+                gridCopy[r][c] = grid[r][c].getCopy();
             }
         }
         return gridCopy;

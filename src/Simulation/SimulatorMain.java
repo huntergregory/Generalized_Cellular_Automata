@@ -98,6 +98,7 @@ public class SimulatorMain extends Application {
             for (Cell cell : cellRow){
                 cellGroupList.add(cell.getCellBody());
             }
+            System.out.println();
         }
         return cellGroup;
     }
@@ -160,6 +161,7 @@ public class SimulatorMain extends Application {
             Constructor<? extends Grid> constructor = newType.getRandomConstructor();
             try {
                 myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getRandomComposition());
+                myGrid.setGridRandom(myParser.getRandomComposition());
                 return true;
             }
             catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
@@ -170,6 +172,7 @@ public class SimulatorMain extends Application {
             Constructor<? extends Grid> constructor = newType.getConfiguredConstructor();
             try {
                 myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getConfiguration());
+                myGrid.setGridSpecific(myParser.getConfiguration());
                 return true;
             }
             catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
