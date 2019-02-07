@@ -7,9 +7,17 @@ import java.util.LinkedHashMap;
 
 import XML.*;
 import GridCell.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *
@@ -17,13 +25,21 @@ import javafx.stage.Stage;
  * @coauthor Hunter Gregory
  */
 public class SimulatorMain extends Application {
-    public static final int GRID_DISPLAY_SIZE = 100;
+    public static final double GRID_DISPLAY_SIZE = 350.0;
     public static final String DATA_FILE_EXTENSION = "*.xml";
+    private static final double SCREEN_WIDTH = 550.0;
+    private static final double SCREEN_HEIGHT = 550.0;
+    private static final int FRAMES_PER_SECOND = 60;
+    private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+
 
     private CA_TYPE myType;
     private Grid myGrid;
     private XMLParser myParser;
     private FileChooser myChooser;
+    private Group root;
+    private Group cellGroup;
+    private int stepCounter = 0;
 
     public SimulatorMain() {
         myType = null;
@@ -33,10 +49,67 @@ public class SimulatorMain extends Application {
         myChooser.setInitialDirectory(new File("data/automata"));
     }
 
-    public void start(Stage primaryStage) {
-        var xmlFile = myChooser.showOpenDialog(primaryStage);
+    @Override
+    public void start(Stage stage) {
+        handleXMLFile(stage);
+
+        Scene scene = setUpScene();
+        stage.setScene(scene);
+        stage.setTitle("Cell Society");
+        stage.show();
+
+        var frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> simulationStep(stage));
+        var gameTime = new Timeline();
+        gameTime.setCycleCount(Timeline.INDEFINITE);
+        gameTime.getKeyFrames().add(frame);
+        gameTime.play();
+        //simulateTransitions(10);
+    }
+
+    private Scene setUpScene() {
+        root = new Group();
+        Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT, Color.BLANCHEDALMOND);
+        ObservableList rootList = root.getChildren();
+        cellGroup = initializeCellGroup();
+        rootList.addAll(cellGroup);
+        return scene;
+    }
+
+    private void simulationStep(Stage stage) {
+        if (stepCounter % 60 == 0) {
+            handleGridUpdate();
+            stepCounter = 0;
+        }
+        stepCounter++;
+    }
+
+    private void handleGridUpdate() {
+        myGrid.updateCells();
+        resetCellGroup();
+    }
+
+    private Group initializeCellGroup() {
+        var gridArray = myGrid.getGrid();
+        var cellGroup = new Group();
+        ObservableList cellGroupList = cellGroup.getChildren();
+        for (Cell[] cellRow : gridArray){
+            for (Cell cell : cellRow){
+                cellGroupList.add(cell.getCellBody());
+            }
+        }
+        return cellGroup;
+    }
+
+    private void resetCellGroup() {
+        root.getChildren().remove(cellGroup);
+        cellGroup = initializeCellGroup();
+        root.getChildren().add(cellGroup);
+    }
+
+    public void handleXMLFile(Stage stage){
+        var xmlFile = myChooser.showOpenDialog(stage);
         if (xmlFile == null) //in case someone clicks cancel
-            return;
+            Platform.exit();
 
         try {
             getNewGrid(xmlFile);
@@ -44,8 +117,6 @@ public class SimulatorMain extends Application {
         catch (InstantiationException e) {
             System.out.println(e.getMessage());
         }
-
-        simulateTransitions(10);
     }
 
     /**
@@ -110,6 +181,24 @@ public class SimulatorMain extends Application {
         result.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("Text Files", extensionAccepted));
         return result;
     }
+
+
+    /**
+     * Starts the program.
+     *
+     * @param args
+     */
+    public static void main (String[] args){
+        launch(args);
+    }
+
+
+
+
+
+
+
+
 
     /////////////////////////////////   DEBUGGING   ///////////////////////////////////////////
 

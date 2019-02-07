@@ -3,11 +3,11 @@ cell society
 
 This project implements a cellular automata simulator.
 
-Names:
+Names: Dhanush Madabusi, Hunter Gregory, Connor Ghazaleh
 
 ### Timeline
 
-Start Date: 
+Start Date: 1/27/19
 
 Finish Date: 
 
