@@ -73,6 +73,10 @@ public class Cell {
         return state;
     }
 
+    public String toString(){
+        return String.format("Cell state: %d",state);
+    }
+
     public void setState(int State) {
         state = State;
     }

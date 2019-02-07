@@ -3,6 +3,7 @@ package GridCell;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * @author Connor Ghazaleh
@@ -12,6 +13,7 @@ public class Segregation extends Grid {
 
     private double happyPercent;
     private HashMap<Integer,Color> stateColorMap;
+    private Random rand = new Random();
 
     public Segregation(int gridSize, double screenSize, Double[] composition) {
         super(gridSize,screenSize);
@@ -65,11 +67,20 @@ public class Segregation extends Grid {
         }
         //move unhappy cells
         while (!unhappy.isEmpty()){
+//            System.out.println("empty:"+empty.size());
+//            System.out.println("unhappy:"+unhappy.size());
+            //unhappy person and empty spot
             Integer[] person = unhappy.get(0);
-            Integer[] emptySpot = empty.get(0);
+            //System.out.println(empty);
+            int emptyIndex = rand.nextInt(empty.size()-1);
+            Integer[] emptySpot = empty.get(emptyIndex);
+            //set state of empty spot to state of person and vice versa
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
+            currentGrid[person[0]][person[1]].setState(0);
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
+            empty.remove(emptyIndex);
+            unhappy.remove(0);
         }
         setGrid(currentGrid);
     }
