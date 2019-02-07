@@ -78,7 +78,7 @@ public class SimulatorMain extends Application {
     }
 
     private void simulationStep(Stage stage) {
-        if (stepCounter % 120 == 0) {
+        if (stepCounter % 12 == 0) {
             handleGridUpdate();
             stepCounter = 0;
         }
@@ -98,7 +98,7 @@ public class SimulatorMain extends Application {
             for (Cell cell : cellRow){
                 cellGroupList.add(cell.getCellBody());
             }
-            System.out.println();
+            //System.out.println();
         }
         return cellGroup;
     }

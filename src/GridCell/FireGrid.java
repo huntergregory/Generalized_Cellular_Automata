@@ -66,6 +66,7 @@ public class FireGrid extends Grid {
         probCatch = params[0];
         probLightning = params[1];
         burnTime = params[2];
+        System.out.println("burn time is " + burnTime);
         probGrow = params[3];
     }
 
@@ -73,6 +74,7 @@ public class FireGrid extends Grid {
     public void updateCells() {
         Cell[][] newGrid = getGrid(); // this method returns a copy of the grid, so these two variables reference different cells
         Cell[][] oldGrid = getGrid();
+        System.out.println("new update");
 
         int size = oldGrid.length;
         for (int r=0; r<size; r++) {
@@ -90,6 +92,7 @@ public class FireGrid extends Grid {
                 updateGreenCell(newCell, getNeighbors(r,c,false));
             }
         }
+        setGrid(newGrid);
     }
 
     private void updateEmptyCell(Cell newCell) {
@@ -100,9 +103,13 @@ public class FireGrid extends Grid {
     }
 
     private void updateBurningCell(Cell newCell) {
+        System.out.println("age was " + newCell.getAge());
         newCell.setAge(1 + newCell.getAge());
-        if (newCell.getAge() >= burnTime)
+        if (newCell.getAge() >= burnTime) {
             setCellState(newCell, EMPTY);
+            newCell.setAge(0);
+            System.out.println("setting empty");
+        }
     }
 
     private void updateGreenCell(Cell newCell, ArrayList<Integer[]> neighborCoords) {
