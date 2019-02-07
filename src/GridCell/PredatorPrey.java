@@ -51,7 +51,7 @@ public class PredatorPrey extends Grid {
         setGrid(currentGrid);
 
     }
-
+    
     @Override
     public void updateCells(){
         Cell[][] currentGrid = getGrid();
