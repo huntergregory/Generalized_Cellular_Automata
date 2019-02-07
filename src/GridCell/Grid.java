@@ -72,7 +72,7 @@ public abstract class Grid {
                     if (stateCounts[index]>0){
                         availableState = true;
                     }else{
-                        index = getRandomInt(4);
+                        index = getRandomInt(composition.length);
                     }
                 }
                 grid[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);

@@ -7,12 +7,13 @@ import java.util.HashMap;
 /**
  * @author Connor Ghazaleh
  */
+
 public class Segregation extends Grid {
 
     private double happyPercent;
     private HashMap<Integer,Color> stateColorMap;
 
-    public Segregation(int gridSize, double screenSize){
+    public Segregation(int gridSize, double screenSize, Double[] composition) {
         super(gridSize,screenSize);
     }
 

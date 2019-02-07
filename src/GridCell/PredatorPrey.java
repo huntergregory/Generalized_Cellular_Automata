@@ -8,17 +8,14 @@ import java.util.HashMap;
 /**
  * @author Connor Ghazaleh
  */
-/*
+
 public class PredatorPrey extends Grid {
     private double fishBreedingAge;
     private double sharkBreedingAge;
     private HashMap<Integer, Color> stateColorMap;
 
-    public PredatorPrey(int gridSize, double screenSize){
+    public PredatorPrey(int gridSize, double screenSize, Double[] composition){
         super(gridSize,screenSize);
-    }
-
-    public void setGridStates(double[] composition){
         setGridRandom(composition);
     }
 
@@ -33,7 +30,7 @@ public class PredatorPrey extends Grid {
     }
 
     @Override
-    public void setAdditionalParams(double[] params){
+    public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
         sharkBreedingAge = params[1];
     }
@@ -127,4 +124,4 @@ public class PredatorPrey extends Grid {
         grid[y2][x2].setColor(stateColorMap.get(state2));
     }
 }
-*/
+
