@@ -3,6 +3,9 @@ package GridCell;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Connor Ghazaleh
+ */
 public class Cell {
     private Rectangle cellBody;
     private Color cellColor;

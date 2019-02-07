@@ -5,6 +5,9 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author Connor Ghazaleh
+ */
 public abstract class Grid {
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;

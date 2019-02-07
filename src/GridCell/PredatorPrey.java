@@ -5,6 +5,9 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author Connor Ghazaleh
+ */
 /*
 public class PredatorPrey extends Grid {
     private double fishBreedingAge;

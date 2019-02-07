@@ -4,7 +4,9 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*
+/**
+ * @author Connor Ghazaleh
+ */
 public class Segregation extends Grid {
 
     private double happyPercent;
@@ -14,7 +16,7 @@ public class Segregation extends Grid {
         super(gridSize,screenSize);
     }
 
-    public void setGridStates(double[] composition){
+    public void setGridStates(Double[] composition){
         setGridRandom(composition);
     }
 
@@ -29,7 +31,7 @@ public class Segregation extends Grid {
     }
 
     @Override
-    public void setAdditionalParams(double[] params){
+    public void setAdditionalParams(Double[] params){
         happyPercent = params[0];
     }
 
@@ -72,5 +74,6 @@ public class Segregation extends Grid {
     }
 
 
+
 }
-*/
+
