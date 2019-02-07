@@ -225,7 +225,12 @@ public class SimulatorMain extends Application {
     }
 
     private void handleReset() {
-        myGrid.setGridRandom(myGrid.getCurComposition());
+        if (!myParser.getIsRandom()) {
+            myGrid.setGridSpecific(myParser.getConfiguration());
+        }
+        else {
+            myGrid.setGridRandom(myGrid.getCurComposition());
+        }
         resetCellGroup();
         pauseSim = true;
     }
