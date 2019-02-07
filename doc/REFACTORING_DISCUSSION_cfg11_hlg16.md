@@ -1,2 +1,2 @@
 #Refactoring Discussion
-We refactored the updateCells() method in the PredatorPrey subclass.
+We refactored the updateCells() method in the PredatorPrey subclass. We tried to analyze the code to find sections that made sense to break up into individual methods because they accomplished very specific tasks. Additionally we looked for any code that was repeated throughout the method (or was at least very similar across implementations) and refactored that into individual methods. 
