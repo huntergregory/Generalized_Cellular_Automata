@@ -66,7 +66,6 @@ public class FireGrid extends Grid {
         probCatch = params[0];
         probLightning = params[1];
         burnTime = params[2];
-        System.out.println("burn time is " + burnTime);
         probGrow = params[3];
     }
 
@@ -74,7 +73,7 @@ public class FireGrid extends Grid {
     public void updateCells() {
         Cell[][] newGrid = getGrid(); // this method returns a copy of the grid, so these two variables reference different cells
         Cell[][] oldGrid = getGrid();
-        System.out.println("new update");
+        //System.out.println("new update");
 
         int size = oldGrid.length;
         for (int r=0; r<size; r++) {
@@ -98,17 +97,17 @@ public class FireGrid extends Grid {
     private void updateEmptyCell(Cell newCell) {
         if (getRandomDouble() <= probGrow) {
             setCellState(newCell, GREEN);
-            System.out.println("Growing!");
+            //System.out.println("Growing!");
         }
     }
 
     private void updateBurningCell(Cell newCell) {
-        System.out.println("age was " + newCell.getAge());
+        //System.out.println("age was " + newCell.getAge());
         newCell.setAge(1 + newCell.getAge());
         if (newCell.getAge() >= burnTime) {
             setCellState(newCell, EMPTY);
             newCell.setAge(0);
-            System.out.println("setting empty");
+            //System.out.println("setting empty");
         }
     }
 
@@ -123,11 +122,11 @@ public class FireGrid extends Grid {
         double dub = getRandomDouble();
         if (dub <= probTransition) {
             setCellState(newCell, BURNING);
-            System.out.println("Neighbor burnt me!");
+            //System.out.println("Neighbor burnt me!");
         }
         else if (dub <= probTransition + probLightning * probCatch) {
             setCellState(newCell, BURNING);
-            System.out.println("Lightning!");
+            //System.out.println("Lightning!");
         }
     }
 
