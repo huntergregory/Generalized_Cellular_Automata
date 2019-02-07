@@ -49,7 +49,9 @@ public class PredatorPrey extends Grid {
         Cell[][] currentGrid = getGrid();
         for (Cell[] row : currentGrid){
             for (Cell cell : row){
-                cell.setEnergy(sharkEnergy);
+                if (cell.getState() == SHARK){
+                    cell.setEnergy(sharkEnergy);
+                }
             }
         }
         setGrid(currentGrid);
@@ -58,16 +60,15 @@ public class PredatorPrey extends Grid {
 
     @Override
     public void updateCells(){
+        printEnergies();
         Cell[][] currentGrid = getGrid();
         ArrayList<Integer[]> sharks = findCellsWithState(currentGrid,SHARK);
         ArrayList<Integer[]> fish = findCellsWithState(currentGrid,FISH);
-
         for (Integer[] fishy : fish) {
             ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1],false);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
             //try to reproduce
             reproduce(fishy, currentGrid, emptyNeighbors, neighbors);
-
             //try to move
             if (!emptyNeighbors.isEmpty()){
                 Integer[] emptyCell = emptyNeighbors.get(0);
@@ -78,20 +79,8 @@ public class PredatorPrey extends Grid {
         for (Integer[] shark : sharks) {
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1],false);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
-            double sharkEnergy = currentGrid[shark[0]][shark[1]].getEnergy();
-            //if not enough energy, expire
-            if (sharkEnergy <= 0 && currentGrid[shark[0]][shark[1]].getState() == SHARK){
-                currentGrid[shark[0]][shark[1]].setState(EMPTY);
-                currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(0));
-                currentGrid[shark[0]][shark[1]].setEnergy(sharkEnergy);
-                currentGrid[shark[0]][shark[1]].setAge(0);
-            }else {
-                //decrease energy by one
-                currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
-            }
             //try to reproduce
             reproduce(shark, currentGrid, emptyNeighbors, neighbors);
-
             //try to eat
             boolean foundFish = false;
             for (Integer[] neighbor : neighbors){
@@ -106,20 +95,25 @@ public class PredatorPrey extends Grid {
             }
             //set new age and move
             if (!foundFish){
-                currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
-                if (!emptyNeighbors.isEmpty()){
-                    Integer[] emptyCell = emptyNeighbors.get(0);
-                    switchSpots(currentGrid,emptyCell[0],emptyCell[1],SHARK,shark[0],shark[1],EMPTY);
-                }
-                if (currentGrid[shark[0]][shark[1]].getEnergy() == 0){
-                    //currentGrid[shark[0]][shark[1]].setEnergy();
-                }
+                killOrMoveShark(currentGrid,shark,emptyNeighbors);
             }
             currentGrid[shark[0]][shark[1]].setAge(currentGrid[shark[0]][shark[1]].getAge()+1);
-
-
         }
         setGrid(currentGrid);
+    }
+
+    private void killOrMoveShark(Cell[][] currentGrid, Integer[] shark, ArrayList<Integer[]> emptyNeighbors){
+        currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
+        if (currentGrid[shark[0]][shark[1]].getEnergy() <= 0){
+            currentGrid[shark[0]][shark[1]].setState(EMPTY);
+            currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(EMPTY));
+
+        }else {
+            if (!emptyNeighbors.isEmpty()){
+                Integer[] emptyCell = emptyNeighbors.get(0);
+                switchSpots(currentGrid,emptyCell[0],emptyCell[1],SHARK,shark[0],shark[1],EMPTY);
+            }
+        }
     }
 
     private ArrayList<Integer[]> findCellsWithState(Cell[][] grid, int state){
@@ -158,6 +152,18 @@ public class PredatorPrey extends Grid {
         grid[y1][x1].setColor(stateColorMap.get(state1));
         grid[y2][x2].setState(state2);
         grid[y2][x2].setColor(stateColorMap.get(state2));
+    }
+
+    private void printEnergies(){
+        Cell[][] temp = getGrid();
+        for (Cell[] row : temp){
+            for (Cell cell : row){
+                System.out.print(cell.getEnergy()+",");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
     }
 }
 
