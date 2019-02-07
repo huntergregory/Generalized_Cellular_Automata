@@ -19,9 +19,9 @@ import java.util.HashMap;
  * @author Hunter Gregory
  */
 public class FireGrid extends Grid {
-    public static final int EMPTY = 0;
-    public static final int GREEN = 1;
-    public static final int BURNING = 2;
+    private static final int EMPTY = 0;
+    private static final int GREEN = 1;
+    private static final int BURNING = 2;
 
     private double probCatch;
     private double probLightning;
@@ -71,7 +71,8 @@ public class FireGrid extends Grid {
 
     @Override
     public void updateCells() {
-        Cell[][] newGrid = getGrid(); // this method returns a copy of the grid, so these two variables reference different cells
+        // getGrid() returns a copy of the grid, so these two variables reference different cells
+        Cell[][] newGrid = getGrid();
         Cell[][] oldGrid = getGrid();
         //System.out.println("new update");
 
