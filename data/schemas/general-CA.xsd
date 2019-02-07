@@ -10,16 +10,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:complexType name="automaton">
         <xsd:sequence>
-            <xsd:element name="size">
-                <xsd:complexType>
-                    <xsd:simpleContent>
-                        <xsd:extension base="xsd:int">
-                            <xsd:attribute name="min" type="xsd:int" use="required"/>
-                            <xsd:attribute name="max" type="xsd:int" use="required"/>
-                        </xsd:extension>
-                    </xsd:simpleContent>
-                </xsd:complexType>
-            </xsd:element>
+            <xsd:element name="size" type="int-parameter"/>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:choice>
                 <xsd:element name="random" type="composition-list"/>

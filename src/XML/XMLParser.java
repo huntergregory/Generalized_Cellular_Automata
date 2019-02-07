@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
  * Checks for errors in the xml file such as:
  *      - xml file doesn't conform to an automaton schema
  *      - values given to elements are out of bounds
+ * Replaces error values with defaults. If an invalid xml file is given, a warning will displayed and the parser will
+ * continue with parsing a default fire-random configuration file.
  * Schema validation inspired by Wayan Saryada's article.
  * @see <a href="https://kodejava.org/how-do-i-validate-xml-against-xsd-in-java/">Wayan Saryada's</a> article
  * @author Hunter Gregory
@@ -32,6 +34,7 @@ public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
     public static final String RANDOM_TAG = "random";
+    public static final File DEFAULT_XML_FILE = new File("data/automata/fire-random.xml");
 
     File myXMLFile;
     private int myElementsIndex; //increment after passing an element in order to know where the parameters start
@@ -51,11 +54,12 @@ public class XMLParser {
     }
 
     /**
-     * Stores necessary data from the given xml file
+     * Stores necessary data from the given xml file or a default file if the given file fails.
+     * Additionally, overrides erroneous xml values.
      * @param xmlFile
      * @throws XMLException
      */
-    public void parseFile(File xmlFile) throws XMLException {
+    public void parseFile(File xmlFile) {
         myXMLFile = xmlFile;
         resetInstanceVars();
         assignRootType();
@@ -65,7 +69,7 @@ public class XMLParser {
         myElementsIndex++;
         myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, myElementsIndex));
         if (myIsRandom)
-            assignCompAndUpdateSliders(elements);
+            assignCompAndUpdateSliders(elements); //FIX throws XML exception
         else
             assignConfiguration(elements);
 
@@ -73,15 +77,21 @@ public class XMLParser {
         assignParamsAndUpdateSliders(elements);
     }
 
-    private void assignRootType() throws XMLException {
+    private void assignRootType() {
         for (CA_TYPE type : CA_TYPE.values()) {
             if (fileIsType(type))
                 myRootType = type;
         }
-        if (myRootType == null)
-            throw new XMLException("File does not match any automaton's schema");
+        if (myRootType == null) {
+            String message = "Warning: file does not match any automaton schema. Continuing with " +
+                                "default file: " + DEFAULT_XML_FILE.getAbsolutePath();
+            System.out.println(message);
+            myXMLFile = DEFAULT_XML_FILE;
+            assignRootType(); //should never have an infinite loop unless the default xml doesn't follow a schema
+        }
     }
 
+    //should never throw the exception because the xml doc will conform to an xsd after assignRootType
     private Element getRoot() throws XMLException {
         try {
             var xmlDoc = DOCUMENT_BUILDER.parse(myXMLFile);
@@ -93,9 +103,16 @@ public class XMLParser {
     }
 
     private void assignSizeAndSizeSlider(NodeList elements) {
-        mySize = getIntFromNodeList(elements, myElementsIndex);
         addSliderFromNodeList(elements, myElementsIndex);
+        mySize = (int) outOfBoundsRevision(elements, myElementsIndex);
         myElementsIndex++;
+    }
+
+    //extrema in form [min, max]
+    private Double[] getExtrema(NodeList list, int index) {
+        String min = getAttributeFromNodeList(list, index, "min");
+        String max = getAttributeFromNodeList(list, index, "max");
+        return new Double[]{ Double.parseDouble(min), Double.parseDouble(max) };
     }
 
     private void assignCompAndUpdateSliders(NodeList elements) throws XMLException {
@@ -135,25 +152,23 @@ public class XMLParser {
         }
     }
 
+    //no need to increment myElementsIndex anymore
     private void assignParamsAndUpdateSliders(NodeList elements) {
         NodeList parameters = ((Element) elements.item(myElementsIndex)).getElementsByTagName("*");
         int k=0;
-        //no need to increment myElementsIndex anymore
+        //make sure only one comp is -1
+        int numNegatives = 0;
         while (k<parameters.getLength()) {
-            myParameters.add(getDoubleFromNodeList(parameters, k));
             addSliderFromNodeList(parameters, k);
+            //FIX
+            myParameters.add(getDoubleFromNodeList(parameters, k));
             k++;
         }
     }
 
-    private void addSliderFromNodeList(NodeList parameters, int index) throws XMLException {
-        String tagName = getTagNameFromNodeList(parameters, index);
-        String min = getAttributeFromNodeList(parameters, index, "min");
-        String max = getAttributeFromNodeList(parameters, index, "max");
-        Double[] extrema = { Double.parseDouble(min), Double.parseDouble(max) };
-        double value = getDoubleFromNodeList(parameters, index);
-        validateInRange(value, extrema[0], extrema[1]);
-        mySliderMap.put(tagName, extrema);
+    //returns the error-checked and possibly revised value to add to mySize or myParameters
+    private void addSliderFromNodeList(NodeList parameters, int index) {
+        mySliderMap.put(getTagNameFromNodeList(parameters, index), getExtrema(parameters, index));
     }
 
     // Throws exception if coordinates out of bounds
@@ -166,10 +181,7 @@ public class XMLParser {
         return new Integer[]{row, col, numState};
     }
 
-    private void validateInBounds(int row, int col, int numState) throws XMLException {
-        if ((!(row == -1 && col==-1) && (row<0 || col<0)) || row>=mySize || col>=mySize)
-            throw new XMLException("The location (%d, %d) for state %d is out of bounds for grid size %d", row, col, numState, mySize);
-    }
+
 
     private boolean itemIsState(Node item) {
         String itemName = ((Element) item).getTagName();
@@ -179,10 +191,6 @@ public class XMLParser {
                 return false;
         }
         return true;
-    }
-
-    private String getAttributeFromNodeList(NodeList list, int index, String name) {
-        return ((Element) list.item(index)).getAttribute(name);
     }
 
     private boolean fileIsType(CA_TYPE type) {
@@ -197,27 +205,6 @@ public class XMLParser {
         }
     }
 
-    private void validateComp() throws XMLException {
-        double totalComp = 0;
-        int negativeCount = 0;
-        for (int k=0; k<myRandomComposition.size(); k++) {
-            if (myRandomComposition.get(k) == -1 && negativeCount==0) {
-                negativeCount ++;
-                continue;
-            }
-            totalComp += myRandomComposition.get(k);
-            if (totalComp > 1.0 || negativeCount==2)
-                throw new XMLException("Error in composition values");
-        }
-
-        if (totalComp != 1 && negativeCount == 0)
-            throw new XMLException("Error in composition values");
-    }
-
-    private void validateInRange(double value, double min, double max) throws XMLException {
-        if (value < min || value > max)
-            throw new XMLException("Value %f was not in range [%f,%f]", value, min, max);
-    }
 
     private String getTagNameFromNodeList(NodeList list, int index) {
         var element = (Element) list.item(index);
@@ -230,6 +217,10 @@ public class XMLParser {
 
     private double getDoubleFromNodeList(NodeList list, int index) {
         return Double.parseDouble(list.item(index).getTextContent());
+    }
+
+    private String getAttributeFromNodeList(NodeList list, int index, String name) {
+        return ((Element) list.item(index)).getAttribute(name);
     }
 
     private DocumentBuilder getDocumentBuilder() {
@@ -252,6 +243,47 @@ public class XMLParser {
         myIsRandom = false;
         myElementsIndex = 0;
     }
+
+    /*
+    ------------- Error-handling helper functions  ----------
+    */
+
+    private void validateComp() throws XMLException {
+        double totalComp = 0;
+        int negativeCount = 0;
+        for (int k=0; k<myRandomComposition.size(); k++) {
+            if (myRandomComposition.get(k) == -1 && negativeCount==0) {
+                negativeCount ++;
+                continue;
+            }
+            totalComp += myRandomComposition.get(k);
+            if (totalComp > 1.0 || negativeCount==2)
+                throw new XMLException("Error in composition values");
+        }
+
+        if (totalComp != 1 && negativeCount == 0)
+            throw new XMLException("Error in composition values");
+    }
+
+    private void validateInBounds(int row, int col, int numState) throws XMLException {
+        if ((!(row == -1 && col==-1) && (row<0 || col<0)) || row>=mySize || col>=mySize)
+            throw new XMLException("The location (%d, %d) for state %d is out of bounds for grid size %d", row, col, numState, mySize);
+    }
+
+    private double outOfBoundsRevision(NodeList list, int index) {
+        double value = getDoubleFromNodeList(list, index);
+        Double[] extrema = getExtrema(list, index);
+        double min = extrema[0]; double max = extrema[1];
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
+    }
+
+    /*
+    -------------------     GETTERS  ------------------------
+    */
 
     /**
      * @return XML.CA_TYPE of file parsed
