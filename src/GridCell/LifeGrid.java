@@ -48,6 +48,11 @@ public class LifeGrid extends Grid {
     }
 
     @Override
+    public void initSliderMap(){
+
+    }
+
+    @Override
     public void setAdditionalParams(Double[] params) {
         //no parameters for this game
     }

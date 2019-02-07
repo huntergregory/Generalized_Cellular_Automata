@@ -3,6 +3,7 @@ package GridCell;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -28,6 +29,14 @@ public class Segregation extends Grid {
         colorMap.put(1,Color.RED);
         colorMap.put(2,Color.BLUE);
         setStateColorMap(colorMap);
+    }
+
+    @Override
+    public void initSliderMap(){
+        sliderMap = new LinkedHashMap<>();
+        sliderMap.put("Similar", new Double[]{0.0, 0.1});
+        sliderMap.put("Red/Blue", new Double[]{0.0, 0.1});
+        sliderMap.put("Empty", new Double[]{0.0, 0.1});
     }
 
     @Override

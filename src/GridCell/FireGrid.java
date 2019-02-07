@@ -62,6 +62,11 @@ public class FireGrid extends Grid {
     }
 
     @Override
+    public void initSliderMap(){
+
+    }
+
+    @Override
     public void setAdditionalParams(Double[] params) {
         probCatch = params[0];
         probLightning = params[1];
