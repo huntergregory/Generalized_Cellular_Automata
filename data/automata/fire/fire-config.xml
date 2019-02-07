@@ -1,5 +1,5 @@
 <fire title="Test configured fire">
-  <size min="3" max="30">2</size>
+  <size min="3" max="30">5</size>
   <num-states>3</num-states>
   <configured>
     <empty-spots>

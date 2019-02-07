@@ -27,6 +27,7 @@ public class FireGrid extends Grid {
     private double probLightning;
     private double burnTime;
     private double probGrow;
+    private HashMap<Integer, Color> myStateColorMap;
 
     /**
      * Create a FireGrid that initializes states in explicit positions based on the configuration.
@@ -52,11 +53,12 @@ public class FireGrid extends Grid {
 
     @Override
     public void initStateColorMap() {
-        HashMap<Integer, Color> map = new HashMap<>();
-        map.put(EMPTY, Color.YELLOW);
-        map.put(GREEN, Color.GREEN);
-        map.put(BURNING, Color.RED);
-        setStateColorMap(map);
+        myStateColorMap = new HashMap<>();
+        myStateColorMap.put(EMPTY, Color.YELLOW);
+        myStateColorMap.put(GREEN, Color.GREEN);
+        myStateColorMap.put(BURNING, Color.RED);
+        setStateColorMap(myStateColorMap);
+
     }
 
     @Override
@@ -72,6 +74,7 @@ public class FireGrid extends Grid {
         // getGrid() returns a copy of the grid, so these two variables reference different cells
         Cell[][] newGrid = getGrid();
         Cell[][] oldGrid = getGrid();
+        //System.out.println("new update");
 
         int size = oldGrid.length;
         for (int r=0; r<size; r++) {
@@ -94,15 +97,19 @@ public class FireGrid extends Grid {
 
     private void updateEmptyCell(Cell newCell) {
         if (getRandomDouble() <= probGrow) {
-            newCell.setState(GREEN);
-            System.out.println("Growing!");
+            setCellState(newCell, GREEN);
+            //System.out.println("Growing!");
         }
     }
 
     private void updateBurningCell(Cell newCell) {
+        //System.out.println("age was " + newCell.getAge());
         newCell.setAge(1 + newCell.getAge());
-        if (newCell.getAge() >= burnTime)
-            newCell.setState(EMPTY);
+        if (newCell.getAge() >= burnTime) {
+            setCellState(newCell, EMPTY);
+            newCell.setAge(0);
+            //System.out.println("setting empty");
+        }
     }
 
     private void updateGreenCell(Cell newCell, ArrayList<Integer[]> neighborCoords) {
@@ -115,12 +122,17 @@ public class FireGrid extends Grid {
         }
         double dub = getRandomDouble();
         if (dub <= probTransition) {
-            newCell.setState(BURNING);
-            System.out.println("Neighbor burnt me!");
+            setCellState(newCell, BURNING);
+            //System.out.println("Neighbor burnt me!");
         }
         else if (dub <= probTransition + probLightning * probCatch) {
-            newCell.setState(BURNING);
-            System.out.println("Lightning!");
+            setCellState(newCell, BURNING);
+            //System.out.println("Lightning!");
         }
+    }
+
+    private void setCellState(Cell cell, int state) {
+        cell.setState(state);
+        cell.setColor(myStateColorMap.get(state));
     }
 }
