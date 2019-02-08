@@ -11,6 +11,9 @@ import java.util.HashMap;
  * @author Connor Ghazaleh
  */
 public abstract class Grid {
+    private final CELL_SHAPE myCellShape;
+    private final int[] myNeighborConfig;
+
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
     private Random rand = new Random();
@@ -26,10 +29,10 @@ public abstract class Grid {
      * @param gridSize
      * @param screenSize
      */
-    public Grid(int gridSize, double screenSize){
+    public Grid(int gridSize, double screenSize) {
         System.out.println("Called constructor on size: "+gridSize);
         grid = new Cell[gridSize][gridSize];
-        System.out.println("Grid of size: "+grid.length);
+        System.out.println("Grid of size: " + grid.length);
         initStateColorMap();
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
@@ -230,16 +233,17 @@ public abstract class Grid {
      * @return array of neighboring Cells
      * @throws IllegalArgumentException
      */
-    Cell[] getNeighborCells(int row, int col, boolean eightNeighbors) throws IllegalArgumentException {
+    Cell[] getNeighborCells(int row, int col) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
 
+        Integer[] deltaR = myCellShape.getDeltaR(row, col, myNeighborConfig);
+        Integer[] deltaC = myCellShape.getDeltaC(row, col, myNeighborConfig);
+
         ArrayList<Cell> neighbors = new ArrayList<>();
-        var deltaX = eightNeighbors ? new int[]{-1, -1, -1, 1, 1, 1, 0, 0} : new int[]{-1, 1, 0, 0};
-        var deltaY = eightNeighbors ? new int[]{0, 1, -1, 0, 1, -1, 1, -1} : new int[]{0, 0, -1, 1};
-        for (int k=0; k<deltaX.length; k++) {
-            int neighborRow = row + deltaX[k];
-            int neighborCol = col + deltaY[k];
+        for (int k=0; k<deltaR.length; k++) {
+            int neighborRow = row + deltaR[k];
+            int neighborCol = col + deltaC[k];
             if (isInBounds(neighborRow, neighborCol))
                 neighbors.add(grid[neighborRow][neighborCol]);
         }
