@@ -62,11 +62,7 @@ public class LifeGrid extends Grid {
     }
 
     private void updateCell(Cell oldCell, Cell newCell, ArrayList<Integer[]> neighborCoords) {
-        int numPopulatedNeighbors = 0;
-        for (Integer[] neighborCoord : neighborCoords) {
-            if (neighborCoord[2] == POPULATED) //gets the state from the (row, col, state) coordinate
-                numPopulatedNeighbors ++;
-        }
+        int numPopulatedNeighbors = getNumPopulatedNeighbors(neighborCoords);
 
         if (oldCell.getState() == EMPTY && numPopulatedNeighbors == 3) {
             setCellState(newCell, POPULATED);
@@ -76,6 +72,15 @@ public class LifeGrid extends Grid {
             setCellState(newCell, EMPTY);
             if (oldCell.getState() == POPULATED) System.out.println("emptying the populated spot ");
         }
+    }
+
+    private int getNumPopulatedNeighbors(ArrayList<Integer[]> neighborCoords) {
+        int numPopulatedNeighbors = 0;
+        for (Integer[] neighborCoord : neighborCoords) {
+            if (neighborCoord[2] == POPULATED) //gets the state from the (row, col, state) coordinate
+                numPopulatedNeighbors ++;
+        }
+        return numPopulatedNeighbors;
     }
 
     private void setCellState(Cell cell, int state) {
