@@ -60,10 +60,10 @@ public enum CELL_SHAPE {
         if (this.equals(CELL_SHAPE.TRIANGLE) && (row + col) % 2 == 1)
             flipSign(fullDelta);
         // [-1] means include max possible neighbors
-        if (fullDelta.length == 1 && fullDelta[0] == -1)
+        if (selectedNeighbors.length == 1 && selectedNeighbors[0] == -1)
             return fullDelta;
 
-        Arrays.sort(selectedNeighbors);
+        Arrays.sort(selectedNeighbors); // in case the selected neighbors weren't in increasing order
         ArrayList<Integer> newDelta = new ArrayList<>();
         for (int index : selectedNeighbors) {
             newDelta.add(fullDelta[index]);
