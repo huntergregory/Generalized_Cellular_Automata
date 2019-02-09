@@ -50,8 +50,8 @@ public class PredatorPrey extends Grid {
     public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
         sharkBreedingAge = params[1];
-        sharkEnergy = 5;//params[2];
-        energyPerFish = 2;//params[3];
+        energyPerFish = params[2];
+        sharkEnergy = params[3];
         Cell[][] currentGrid = getGrid();
         for (Cell[] row : currentGrid){
             for (Cell cell : row){

@@ -189,44 +189,44 @@ public abstract class Grid {
     
 
 
-    /*public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
-        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
-        if(row > 0){
-            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
-            neighbors.add(neighbor);
-        }
-        if(row < grid.length-1){
-            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
-            neighbors.add(neighbor);
-        }
-        if(col > 0){
-            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
-            neighbors.add(neighbor);
-        }
-        if(col < grid.length-1){
-            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
-            neighbors.add(neighbor);
-        }
-        if (eightNeighbors){
-            if(row > 0 && col > 0){
-                Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row < grid.length-1 && col < grid.length-1){
-                Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row < grid.length-1 && col > 0){
-                Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row > 0 && col < grid.length-1){
-                Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
-    }*/
+//    public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
+//        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
+//        if(row > 0){
+//            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(row < grid.length-1){
+//            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(col > 0){
+//            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(col < grid.length-1){
+//            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if (eightNeighbors){
+//            if(row > 0 && col > 0){
+//                Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row < grid.length-1 && col < grid.length-1){
+//                Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row < grid.length-1 && col > 0){
+//                Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row > 0 && col < grid.length-1){
+//                Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//        }
+//        return neighbors;
+//    }
 
     /**
      * Gets the neighborhood of a cell at specified position.
