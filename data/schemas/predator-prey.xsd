@@ -12,11 +12,7 @@
         <xsd:complexType name="state-name-list">
             <xsd:complexContent>
                 <xsd:extension base="state-name-list">
-                    <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:string"/>
-                        <xsd:element name="fish" type="xsd:string"/>
-                        <xsd:element name="shark" type="xsd:string"/>
-                    </xsd:sequence>
+                    <xsd:attribute name="states" use="required" fixed="empty, fish, shark"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
@@ -35,7 +31,7 @@
 
         <xsd:complexType name="random-number-list">
             <xsd:complexContent>
-                <xsd:extension base="random-number-list-list">
+                <xsd:extension base="random-number-list">
                     <xsd:sequence>
                         <xsd:element name="empty-num" type="int-min-max"/>
                         <xsd:element name="shark-num" type="int-min-max"/>

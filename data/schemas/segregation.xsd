@@ -10,11 +10,7 @@
         <xsd:complexType name="state-name-list">
             <xsd:complexContent>
                 <xsd:extension base="state-name-list">
-                    <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:string"/>
-                        <xsd:element name="people-A" type="xsd:string"/>
-                        <xsd:element name="people-B" type="xsd:string"/>
-                    </xsd:sequence>
+                    <xsd:attribute name="states" use="required" fixed="empty, people A, people B"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>

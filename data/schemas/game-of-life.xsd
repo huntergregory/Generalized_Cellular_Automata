@@ -1,10 +1,5 @@
 <!-- Schema for a game of life automaton. game-of-life element defined at bottom after redefinitions.
      States are populated and empty.
-     Parameters are
-       - probability that a tree catches fire given its neighbors are ablaze
-       - probability that lightning strikes a green tree
-       - time it takes for a tree to burn
-       - probability that a dead tree grows
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -12,10 +7,7 @@
         <xsd:complexType name="state-name-list">
             <xsd:complexContent>
                 <xsd:extension base="state-name-list">
-                    <xsd:sequence>
-                        <xsd:element name="populated" type="xsd:string"/>
-                        <xsd:element name="empty" type="xsd:string"/>
-                    </xsd:sequence>
+                    <xsd:attribute name="states" use="required" fixed="populated, empty"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
@@ -33,7 +25,7 @@
 
         <xsd:complexType name="random-number-list">
             <xsd:complexContent>
-                <xsd:extension base="random-number-list-list">
+                <xsd:extension base="random-number-list">
                     <xsd:sequence>
                         <xsd:element name="populated-num" type="int-min-max"/>
                         <xsd:element name="empty-num" type="int-min-max"/>

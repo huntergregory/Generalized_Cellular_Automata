@@ -13,8 +13,24 @@
             <xsd:element name="size" type="int-min-max"/>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:element name="state-names" type="state-name-list"/>
-            <xsd:element name="edges" type="xsd:string"/>       <!-- value should be either 'NORMAL', 'TOROIDAL', or 'INFINITE' -->
-            <xsd:element name="shape" type="xsd:string"/>       <!-- value should be either 'SQUARE', 'TRIANGLE', or 'HEXAGON' -->
+            <xsd:element name="edges">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="normal"/>
+                        <xsd:enumeration value="toroidal"/>
+                        <xsd:enumeration value="infinite"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="shape" type="xsd:string">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="square"/>
+                        <xsd:enumeration value="triangle"/>
+                        <xsd:enumeration value="hexagon"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
             <xsd:element name="neighbors" type="xsd:string"/>   <!-- value should be a comma-separated list of the numbers for the
                                                                       desired neighbors from 0 to n-1, where n is the max possible
                                                                       neighbors for the given shape. Neighbors are numbered starting
@@ -35,8 +51,8 @@
     <!-- /////////////////////////////////////////////////////////////////  -->
 
     <!-- Rewrite for every CA type's schema.
-         Each item represents the state's names, in the order used for the initial state lists.
-         Each item must have type string.
+         Add one attribute (called 'states' or whatever else) and make it have a fixed value of a comma-separated
+         list of all the states in the correct order.
     -->
     <xsd:complexType name="state-name-list"/>
 

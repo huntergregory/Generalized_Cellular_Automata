@@ -13,11 +13,7 @@
         <xsd:complexType name="state-name-list">
             <xsd:complexContent>
                 <xsd:extension base="state-name-list">
-                    <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:string"/>
-                        <xsd:element name="green" type="xsd:string"/>
-                        <xsd:element name="burning" type="xsd:string"/>
-                    </xsd:sequence>
+                    <xsd:attribute name="states" use="required" fixed="empty, green, burning"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
