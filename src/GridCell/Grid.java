@@ -246,7 +246,7 @@ public abstract class Grid {
             int neighborRow = row + deltaR[k];
             int neighborCol = col + deltaC[k];
             if (isInBounds(neighborRow, neighborCol)) {
-                Integer[] neighbor = {row, col, grid[neighborRow][neighborCol].getState()};
+                Integer[] neighbor = {neighborRow, neighborCol, grid[neighborRow][neighborCol].getState()};
                 neighbors.add(neighbor);
             }
         }

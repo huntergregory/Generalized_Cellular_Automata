@@ -62,13 +62,19 @@ public class Segregation extends Grid {
                 int myState = currentGrid[i][j].getState();
                 if (myState!= 0){
                     ArrayList<Integer[]> neighbors = getNeighbors(i,j);
+                    System.out.println("<NEIGHBORS>");
+                    System.out.println("["+i+","+j+"] : ");
+                    for(Integer[] n : neighbors){
+                        System.out.println(n[0]+","+n[1]+","+n[2]);
+                    }
+                    System.out.println("<NEIGHBORS>");
                     int numSameState = 0;
                     for (Integer[] cell : neighbors){
                         if (cell[2] == myState){
                             numSameState++;
                         }
                     }
-                    if (numSameState/8.0 < happyPercent){
+                    if (numSameState/neighbors.size() < happyPercent){
                         Integer[] person = {i,j,myState};
                         unhappy.add(person);
                     }
@@ -78,13 +84,20 @@ public class Segregation extends Grid {
                 }
             }
         }
+        System.out.println("<UNHAPPY>");
+        for(Integer[] i : unhappy){
+            System.out.println(i[0]+","+i[1]);
+        }
+        System.out.println("<UNHAPPY>");
+
         //move unhappy cells
         while (!unhappy.isEmpty()){
             Random rand = new Random();
             //unhappy person and empty spot
             Integer[] person = unhappy.remove(0);
-            int emptyIndex = rand.nextInt(empty.size()-1);
-            Integer[] emptySpot = empty.remove(emptyIndex);
+            int emptyIndex = rand.nextInt(empty.size());
+            Integer[] emptySpot = empty.get(emptyIndex);
+            empty.remove(emptyIndex);
             //switch random empty spot
             currentGrid[emptySpot[0]][emptySpot[1]].setState(person[2]);
             currentGrid[emptySpot[0]][emptySpot[1]].setColor(getStateColorMap().get(person[2]));

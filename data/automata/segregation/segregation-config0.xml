@@ -1,0 +1,13 @@
+<segregation title="string">
+  <size min="3" max="3">3</size>
+  <num-states>3</num-states>
+  <!--You have a CHOICE of the next 2 items at this level-->
+  <random>
+    <empty>0.2</empty>
+    <person-A>0.4</person-A>
+    <person-B>0.4</person-B>
+  </random>
+  <parameters>
+    <similar min="0" max="1">0.2</similar>
+  </parameters>
+</segregation>

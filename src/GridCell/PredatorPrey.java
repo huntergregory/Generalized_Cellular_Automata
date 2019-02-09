@@ -34,9 +34,9 @@ public class PredatorPrey extends Grid {
     @Override
     public void initStateColorMap(){
         HashMap<Integer, Color > colorMap = new HashMap<Integer,Color>();
-        colorMap.put(0,Color.WHITE); //empty
-        colorMap.put(1,Color.GREEN); //fish
-        colorMap.put(2,Color.BLUE); //shark
+        colorMap.put(EMPTY,Color.WHITE); //empty
+        colorMap.put(FISH,Color.GREEN); //fish
+        colorMap.put(SHARK,Color.BLUE); //shark
         stateColorMap = colorMap;
         setStateColorMap(colorMap);
     }
