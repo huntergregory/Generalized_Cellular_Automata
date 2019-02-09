@@ -15,6 +15,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -26,15 +27,15 @@ import javafx.util.Duration;
  * @coauthor Hunter Gregory
  */
 public class SimulatorMain extends Application {
-    public static final double GRID_DISPLAY_SIZE = 350.0;
-    public static final String DATA_FILE_EXTENSION = "*.xml";
-    private static final double SCREEN_WIDTH = 550.0;
-    private static final double SCREEN_HEIGHT = 550.0;
+    private static final double GRID_DISPLAY_SIZE = 350.0;
+    private static final String DATA_FILE_EXTENSION = "*.xml";
+    private static final double SCREEN_WIDTH = 600.0;
+    private static final double SCREEN_HEIGHT = 600.0;
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double BUTTON_WIDTH = 65.0;
     private static final double BUTTON_HEIGHT = 30.0;
-    private static final double BUTTON_SPACING = 3.0;
+    private static final double BUTTON_SPACING = 5.0;
 
     private CA_TYPE myType;
     private Grid myGrid;
@@ -79,9 +80,9 @@ public class SimulatorMain extends Application {
         Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT, Color.LIGHTCYAN);
         ObservableList rootList = root.getChildren();
         cellGroup = initializeCellGroup();
-        var buttonGroup = initializeButtonGroup();
+        var buttonVBox = initializeButtonVBox();
         var sliderGroup = initializeSliderGroup();
-        rootList.addAll(cellGroup, buttonGroup, sliderGroup);
+        rootList.addAll(cellGroup, buttonVBox, sliderGroup);
 
         pauseSim = true;
 
@@ -195,19 +196,20 @@ public class SimulatorMain extends Application {
         return result;
     }
 
-    private Group initializeButtonGroup() {
-        var buttonGroup = new Group();
-        ObservableList buttonList = buttonGroup.getChildren();
+    private VBox initializeButtonVBox() {
+        VBox buttonVBox = new VBox();
+        ObservableList buttonList = buttonVBox.getChildren();
         buttonList.addAll(createResetButton(), createStartButton(), createStopButton(), createStepButton());
-        return buttonGroup;
+        buttonVBox.setSpacing(BUTTON_SPACING);
+        buttonVBox.setLayoutX(Grid.GRID_PADDING);
+        buttonVBox.setLayoutY(GRID_DISPLAY_SIZE + 2*Grid.GRID_PADDING);
+        return buttonVBox;
     }
 
     private Button createResetButton() {
         Button resetButton = new Button("Reset");
         resetButton.setPrefWidth(BUTTON_WIDTH);
         resetButton.setPrefHeight(BUTTON_HEIGHT);
-        resetButton.setLayoutX(Grid.GRID_PADDING);
-        resetButton.setLayoutY(Grid.GRID_PADDING + GRID_DISPLAY_SIZE + Grid.GRID_PADDING);
         resetButton.setFocusTraversable(false);
         resetButton.setOnMouseClicked(buttonClick -> handleReset());
         resetButton.setOnMouseEntered(mouseEvent -> resetButton.setEffect(new DropShadow()));
@@ -235,9 +237,6 @@ public class SimulatorMain extends Application {
         startButton = new Button("Start");
         startButton.setPrefWidth(BUTTON_WIDTH);
         startButton.setPrefHeight(BUTTON_HEIGHT);
-        startButton.setLayoutX(Grid.GRID_PADDING);
-        startButton.setLayoutY(Grid.GRID_PADDING + GRID_DISPLAY_SIZE + Grid.GRID_PADDING + startButton.getPrefHeight()
-                + BUTTON_SPACING);
         startButton.setFocusTraversable(false);
         startButton.setOnMouseClicked(buttonClick -> handleStart());
         startButton.setOnMouseEntered(mouseEvent -> startButton.setEffect(new DropShadow()));
@@ -259,9 +258,6 @@ public class SimulatorMain extends Application {
         stopButton = new Button("Stop");
         stopButton.setPrefWidth(BUTTON_WIDTH);
         stopButton.setPrefHeight(BUTTON_HEIGHT);
-        stopButton.setLayoutX(Grid.GRID_PADDING);
-        stopButton.setLayoutY(Grid.GRID_PADDING + GRID_DISPLAY_SIZE + Grid.GRID_PADDING + 2*stopButton.getPrefHeight()
-                + 2*BUTTON_SPACING);
         stopButton.setFocusTraversable(false);
         stopButton.setOnMouseClicked(buttonClick -> handleStop());
         stopButton.setOnMouseEntered(mouseEvent -> stopButton.setEffect(new DropShadow()));
@@ -284,9 +280,6 @@ public class SimulatorMain extends Application {
         Button stepButton = new Button("Step");
         stepButton.setPrefWidth(BUTTON_WIDTH);
         stepButton.setPrefHeight(BUTTON_HEIGHT);
-        stepButton.setLayoutX(Grid.GRID_PADDING);
-        stepButton.setLayoutY(Grid.GRID_PADDING + GRID_DISPLAY_SIZE + Grid.GRID_PADDING + 3*stepButton.getPrefHeight()
-                + 3*BUTTON_SPACING);
         stepButton.setFocusTraversable(false);
         stepButton.setOnMouseClicked(buttonClick -> handleStep());
         stepButton.setOnMouseEntered(mouseEvent -> stepButton.setEffect(new DropShadow()));
