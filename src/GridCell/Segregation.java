@@ -62,19 +62,20 @@ public class Segregation extends Grid {
                 int myState = currentGrid[i][j].getState();
                 if (myState!= 0){
                     ArrayList<Integer[]> neighbors = getNeighbors(i,j);
-                    System.out.println("<NEIGHBORS>");
-                    System.out.println("["+i+","+j+"] : ");
-                    for(Integer[] n : neighbors){
-                        System.out.println(n[0]+","+n[1]+","+n[2]);
-                    }
-                    System.out.println("<NEIGHBORS>");
+//                    System.out.println("<NEIGHBORS>");
+//                    System.out.println("["+i+","+j+"] : ");
+//                    for(Integer[] n : neighbors){
+//                        System.out.println(n[0]+","+n[1]+","+n[2]);
+//                    }
+//                    System.out.println("<NEIGHBORS>");
                     int numSameState = 0;
                     for (Integer[] cell : neighbors){
                         if (cell[2] == myState){
                             numSameState++;
                         }
                     }
-                    if (numSameState/neighbors.size() < happyPercent){
+                    //System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
+                    if (((double)numSameState)/((double)neighbors.size()) < happyPercent){
                         Integer[] person = {i,j,myState};
                         unhappy.add(person);
                     }
@@ -84,11 +85,11 @@ public class Segregation extends Grid {
                 }
             }
         }
-        System.out.println("<UNHAPPY>");
-        for(Integer[] i : unhappy){
-            System.out.println(i[0]+","+i[1]);
-        }
-        System.out.println("<UNHAPPY>");
+//        System.out.println("<UNHAPPY>");
+//        for(Integer[] i : unhappy){
+//            System.out.println(i[0]+","+i[1]);
+//        }
+//        System.out.println("<UNHAPPY>");
 
         //move unhappy cells
         while (!unhappy.isEmpty()){

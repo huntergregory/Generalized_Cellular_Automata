@@ -73,6 +73,11 @@ public class PredatorPrey extends Grid {
         for (Integer[] fishy : fish) {
             ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
+            for (Integer[] neighbor : neighbors){
+                if (currentGrid[neighbor[0]][neighbor[1]].getState() == EMPTY) {
+                    emptyNeighbors.add(neighbor);
+                }
+            }
             //try to reproduce
             reproduce(fishy, currentGrid, emptyNeighbors, neighbors);
             //try to move
@@ -83,6 +88,7 @@ public class PredatorPrey extends Grid {
             currentGrid[fishy[0]][fishy[1]].setAge(currentGrid[fishy[0]][fishy[1]].getAge()+1);
         }
         for (Integer[] shark : sharks) {
+            currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
             //try to reproduce
@@ -109,7 +115,6 @@ public class PredatorPrey extends Grid {
     }
 
     private void killOrMoveShark(Cell[][] currentGrid, Integer[] shark, ArrayList<Integer[]> emptyNeighbors){
-        currentGrid[shark[0]][shark[1]].setEnergy(currentGrid[shark[0]][shark[1]].getEnergy()-1);
         if (currentGrid[shark[0]][shark[1]].getEnergy() <= 0){
             currentGrid[shark[0]][shark[1]].setState(EMPTY);
             currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(EMPTY));

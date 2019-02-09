@@ -3,9 +3,9 @@
   <num-states>3</num-states>
   <!--You have a CHOICE of the next 2 items at this level-->
   <random>
-    <empty>0.2</empty>
-    <predator>0.3</predator>
-    <prey>0.5</prey>
+    <empty>0.7</empty>
+    <predator>0.1</predator>
+    <prey>0.2</prey>
   </random>
   <parameters>
     <fish-breeding-age min="0" max="1000.00">4</fish-breeding-age>
