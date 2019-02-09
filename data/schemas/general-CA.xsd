@@ -13,8 +13,8 @@
             <xsd:element name="size" type="int-min-max"/>
             <xsd:element name="num-states" type="xsd:int"/>
             <xsd:element name="state-names" type="state-name-list"/>
-            <xsd:element name="edges" type="xsd:string"/>       <!-- value should be either "NORMAL", "TOROIDAL", or "INFINITE" -->
-            <xsd:element name="shape" type="xsd:string"/>       <!-- value should be either "SQUARE", "TRIANGLE", or "HEXAGON" -->
+            <xsd:element name="edges" type="xsd:string"/>       <!-- value should be either 'NORMAL', 'TOROIDAL', or 'INFINITE' -->
+            <xsd:element name="shape" type="xsd:string"/>       <!-- value should be either 'SQUARE', 'TRIANGLE', or 'HEXAGON' -->
             <xsd:element name="neighbors" type="xsd:string"/>   <!-- value should be a comma-separated list of the numbers for the
                                                                       desired neighbors from 0 to n-1, where n is the max possible
                                                                       neighbors for the given shape. Neighbors are numbered starting
@@ -94,7 +94,7 @@
         <xsd:simpleContent>
             <xsd:extension base="xsd:decimal">
                 <xsd:attribute name="min" type="xsd:decimal" use="required" fixed="0.0"/>
-                <xsd:attribute name="max" type="xsd:decimal" use="required" fixed"1.0"/>
+                <xsd:attribute name="max" type="xsd:decimal" use="required" fixed="1.0"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>

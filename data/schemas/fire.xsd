@@ -36,7 +36,7 @@
 
         <xsd:complexType name="random-number-list">
             <xsd:complexContent>
-                <xsd:extension base="state-name-list">
+                <xsd:extension base="random-number-list-list">
                     <xsd:sequence>
                         <xsd:element name="empty-num" type="int-min-max"/>
                         <xsd:element name="green-num" type="int-min-max"/>
