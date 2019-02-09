@@ -11,6 +11,9 @@ import java.util.HashMap;
  * @author Connor Ghazaleh
  */
 public abstract class Grid {
+    private final CELL_SHAPE myCellShape;
+    private final int[] myNeighborConfig;
+
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
     private Random rand = new Random();
@@ -26,13 +29,15 @@ public abstract class Grid {
      * @param gridSize
      * @param screenSize
      */
-    public Grid(int gridSize, double screenSize){
+    public Grid(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neighborConfig) {
         System.out.println("Called constructor on size: "+gridSize);
         grid = new Cell[gridSize][gridSize];
-        System.out.println("Grid of size: "+grid.length);
+        System.out.println("Grid of size: " + grid.length);
         initStateColorMap();
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
+        myCellShape = cellShape;
+        myNeighborConfig = neighborConfig;
     }
 
 
@@ -184,7 +189,7 @@ public abstract class Grid {
     
 
 
-    public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
+    /*public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
         ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
         if(row > 0){
             Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
@@ -221,29 +226,32 @@ public abstract class Grid {
             }
         }
         return neighbors;
-    }
+    }*/
 
     /**
      * Gets the neighborhood of a cell at specified position.
      * @param row
      * @param col
-     * @return array of neighboring Cells
+     * @return array of Integers of the form [row, col, state] for each neighboring cell
      * @throws IllegalArgumentException
      */
-    Cell[] getNeighborCells(int row, int col, boolean eightNeighbors) throws IllegalArgumentException {
+    ArrayList<Integer[]> getNeighbors(int row, int col) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
 
-        ArrayList<Cell> neighbors = new ArrayList<>();
-        var deltaX = eightNeighbors ? new int[]{-1, -1, -1, 1, 1, 1, 0, 0} : new int[]{-1, 1, 0, 0};
-        var deltaY = eightNeighbors ? new int[]{0, 1, -1, 0, 1, -1, 1, -1} : new int[]{0, 0, -1, 1};
-        for (int k=0; k<deltaX.length; k++) {
-            int neighborRow = row + deltaX[k];
-            int neighborCol = col + deltaY[k];
-            if (isInBounds(neighborRow, neighborCol))
-                neighbors.add(grid[neighborRow][neighborCol]);
+        Integer[] deltaR = myCellShape.getDeltaR(row, col, myNeighborConfig);
+        Integer[] deltaC = myCellShape.getDeltaC(row, col, myNeighborConfig);
+
+        ArrayList<Integer[]> neighbors = new ArrayList<>();
+        for (int k=0; k<deltaR.length; k++) {
+            int neighborRow = row + deltaR[k];
+            int neighborCol = col + deltaC[k];
+            if (isInBounds(neighborRow, neighborCol)) {
+                Integer[] neighbor = {row, col, grid[neighborRow][neighborCol].getState()};
+                neighbors.add(neighbor);
+            }
         }
-        return neighbors.toArray(new Cell[0]);
+        return neighbors;
     }
 
 

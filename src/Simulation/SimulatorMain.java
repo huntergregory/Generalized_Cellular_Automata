@@ -166,31 +166,23 @@ public class SimulatorMain extends Application {
             myGrid.setAdditionalParams(parameters);
     }
 
-    //returns false if didn't work
+    //returns false if didn't work, but should always work
     private boolean assignGrid() {
         int gridSize = myParser.getGridSize();
         CA_TYPE newType = myParser.getCAType();
-        if (myParser.getIsRandom()) {
-            Constructor<? extends Grid> constructor = newType.getRandomConstructor();
-            try {
-                myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getRandomComposition());
+        Constructor<? extends Grid> constructor = newType.getConstructor();
+        try {
+            myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getCellShape(), myParser.getNeighborConfig());
+
+            if (myParser.getIsRandom())
                 myGrid.setGridRandom(myParser.getRandomComposition());
-                return true;
-            }
-            catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
-                return false;
-            }
-        }
-        else {
-            Constructor<? extends Grid> constructor = newType.getConfiguredConstructor();
-            try {
-                myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getConfiguration());
+            else
                 myGrid.setGridSpecific(myParser.getConfiguration());
-                return true;
-            }
-            catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
-                return false;
-            }
+            return true;
+        }
+        catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+            // should always work
+            return false;
         }
     }
 

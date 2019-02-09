@@ -25,29 +25,16 @@ public enum CA_TYPE {
     public File getSchemaFile() { return mySchemaFile; }
 
     /**
-     * Uses reflection to return the constructor associated with a Grid that configures states randomly.
-     * Use newInstance(int, double, Double[]) to invoke the constructor.
+     * Uses reflection to return the constructor associated with a Grid subclass.
+     * Use newInstance(int, double, CELL_SHAPE, int[]) to invoke the constructor.
      * @return Grid constructor or null if an error occurred.
      */
-    public Constructor<? extends Grid> getRandomConstructor() {
+    public Constructor<? extends Grid> getConstructor() {
         try {
-            return myGridClass.getConstructor(int.class, double.class, Double[].class);
+            return myGridClass.getConstructor(int.class, double.class, CELL_SHAPE.class, int[].class);
         }
         catch (NoSuchMethodException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Uses reflection to return the constructor associated with a Grid that configures states based on explicit positions.
-     * Use newInstance(int, double, ArrayList<Double[]>) to invoke the constructor.
-     * @return Grid constructor or null if an error occurred.
-     */
-    public Constructor<? extends Grid> getConfiguredConstructor() {
-        try {
-            return myGridClass.getConstructor(int.class, double.class, ArrayList.class);
-        }
-        catch (NoSuchMethodException e) {
+            //should never happen
             return null;
         }
     }

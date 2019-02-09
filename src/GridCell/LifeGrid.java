@@ -18,25 +18,14 @@ public class LifeGrid extends Grid {
     private HashMap<Integer, Color> myStateColorMap;
 
     /**
-     * Create a LifeGrid that initializes states in explicit positions based on the configuration.
+     * Create a LifeGrid
      * @param gridSize
      * @param screenSize
-     * @param configuration
+     * @param cellShape
+     * @param neigborConfig
      */
-    public LifeGrid(int gridSize, double screenSize, ArrayList<Integer[]> configuration) {
-        super(gridSize, screenSize);
-        setGridSpecific(configuration);
-    }
-
-    /**
-     * Create a LifeGrid that initializes states randomly based on their percent composition.
-     * @param gridSize
-     * @param screenSize
-     * @param randomComp
-     */
-    public LifeGrid(int gridSize, double screenSize, Double[] randomComp) {
-        super(gridSize, screenSize);
-        setGridRandom(randomComp);
+    public LifeGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
+        super(gridSize, screenSize, cellShape, neigborConfig);
     }
 
     @Override
@@ -65,7 +54,7 @@ public class LifeGrid extends Grid {
         int size = oldGrid.length;
         for (int r=0; r<size; r++) {
             for (int c=0; c<size; c++) {
-                updateCell(oldGrid[r][c], newGrid[r][c], getNeighbors(r, c, true));
+                updateCell(oldGrid[r][c], newGrid[r][c], getNeighbors(r, c));
                 //System.out.println("for " + r + " and col " + c);
             }
         }

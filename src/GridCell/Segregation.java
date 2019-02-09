@@ -14,8 +14,15 @@ public class Segregation extends Grid {
 
     private double happyPercent;
 
-    public Segregation(int gridSize, double screenSize, Double[] composition) {
-        super(gridSize,screenSize);
+    /**
+     * Create a Segregation
+     * @param gridSize
+     * @param screenSize
+     * @param cellShape
+     * @param neigborConfig
+     */
+    public Segregation(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
+        super(gridSize, screenSize, cellShape, neigborConfig);
     }
 
     public void setGridStates(Double[] composition){
@@ -54,7 +61,7 @@ public class Segregation extends Grid {
             for (int j = 0; j < currentGrid.length; j++){
                 int myState = currentGrid[i][j].getState();
                 if (myState!= 0){
-                    ArrayList<Integer[]> neighbors = getNeighbors(i,j,true);
+                    ArrayList<Integer[]> neighbors = getNeighbors(i,j);
                     int numSameState = 0;
                     for (Integer[] cell : neighbors){
                         if (cell[2] == myState){

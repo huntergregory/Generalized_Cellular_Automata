@@ -30,25 +30,14 @@ public class FireGrid extends Grid {
     private HashMap<Integer, Color> myStateColorMap;
 
     /**
-     * Create a FireGrid that initializes states in explicit positions based on the configuration.
+     * Create a FireGrid.
      * @param gridSize
      * @param screenSize
-     * @param configuration
+     * @param cellShape
+     * @param neigborConfig
      */
-    public FireGrid(int gridSize, double screenSize, ArrayList<Integer[]> configuration) {
-        super(gridSize, screenSize);
-        setGridSpecific(configuration);
-    }
-
-    /**
-     * Create a FireGrid that initializes states randomly based on their percent composition.
-     * @param gridSize
-     * @param screenSize
-     * @param randomComp
-     */
-    public FireGrid(int gridSize, double screenSize, Double[] randomComp) {
-        super(gridSize, screenSize);
-        setGridRandom(randomComp);
+    public FireGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
+        super(gridSize, screenSize, cellShape, neigborConfig);
     }
 
     @Override
@@ -94,7 +83,7 @@ public class FireGrid extends Grid {
                     updateBurningCell(newCell);
                     continue;
                 }
-                updateGreenCell(newCell, getNeighbors(r,c,false));
+                updateGreenCell(newCell, getNeighbors(r,c));
             }
         }
         setGrid(newGrid);

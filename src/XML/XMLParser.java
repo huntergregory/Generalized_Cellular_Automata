@@ -1,5 +1,6 @@
 package XML;
 
+import GridCell.CELL_SHAPE;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -284,6 +285,16 @@ public class XMLParser {
     /*
     -------------------     GETTERS  ------------------------
     */
+
+    /**
+     * @return CELL_SHAPE of file parsed
+     */
+    public CELL_SHAPE getCellShape() { return CELL_SHAPE.SQUARE; } //FIX
+
+    /**
+     * @return integer array of specified neighbors for the cell shape
+     */
+    public int[] getNeighborConfig() { return new int[]{-1}; } //FIX
 
     /**
      * @return XML.CA_TYPE of file parsed

@@ -20,9 +20,15 @@ public class PredatorPrey extends Grid {
     private double sharkEnergy;
     private HashMap<Integer, Color> stateColorMap;
 
-    public PredatorPrey(int gridSize, double screenSize, Double[] composition){
-        super(gridSize,screenSize);
-        setGridRandom(composition);
+    /**
+     * Create a PredatorPrey
+     * @param gridSize
+     * @param screenSize
+     * @param cellShape
+     * @param neigborConfig
+     */
+    public PredatorPrey(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
+        super(gridSize, screenSize, cellShape, neigborConfig);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class PredatorPrey extends Grid {
         ArrayList<Integer[]> sharks = findCellsWithState(currentGrid,SHARK);
         ArrayList<Integer[]> fish = findCellsWithState(currentGrid,FISH);
         for (Integer[] fishy : fish) {
-            ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1],false);
+            ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
             //try to reproduce
             reproduce(fishy, currentGrid, emptyNeighbors, neighbors);
@@ -77,7 +83,7 @@ public class PredatorPrey extends Grid {
             currentGrid[fishy[0]][fishy[1]].setAge(currentGrid[fishy[0]][fishy[1]].getAge()+1);
         }
         for (Integer[] shark : sharks) {
-            ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1],false);
+            ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
             //try to reproduce
             reproduce(shark, currentGrid, emptyNeighbors, neighbors);
