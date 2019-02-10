@@ -39,6 +39,9 @@ public class SimulatorMain extends Application {
     private static final double BUTTON_WIDTH = 90.0;
     private static final double BUTTON_HEIGHT = 30.0;
     private static final double BUTTON_SPACING = 5.0;
+    private static final String SPECIFIED_LOCATIONS = "locations";
+    private static final String RANDOM_COMP = "random composition";
+    private static final String RANDOM_NUMS = "random numbers";
 
     private CA_TYPE myType;
     private Grid myGrid;
@@ -192,10 +195,13 @@ public class SimulatorMain extends Application {
         try {
             myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getCellShape(), myParser.getNeighborConfig());
 
-            if (myParser.getIsRandom())
+            String configType = myParser.getConfigType();
+            if (configType.equals(RANDOM_COMP))
                 myGrid.setGridRandom(myParser.getRandomComposition());
-            else
-                myGrid.setGridSpecific(myParser.getConfiguration());
+            else if (configType.equals(SPECIFIED_LOCATIONS))
+                myGrid.setGridSpecific(myParser.getLocations());
+            /*else
+                myGrid.setGridRandomNums(myParser.getRandomNumbers());*/
             return true;
         }
         catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
@@ -248,8 +254,8 @@ public class SimulatorMain extends Application {
     }
 
     private void handleReset() {
-        if (!myParser.getIsRandom()) {
-            myGrid.setGridSpecific(myParser.getConfiguration());
+        if (myParser.getConfigType().equals(SPECIFIED_LOCATIONS)) {
+            myGrid.setGridSpecific(myParser.getLocations());
         }
         else {
             myGrid.setGridRandom(myGrid.getCurComposition());
@@ -345,10 +351,9 @@ public class SimulatorMain extends Application {
     private void printShit() {
         System.out.println(myParser.getCAType());
         System.out.println("Grid size: " + myParser.getGridSize());
-        System.out.println("Number of states: " + myParser.getNumStates());
-        System.out.println("Grid is randomly composed? " + myParser.getIsRandom());
+        System.out.println("Grid config type is " + myParser.getConfigType());
         printAllInDubArray(myParser.getRandomComposition(), "random composition of states");
-        printAllPositions(myParser.getConfiguration());
+        printAllPositions(myParser.getLocations());
         printAllInDubArray(myParser.getParameters(), "initial values of parameters");
         printSliders(myParser.getSliderNamesAndValues());
     }

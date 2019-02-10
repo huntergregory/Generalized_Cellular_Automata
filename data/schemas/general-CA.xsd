@@ -1,19 +1,42 @@
 <!-- A general cellular automaton complex type that allows extension.
         Steps to extend:
           - <include> this xsd in the one you're creating
-          - <redefine> and extend all the "list" types below
+          - <redefine> and extend all the types below that need to overwritten
           - create a new element of type "automaton"
-
-     If you're making a configured automaton, make sure that all the positions would fit in the minimum size grid.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:complexType name="automaton">
         <xsd:sequence>
-            <xsd:element name="size" type="int-parameter"/>
-            <xsd:element name="num-states" type="xsd:int"/>
+            <xsd:element name="size" type="int-min-max"/>
+            <xsd:element name="num-states" type="num-states-type"/>
+            <xsd:element name="state-names" type="state-names-type"/>
+            <xsd:element name="edges">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="normal"/>
+                        <xsd:enumeration value="toroidal"/>
+                        <xsd:enumeration value="infinite"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="shape">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="square"/>
+                        <xsd:enumeration value="triangle"/>
+                        <xsd:enumeration value="hexagon"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="neighbors" type="xsd:string"/>   <!-- value should be a comma-separated list of the numbers for the
+                                                                      desired neighbors from 0 to n-1, where n is the max possible
+                                                                      neighbors for the given shape. Neighbors are numbered starting
+                                                                      from the top neighbor and numbering neighbors clockwise around
+                                                                      the shape -->
             <xsd:choice>
-                <xsd:element name="random" type="composition-list"/>
+                <xsd:element name="random-composition" type="composition-list"/>
+                <xsd:element name="random-numbers" type="random-number-list"/>
                 <xsd:element name="configured" type="location-list"/>
             </xsd:choice>
             <xsd:element name="parameters" type="parameter-list"/>
@@ -21,27 +44,54 @@
         <xsd:attribute name="title" type="xsd:string" use="required"/>
     </xsd:complexType>
 
-    <!-- All list types below are placeholders that need to be overwritten -->
+    <!-- ///////////////////////////////////////////////////////////  -->
+    <!-- All types below are placeholders that need to be overwritten -->
+    <!-- ///////////////////////////////////////////////////////////  -->
 
-    <!-- Rewrite for every CA type's schema.
+    <!--
+         Add one attribute (called 'num' or whatever else) and make it have a fixed value of an int
+    -->
+    <xsd:complexType name="num-states-type"/>
+
+    <!--
+         Add one attribute (called 'states' or whatever else) and make it have a fixed value of a comma-separated
+         list of all the states in the correct order.
+    -->
+    <xsd:complexType name="state-names-type"/>
+
+    <!--
          Each item represents a percent of the grid occupied by a certain state.
-         Each item must have type decimal.
+         Each item must have type probability.
          Make a state have a value of -1 for the GridCell.Grid to infer its composition from those of the other states.
-            Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
+         -1 should be used at max once.
      -->
     <xsd:complexType name="composition-list"/>
 
-    <!-- Rewrite for all CA types' schemas.
+    <!--
+         Each item represents the number of a certain state present in the grid to start.
+         These states will be positioned randomly.
+         Each item must have type int-min-max.
+         Make a state have a value of -1 for the GridCell.Grid to infer its number from those of the other states.
+         -1 should be used at max once.
+     -->
+    <xsd:complexType name="random-number-list"/>
+
+    <!--
          Each item must have type "positions".
          Make a state have on position with a row and col value of -1 for the GridCell.Grid to infer its positions from those of
-            the other states. Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
+         the other states. Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
     -->
     <xsd:complexType name="location-list"/>
 
-    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
-         Each item must have type parameter
+    <!--
+    Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+         Each item must have type probability or int-min-max.
     -->
     <xsd:complexType name="parameter-list"/>
+
+    <!-- ////////////////////////////////////////////////  -->
+    <!--    PREDEFINED TYPES - should not be overwritten   -->
+    <!-- ////////////////////////////////////////////////  -->
 
     <!-- Allows a list of position elements, each a parent to an x, y coordinate.
          Use this in making a location-list.
@@ -59,18 +109,18 @@
         </xsd:sequence>
     </xsd:complexType>
 
-    <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
-    <xsd:complexType name="double-parameter">
+    <!-- Makes sure an element is a decimal and is between 0 and 1.0 -->
+    <xsd:complexType name="probability">
         <xsd:simpleContent>
             <xsd:extension base="xsd:decimal">
-                <xsd:attribute name="min" type="xsd:decimal" use="required"/>
-                <xsd:attribute name="max" type="xsd:decimal" use="required"/>
+                <xsd:attribute name="min" type="xsd:decimal" use="required" fixed="0.0"/>
+                <xsd:attribute name="max" type="xsd:decimal" use="required" fixed="1.0"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
 
-    <!-- Makes sure an parameter element is a decimal and has required min and max attributes -->
-    <xsd:complexType name="int-parameter">
+    <!-- Makes sure an element is an int and has required, specified min and max attributes -->
+    <xsd:complexType name="int-min-max">
         <xsd:simpleContent>
             <xsd:extension base="xsd:int">
                 <xsd:attribute name="min" type="xsd:int" use="required"/>

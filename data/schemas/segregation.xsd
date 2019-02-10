@@ -1,37 +1,68 @@
-<!-- Schema for a segregation automaton.
-     Can choose random or configured locations for all three states.
-     Can specify how similar each population is in the form of a decimal percent.
+<!-- Schema for a segregation automaton. segregation element defined at bottom after redefinitions.
+     States are empty, people-A, and people-B.
+     Parameters are
+       - similar percentage (min threshold to be satisfied with position based on neighbors)
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="num-states-type">
+            <xsd:complexContent>
+                <xsd:extension base="num-states-type">
+                    <xsd:attribute name="num" use="required" fixed="3"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="state-names-type">
+            <xsd:complexContent>
+                <xsd:extension base="state-names-type">
+                    <xsd:attribute name="states" use="required" fixed="empty, people A, people B"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="composition-list">
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal"/>
-                        <xsd:element name="person-A" type="xsd:decimal"/>
-                        <xsd:element name="person-B" type="xsd:decimal"/>
+                        <xsd:element name="empty-comp" type="probability"/>
+                        <xsd:element name="people-A-comp" type="probability"/>
+                        <xsd:element name="people-B-comp" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
+        <xsd:complexType name="random-number-list">
+            <xsd:complexContent>
+                <xsd:extension base="random-number-list">
+                    <xsd:sequence>
+                        <xsd:element name="empty-num" type="int-min-max"/>
+                        <xsd:element name="people-A-num" type="int-min-max"/>
+                        <xsd:element name="people-B-num" type="int-min-max"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="location-list">
             <xsd:complexContent>
                 <xsd:extension base="location-list">
                     <xsd:sequence>
                         <xsd:element name="empty-spots" type="positions"/>
-                        <xsd:element name="person-A-spots" type="positions"/>
-                        <xsd:element name="person-B-spots" type="positions"/>
+                        <xsd:element name="people-A-spots" type="positions"/>
+                        <xsd:element name="people-B-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
         <xsd:complexType name="parameter-list">
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="similar" type="double-parameter"/>
+                        <xsd:element name="similar" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>

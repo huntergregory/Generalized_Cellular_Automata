@@ -1,19 +1,47 @@
-<!-- Schema for a game of life automaton.
-     Should choose configured locations for the two states.
+<!-- Schema for a game of life automaton. game-of-life element defined at bottom after redefinitions.
+     States are populated and empty.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="num-states-type">
+            <xsd:complexContent>
+                <xsd:extension base="num-states-type">
+                    <xsd:attribute name="num" use="required" fixed="2"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="state-names-type">
+            <xsd:complexContent>
+                <xsd:extension base="state-names-type">
+                    <xsd:attribute name="states" use="required" fixed="populated, empty"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="composition-list">
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="populated" type="xsd:decimal"/>
-                        <xsd:element name="empty" type="xsd:decimal"/>
+                        <xsd:element name="populated-comp" type="probability"/>
+                        <xsd:element name="empty-comp" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
+        <xsd:complexType name="random-number-list">
+            <xsd:complexContent>
+                <xsd:extension base="random-number-list">
+                    <xsd:sequence>
+                        <xsd:element name="populated-num" type="int-min-max"/>
+                        <xsd:element name="empty-num" type="int-min-max"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="location-list">
             <xsd:complexContent>
                 <xsd:extension base="location-list">
@@ -25,5 +53,6 @@
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:redefine>
+
     <xsd:element name="game-of-life" type="automaton"/>
 </xsd:schema>

@@ -7,15 +7,30 @@ public enum CELL_SHAPE {
     SQUARE(
           new Integer[]{-1, -1, 0, 1, 1, 1, 0, -1},
           new Integer[]{0, 1, 1, 1, 0, -1, -1, -1}
-          ),
+          ) {
+        @Override
+        public String toString() {
+            return "square";
+        }
+    },
     TRIANGLE(
           new Integer[]{-1, -1, 0, 0, 1, 1, 1, 1, 1, 0, 0, -1},
           new Integer[]{0, 1, 1, 2, 2, 1, 0, -1, -2, -2, -1, -1}
-          ),
+          ) {
+        @Override
+        public String toString() {
+            return "triangle";
+        }
+    },
     HEXAGON(
           new Integer[]{},
           new Integer[]{}
-          );
+          ) {
+        @Override
+        public String toString() {
+            return "hexagon";
+        }
+    };
 
     private Integer[] myDeltaR;
     private Integer[] myDeltaC;
@@ -39,7 +54,7 @@ public enum CELL_SHAPE {
      * @param selectedNeighbors
      * @return delta column values in an Integer array
      */
-    public Integer[] getDeltaC(int row, int col, int[] selectedNeighbors) {
+    public Integer[] getDeltaC(int row, int col, Integer[] selectedNeighbors) {
         return getDelta(row, col, selectedNeighbors, myDeltaC);
 
     }
@@ -52,11 +67,11 @@ public enum CELL_SHAPE {
      * @param selectedNeighbors
      * @return delta row values in an Integer array
      */
-    public Integer[] getDeltaR(int row, int col, int[] selectedNeighbors) {
+    public Integer[] getDeltaR(int row, int col, Integer[] selectedNeighbors) {
         return getDelta(row, col, selectedNeighbors, myDeltaR);
     }
 
-    private Integer[] getDelta(int row, int col, int[] selectedNeighbors, Integer[] fullDelta) {
+    private Integer[] getDelta(int row, int col, Integer[] selectedNeighbors, Integer[] fullDelta) {
         if (this.equals(CELL_SHAPE.TRIANGLE) && (row + col) % 2 == 1)
             flipSign(fullDelta);
         // [-1] means include max possible neighbors

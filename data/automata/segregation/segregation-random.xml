@@ -1,11 +1,15 @@
 <segregation title="Segregation">
   <size min="10" max="50">20</size>
-  <num-states>3</num-states>
-  <random>
-    <empty>0.1</empty>
-    <person-A>0.4</person-A>
-    <person-B>-1</person-B>
-  </random>
+  <num-states num="3"/>
+  <state-names states="empty, people A, people B"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>-1</neighbors>
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">0.1</empty-comp>
+    <people-A-comp min="0.0" max="1.0">0.4</people-A-comp>
+    <people-B-comp min="0.0" max="1.0">-1</people-B-comp>
+  </random-composition>
   <parameters>
     <similar min="0.0" max="1.0">0.5</similar>
   </parameters>
