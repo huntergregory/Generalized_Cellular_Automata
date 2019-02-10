@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public abstract class Grid {
     private final CELL_SHAPE myCellShape;
-    private final int[] myNeighborConfig;
+    private final Integer[] myNeighborConfig;
 
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
@@ -29,7 +29,7 @@ public abstract class Grid {
      * @param gridSize
      * @param screenSize
      */
-    public Grid(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neighborConfig) {
+    public Grid(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
         System.out.println("Called constructor on size: "+gridSize);
         grid = new Cell[gridSize][gridSize];
         System.out.println("Grid of size: " + grid.length);

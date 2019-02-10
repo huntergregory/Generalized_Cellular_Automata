@@ -1,44 +1,79 @@
-<!-- Schema for a predator prey automaton.
-     Can choose random or configured locations for all three states.
-     Can choose how long it takes for prey to reproduce and for predators to reproduce or starve.
+<!-- Schema for a predator prey automaton. predator-prey element defined at bottom after redefinitions.
+     States are empty, fish, shark.
+     Parameters are
+       - breeding age for fish
+       - breeding age for shark
+       - constant energy stored in fish (transferred to shark when it feasts)
+       - shark's energy until starvation
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="num-states-type">
+            <xsd:complexContent>
+                <xsd:extension base="num-states-type">
+                    <xsd:attribute name="num" use="required" fixed="3"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="state-names-type">
+            <xsd:complexContent>
+                <xsd:extension base="state-names-type">
+                    <xsd:attribute name="states" use="required" fixed="empty, fish, shark"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="composition-list">
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal"/>
-                        <xsd:element name="predator" type="xsd:decimal"/>
-                        <xsd:element name="prey" type="xsd:decimal"/>
+                        <xsd:element name="empty-comp" type="probability"/>
+                        <xsd:element name="fish-comp" type="probability"/>
+                        <xsd:element name="shark-comp" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
+        <xsd:complexType name="random-number-list">
+            <xsd:complexContent>
+                <xsd:extension base="random-number-list">
+                    <xsd:sequence>
+                        <xsd:element name="empty-num" type="int-min-max"/>
+                        <xsd:element name="shark-num" type="int-min-max"/>
+                        <xsd:element name="fish-num" type="int-min-max"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="location-list">
             <xsd:complexContent>
                 <xsd:extension base="location-list">
                     <xsd:sequence>
                         <xsd:element name="empty-spots" type="positions"/>
-                        <xsd:element name="predator-spots" type="positions"/>
-                        <xsd:element name="prey-spots" type="positions"/>
+                        <xsd:element name="fish-spots" type="positions"/>
+                        <xsd:element name="shark-spots" type="positions"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
         <xsd:complexType name="parameter-list">
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="fish-breeding-age" type="double-parameter"/>
-                        <xsd:element name="shark-breeding-age" type="double-parameter"/>
-                        <xsd:element name="fish-energy" type="double-parameter"/>
-                        <xsd:element name="shark-energy" type="int-parameter"/>
+                        <xsd:element name="fish-breeding-age" type="probability"/>
+                        <xsd:element name="shark-breeding-age" type="probability"/>
+                        <xsd:element name="fish-energy" type="probability"/>
+                        <xsd:element name="shark-energy" type="int-min-max"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:redefine>
+
     <xsd:element name="predator-prey" type="automaton"/>
 </xsd:schema>

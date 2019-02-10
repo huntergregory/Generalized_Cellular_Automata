@@ -1,22 +1,55 @@
-<!-- Schema for a fire automaton.
-     Can choose random or configured locations for all three states.
-     Can also choose the probability that a tree will catch fire given its neighbors are ablaze.
+<!-- Schema for a fire automaton. fire element defined at bottom after redefinitions.
+     States are empty, green, and burning.
+     Parameters are
+       - probability that a tree catches fire given its neighbors are ablaze
+       - probability that lightning strikes a green tree
+       - time it takes for a tree to burn
+       - probability that a dead tree grows
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:include schemaLocation="general-CA.xsd"/>
     <xsd:redefine schemaLocation="general-CA.xsd">
+        <xsd:complexType name="num-states-type">
+            <xsd:complexContent>
+                <xsd:extension base="num-states-type">
+                    <xsd:attribute name="num" use="required" fixed="3"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="state-names-type">
+            <xsd:complexContent>
+                <xsd:extension base="state-names-type">
+                    <xsd:attribute name="states" use="required" fixed="empty, green, burning"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="composition-list">
             <xsd:complexContent>
                 <xsd:extension base="composition-list">
                     <xsd:sequence>
-                        <xsd:element name="empty" type="xsd:decimal"/>
-                        <xsd:element name="green" type="xsd:decimal"/>
-                        <xsd:element name="burning" type="xsd:decimal"/>
+                        <xsd:element name="empty-comp" type="probability"/>
+                        <xsd:element name="green-comp" type="probability"/>
+                        <xsd:element name="burning-comp" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
+        <xsd:complexType name="random-number-list">
+            <xsd:complexContent>
+                <xsd:extension base="random-number-list">
+                    <xsd:sequence>
+                        <xsd:element name="empty-num" type="int-min-max"/>
+                        <xsd:element name="green-num" type="int-min-max"/>
+                        <xsd:element name="burning-num" type="int-min-max"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
         <xsd:complexType name="location-list">
             <xsd:complexContent>
                 <xsd:extension base="location-list">
@@ -28,18 +61,20 @@
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
+
         <xsd:complexType name="parameter-list">
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="probCatch" type="double-parameter"/>
-                        <xsd:element name="probLightning" type="double-parameter"/>
-                        <xsd:element name="burnTime" type="int-parameter"/>
-                        <xsd:element name="probGrow" type="double-parameter"/>
+                        <xsd:element name="probCatch" type="probability"/>
+                        <xsd:element name="probLightning" type="probability"/>
+                        <xsd:element name="burnTime" type="int-min-max"/>
+                        <xsd:element name="probGrow" type="probability"/>
                     </xsd:sequence>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:redefine>
+
     <xsd:element name="fire" type="automaton"/>
 </xsd:schema>
