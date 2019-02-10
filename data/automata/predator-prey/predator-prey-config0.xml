@@ -1,5 +1,5 @@
 <predator-prey title="string">
-  <size min="3" max="8">8</size>
+  <size min="3" max="8">4</size>
   <num-states>3</num-states>
   <!--You have a CHOICE of the next 2 items at this level-->
   <random>

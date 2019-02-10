@@ -79,7 +79,10 @@ public class Segregation extends Grid {
                         }
                     }
                     //System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
-                    if (((double)numSameState)/((double)numOccupied) < happyPercent){
+                    if (numOccupied == 0){
+                        Integer[] person = {i,j,myState};
+                        unhappy.add(person);
+                    }else if (((double)numSameState)/((double)numOccupied) < happyPercent){
                         Integer[] person = {i,j,myState};
                         unhappy.add(person);
                     }
