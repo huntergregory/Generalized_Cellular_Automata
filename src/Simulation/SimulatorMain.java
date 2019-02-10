@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -50,6 +52,8 @@ public class SimulatorMain extends Application {
     private Button stopButton;
     private Button startButton;
     private Stage simStage;
+    private int roundCounter = 0;
+    private Text roundLabel;
 
     public SimulatorMain() {
         myType = null;
@@ -88,7 +92,7 @@ public class SimulatorMain extends Application {
         cellGroup = initializeCellGroup();
         var buttonVBox = initializeButtonVBox();
         sliderGroup = initializeSliderGroup();
-        rootList.addAll(cellGroup, buttonVBox, sliderGroup);
+        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderGroup);
 
         pauseSim = true;
 
@@ -108,6 +112,8 @@ public class SimulatorMain extends Application {
     private void handleGridUpdate() {
         myGrid.updateCells();
         resetCellGroup();
+        roundCounter++;
+        updateRoundLabel();
     }
 
     private Group initializeCellGroup() {
@@ -223,7 +229,7 @@ public class SimulatorMain extends Application {
         buttonList.addAll(resetButton, startButton, stopButton, stepButton, loadFileButton);
         buttonVBox.setSpacing(BUTTON_SPACING);
         buttonVBox.setLayoutX(Grid.GRID_PADDING);
-        buttonVBox.setLayoutY(GRID_DISPLAY_SIZE + 2*Grid.GRID_PADDING);
+        buttonVBox.setLayoutY(GRID_DISPLAY_SIZE + (5*Grid.GRID_PADDING)/2);
         buttonVBox.setAlignment(Pos.CENTER);
         return buttonVBox;
     }
@@ -252,6 +258,8 @@ public class SimulatorMain extends Application {
         pauseSim = true;
         stopButton.setDisable(true);
         startButton.setDisable(false);
+        roundCounter = 0;
+        updateRoundLabel();
     }
 
     private void handleStart() {
@@ -283,7 +291,22 @@ public class SimulatorMain extends Application {
             startButton.setDisable(false);
             resetCellGroup();
             resetSliderGroup();
+            roundCounter = 0;
+            updateRoundLabel();
         }
+    }
+
+    private Text createRoundLabel(){
+        roundLabel = new Text();
+        roundLabel.setText("Round " + roundCounter);
+        roundLabel.setFont(new Font(17.0));
+        roundLabel.setX(Grid.GRID_PADDING);
+        roundLabel.setY(GRID_DISPLAY_SIZE + 2*Grid.GRID_PADDING);
+        return roundLabel;
+    }
+
+    private void updateRoundLabel(){
+        roundLabel.setText("Round " + roundCounter);
     }
 
     private Group initializeSliderGroup() {
