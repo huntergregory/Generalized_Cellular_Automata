@@ -1,18 +1,16 @@
 <!-- A general cellular automaton complex type that allows extension.
         Steps to extend:
           - <include> this xsd in the one you're creating
-          - <redefine> and extend all the "list" types below
+          - <redefine> and extend all the types below that need to overwritten
           - create a new element of type "automaton"
-
-     If you're making a configured automaton, make sure that all the positions would fit in the minimum size grid.
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:complexType name="automaton">
         <xsd:sequence>
             <xsd:element name="size" type="int-min-max"/>
-            <xsd:element name="num-states" type="xsd:int"/>
-            <xsd:element name="state-names" type="state-name-list"/>
+            <xsd:element name="num-states" type="num-states-type"/>
+            <xsd:element name="state-names" type="state-names-type"/>
             <xsd:element name="edges">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
@@ -46,17 +44,22 @@
         <xsd:attribute name="title" type="xsd:string" use="required"/>
     </xsd:complexType>
 
-    <!-- /////////////////////////////////////////////////////////////////  -->
-    <!-- All list types below are placeholders that need to be overwritten -->
-    <!-- /////////////////////////////////////////////////////////////////  -->
+    <!-- ///////////////////////////////////////////////////////////  -->
+    <!-- All types below are placeholders that need to be overwritten -->
+    <!-- ///////////////////////////////////////////////////////////  -->
 
-    <!-- Rewrite for every CA type's schema.
+    <!--
+         Add one attribute (called 'num' or whatever else) and make it have a fixed value of an int
+    -->
+    <xsd:complexType name="num-states-type"/>
+
+    <!--
          Add one attribute (called 'states' or whatever else) and make it have a fixed value of a comma-separated
          list of all the states in the correct order.
     -->
-    <xsd:complexType name="state-name-list"/>
+    <xsd:complexType name="state-names-type"/>
 
-    <!-- Rewrite for every CA type's schema.
+    <!--
          Each item represents a percent of the grid occupied by a certain state.
          Each item must have type probability.
          Make a state have a value of -1 for the GridCell.Grid to infer its composition from those of the other states.
@@ -64,7 +67,7 @@
      -->
     <xsd:complexType name="composition-list"/>
 
-    <!-- Rewrite for every CA type's schema.
+    <!--
          Each item represents the number of a certain state present in the grid to start.
          These states will be positioned randomly.
          Each item must have type int-min-max.
@@ -73,14 +76,15 @@
      -->
     <xsd:complexType name="random-number-list"/>
 
-    <!-- Rewrite for all CA types' schemas.
+    <!--
          Each item must have type "positions".
          Make a state have on position with a row and col value of -1 for the GridCell.Grid to infer its positions from those of
          the other states. Likely to cause problems in the GridCell.Grid class if -1 isn't used or if -1 is used multiple times.
     -->
     <xsd:complexType name="location-list"/>
 
-    <!-- Rewrite for all CA types' schemas that have parameters such as a probability of transition.
+    <!--
+    Rewrite for all CA types' schemas that have parameters such as a probability of transition.
          Each item must have type probability or int-min-max.
     -->
     <xsd:complexType name="parameter-list"/>

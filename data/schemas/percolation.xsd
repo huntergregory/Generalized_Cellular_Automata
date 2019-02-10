@@ -5,9 +5,17 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:include schemaLocation="general-CA.xsd"/>
     <xsd:redefine schemaLocation="general-CA.xsd">
-        <xsd:complexType name="state-name-list">
+        <xsd:complexType name="num-states-type">
             <xsd:complexContent>
-                <xsd:extension base="state-name-list">
+                <xsd:extension base="xsd:int">
+                    <xsd:attribute name="num" use="required" fixed="3"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="num-states-type">
+            <xsd:complexContent>
+                <xsd:extension base="num-states-type">
                     <xsd:attribute name="states" use="required" fixed="empty, percolated, blocked"/>
                 </xsd:extension>
             </xsd:complexContent>
