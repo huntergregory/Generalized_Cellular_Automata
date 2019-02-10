@@ -1,6 +1,10 @@
-<fire title="Test configured fire">
-  <size min="3" max="30">5</size>
+<fire title="Configured Fire">
+  <size min="3" max="40">30</size>
   <num-states num="3"/>
+  <state-names states="empty, green, burning"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>0, 2, 4, 8</neighbors>
   <configured>
     <empty-spots>
       <position>
@@ -26,10 +30,9 @@
     </burning-spots>
   </configured>
   <parameters>
-    <probCatch min="0" max="0.25">0.2</probCatch>    <!-- Max at 0.25 because the probability of transitioning to fire
-                                                                  is proportional to the number of neighbors ablaze -->
-    <probLightning min="0" max="0.2">0.2</probLightning>
-    <burnTime min="1" max="5">2</burnTime>
-    <probGrow min="0" max="1">0.4</probGrow>
+    <probCatch min="0.0" max="1.0">0.4</probCatch>
+    <probLightning min="0.0" max="1.0">0.5</probLightning>
+    <burnTime min="3" max="6">3</burnTime>
+    <probGrow min="0.0" max="1.0">0.3</probGrow>
   </parameters>
 </fire>

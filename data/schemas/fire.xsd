@@ -12,7 +12,7 @@
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="num-states-type">
             <xsd:complexContent>
-                <xsd:extension base="xsd:int">
+                <xsd:extension base="num-states-type">
                     <xsd:attribute name="num" use="required" fixed="3"/>
                 </xsd:extension>
             </xsd:complexContent>

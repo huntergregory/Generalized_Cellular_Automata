@@ -8,15 +8,15 @@
     <xsd:redefine schemaLocation="general-CA.xsd">
         <xsd:complexType name="num-states-type">
             <xsd:complexContent>
-                <xsd:extension base="xsd:int">
+                <xsd:extension base="num-states-type">
                     <xsd:attribute name="num" use="required" fixed="3"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
 
-        <xsd:complexType name="num-states-type">
+        <xsd:complexType name="state-names-type">
             <xsd:complexContent>
-                <xsd:extension base="num-states-type">
+                <xsd:extension base="state-names-type">
                     <xsd:attribute name="states" use="required" fixed="empty, people A, people B"/>
                 </xsd:extension>
             </xsd:complexContent>

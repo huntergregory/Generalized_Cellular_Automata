@@ -1,0 +1,19 @@
+<fire title="Random Fire">
+  <size min="10" max="50">20</size>
+  <num-states num="3"/>
+  <state-names states="empty, green, burning"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>string</neighbors>
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">0.1</empty-comp>
+    <green-comp min="0.0" max="1.0">0.5</green-comp>
+    <burning-comp min="0.0" max="1.0">-1</burning-comp>
+  </random-composition>
+  <parameters>
+    <probCatch min="0" max="0.25">0.2</probCatch>
+    <probLightning min="0.0" max="0.5">0.4</probLightning>
+    <burnTime min="0" max="5">3</burnTime>
+    <probGrow min="0.0" max="1">0.3</probGrow>
+  </parameters>
+</fire>
