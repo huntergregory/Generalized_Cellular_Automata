@@ -1,15 +1,20 @@
-<predator-prey title="Sharks and Minnows">
+<predator-prey title="Predator Prey Random">
   <size min="5" max="30">5</size>
-  <num-states>3</num-states>
-  <random>
-    <empty>0.2</empty>
-    <predator>0.3</predator>
-    <prey>-1</prey>
-  </random>
+  <num-states num="3"/>
+  <state-names states="empty, fish, shark"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>0, 2, 4, 6</neighbors>
+  <random-composition>
+    <empty-comp>0.2</empty-comp>
+    <predator-comp>0.3</predator-comp>
+    <prey-comp>-1</prey-comp>
+  </random-composition>
   <parameters>
     <fish-breeding-age min="2" max="6">3</fish-breeding-age>
     <shark-breeding-age min="2" max="6">4</shark-breeding-age>
     <fish-energy min="2" max="5">3</fish-energy>
     <shark-energy min="2" max="5">3</shark-energy>
   </parameters>
+
 </predator-prey>
