@@ -1,0 +1,16 @@
+<predator-prey title="string">
+  <size min="3" max="8">4</size>
+  <num-states>3</num-states>
+  <!--You have a CHOICE of the next 2 items at this level-->
+  <random>
+    <empty>0.7</empty>
+    <predator>0.1</predator>
+    <prey>0.2</prey>
+  </random>
+  <parameters>
+    <fish-breeding-age min="0" max="1000.00">4</fish-breeding-age>
+    <shark-breeding-age min="0" max="1000.00">5</shark-breeding-age>
+    <fish-energy min="0" max="1000.00">2</fish-energy>
+    <shark-energy min="0" max="10">5</shark-energy>
+  </parameters>
+</predator-prey>

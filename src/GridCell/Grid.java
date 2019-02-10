@@ -82,31 +82,55 @@ public abstract class Grid {
      */
     public void setGridRandom(Double[] composition){
         setCurrentComposition(composition);
-        //make array of number of cells per state
-        int[] stateCounts = calcCellsPerState(composition);
-//        System.out.println("state counts:");
-//        for (int a : stateCounts){
-//            System.out.print(a+",");
-//        }
-//        System.out.println("gridlength: "+grid.length);
-        //fill grid randomly
+        ArrayList<Integer> stateCounts = calcCellsPerState(composition);
         for (int row = 0; row < grid.length; row++){
             for (int col = 0; col < grid[0].length; col++){
-                boolean availableState = false;
-                int index = getRandomInt(composition.length);
-                while(!availableState){
-                    if (stateCounts[index]>0){
-                        availableState = true;
-                    }else{
-                        index = getRandomInt(composition.length);
-                    }
-                }
-//                System.out.println("col#: "+col+" state: "+index);
+                int index = getRandomInt(stateCounts.size());
+                int state = stateCounts.get(index);
+                stateCounts.remove(index);
                 grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
-                setCellState(row,col,index);
-                stateCounts[index]--;
+                setCellState(row,col,state);
             }
         }
+    }
+
+    /**
+     * Set grid randomly based on input composition (array of percentages)
+     * @param composition array of percentages associated with each state
+     */
+    public void setGridRandomNum(Double[] composition){
+        setCurrentComposition(composition);
+        ArrayList<Integer> stateCounts = calcNumStatesFromStatesArray(composition);
+        for (int row = 0; row < grid.length; row++){
+            for (int col = 0; col < grid[0].length; col++){
+                int index = getRandomInt(stateCounts.size());
+                int state = stateCounts.get(index);
+                stateCounts.remove(index);
+                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                setCellState(row,col,state);
+            }
+        }
+    }
+
+    private ArrayList<Integer> calcNumStatesFromStatesArray(Double[] composition){
+        ArrayList<Integer> statesArrList = new ArrayList<>();
+        int sum = 0;
+        int index = -1;
+        for (int i = 0; i < composition.length; i++){
+            if (composition[i] == -1){
+                index = i;
+            }else{
+                sum += composition[i];
+            }
+        }
+        double inferred = gridSize*gridSize - sum;
+        composition[index] = inferred;
+        for(int state = 0; state < composition.length; state++){
+            for (int i = 0; i < state; i++){
+                statesArrList.add(state);
+            }
+        }
+        return statesArrList;
     }
 
     private void setCurrentComposition(Double[] composition) {
@@ -128,9 +152,10 @@ public abstract class Grid {
      * @param composition array of percentages associated with each state
      * @return array of number of cells per state
      */
-    private int[] calcCellsPerState(Double[] composition){
+    private ArrayList<Integer> calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
         int[] stateCounts = new int[composition.length];
+        ArrayList<Integer> allStates = new ArrayList<>();
         int sum = 0;
         int inferredState = -1;
         for (int i = 0; i < composition.length; i++){
@@ -147,9 +172,15 @@ public abstract class Grid {
             sum -= stateCounts[stateCounts.length-1];
             stateCounts[stateCounts.length-1] = gridSize - sum;
         }
-        else
+        else {
             stateCounts[inferredState] = gridSize - sum;
-        return stateCounts;
+        }
+        for (int index = 0; index < stateCounts.length; index++){
+            for (int i = 0; i < stateCounts[index]; i++){
+                allStates.add(index);
+            }
+        }
+        return allStates;
     }
 
 
@@ -189,44 +220,44 @@ public abstract class Grid {
     
 
 
-    /*public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
-        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
-        if(row > 0){
-            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
-            neighbors.add(neighbor);
-        }
-        if(row < grid.length-1){
-            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
-            neighbors.add(neighbor);
-        }
-        if(col > 0){
-            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
-            neighbors.add(neighbor);
-        }
-        if(col < grid.length-1){
-            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
-            neighbors.add(neighbor);
-        }
-        if (eightNeighbors){
-            if(row > 0 && col > 0){
-                Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row < grid.length-1 && col < grid.length-1){
-                Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row < grid.length-1 && col > 0){
-                Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
-                neighbors.add(neighbor);
-            }
-            if(row > 0 && col < grid.length-1){
-                Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
-    }*/
+//    public ArrayList<Integer[]> getNeighbors(int row, int col, boolean eightNeighbors){
+//        ArrayList<Integer[]> neighbors = new ArrayList<Integer[]>();
+//        if(row > 0){
+//            Integer[] neighbor = {row-1, col, grid[row-1][col].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(row < grid.length-1){
+//            Integer[] neighbor = {row+1, col, grid[row+1][col].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(col > 0){
+//            Integer[] neighbor = {row, col-1, grid[row][col-1].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if(col < grid.length-1){
+//            Integer[] neighbor = {row, col+1, grid[row][col+1].getState()};
+//            neighbors.add(neighbor);
+//        }
+//        if (eightNeighbors){
+//            if(row > 0 && col > 0){
+//                Integer[] neighbor = {row-1, col-1, grid[row-1][col-1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row < grid.length-1 && col < grid.length-1){
+//                Integer[] neighbor = {row+1, col+1, grid[row+1][col+1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row < grid.length-1 && col > 0){
+//                Integer[] neighbor = {row+1, col-1, grid[row+1][col-1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//            if(row > 0 && col < grid.length-1){
+//                Integer[] neighbor = {row-1, col+1, grid[row-1][col+1].getState()};
+//                neighbors.add(neighbor);
+//            }
+//        }
+//        return neighbors;
+//    }
 
     /**
      * Gets the neighborhood of a cell at specified position.
@@ -247,7 +278,7 @@ public abstract class Grid {
             int neighborRow = row + deltaR[k];
             int neighborCol = col + deltaC[k];
             if (isInBounds(neighborRow, neighborCol)) {
-                Integer[] neighbor = {row, col, grid[neighborRow][neighborCol].getState()};
+                Integer[] neighbor = {neighborRow, neighborCol, grid[neighborRow][neighborCol].getState()};
                 neighbors.add(neighbor);
             }
         }
