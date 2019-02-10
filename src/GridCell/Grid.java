@@ -88,12 +88,28 @@ public abstract class Grid {
                 int index = getRandomInt(stateCounts.size());
                 int state = stateCounts.get(index);
                 stateCounts.remove(index);
-                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                drawCells(row,col);
                 setCellState(row,col,state);
             }
         }
     }
+    //EDIT THIS LATER
+    public void drawCells(int row, int col){
+        if (myCellShape == CELL_SHAPE.SQUARE){
+            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+        }
+        if (myCellShape == CELL_SHAPE.TRIANGLE){
+            //rotate based on row-col position
+            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            if (row % 2 == 0){
 
+            }
+        }
+        if (myCellShape == CELL_SHAPE.HEXAGON){
+            //offset col based on row
+            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+        }
+    }
     /**
      * Set grid randomly based on input composition (array of percentages)
      * @param composition array of percentages associated with each state

@@ -2,6 +2,7 @@ package GridCell;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 /**
  * @author Connor Ghazaleh
@@ -80,6 +81,9 @@ public class Cell {
         return String.format("Cell state: %d",state);
     }
 
+    public void rotateAroundCenter(double angle){
+        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
+    }
     public void setState(int State) {
         state = State;
     }
