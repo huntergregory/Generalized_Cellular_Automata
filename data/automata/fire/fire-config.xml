@@ -4,7 +4,7 @@
   <state-names states="empty, green, burning"/>
   <edges>normal</edges>
   <shape>square</shape>
-  <neighbors>0, 2, 4, 8</neighbors>
+  <neighbors>0, 2, 4, 6</neighbors>
   <configured>
     <empty-spots>
       <position>

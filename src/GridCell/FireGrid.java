@@ -34,10 +34,10 @@ public class FireGrid extends Grid {
      * @param gridSize
      * @param screenSize
      * @param cellShape
-     * @param neigborConfig
+     * @param neighborConfig
      */
-    public FireGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
-        super(gridSize, screenSize, cellShape, neigborConfig);
+    public FireGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
+        super(gridSize, screenSize, cellShape, neighborConfig);
     }
 
     @Override

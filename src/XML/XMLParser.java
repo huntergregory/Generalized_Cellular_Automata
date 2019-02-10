@@ -16,8 +16,8 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Parses automaton XML files associated with any schema with a corresponding CA_TYPE enumeration.
@@ -34,24 +34,41 @@ import java.util.LinkedHashMap;
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
-    public static final String RANDOM_TAG = "random";
-    public static final File DEFAULT_XML_FILE = new File("data/automata/fire-random-comp.xml");
+    private static final String RANDOM_TAG = "random";
+    public static final File DEFAULT_XML_FILE = new File("data/automata/fire/fire-random-comp.xml");
+    public static final CELL_SHAPE DEFAULT_SHAPE = CELL_SHAPE.SQUARE;
 
-    File myXMLFile;
-    private int myElementsIndex; //increment after passing an element in order to know where the parameters start
+    private static final String SIZE_TAG = "size";
+    private static final String STATE_NAMES_TAG = "state-names";
+    private static final String EDGES_TAG = "edges";
+    private static final String SHAPE_TAG = "shape";
+    private static final String NEIGHBORS_TAG = "neighbors";
+    private static final String RANDOM_COMP_TAG = "random-composition";
+    private static final String RANDOM_COMP_TYPE = "random composition"; //aligned with SimulatorMain
+    private static final String RANDOM_NUM_TAG = "random-composition";
+    private static final String RANDOM_NUM_TYPE = "random numbers";     //aligned with SimulatorMain
+    private static final String LOCATIONS_TAG = "configured";
+    private static final String LOCATIONS_TYPE = "locations";         //aligned with SimulatorMain
+    private static final String PARAMETERS_TAG = "parameters";
+
+    private File myXMLFile;
+    private Element myRoot;
     private CA_TYPE myRootType;
     private int mySize;
-    private int myNumStates;
-    private boolean myIsRandom;
-    private ArrayList<Double> myRandomComposition;             //only used if random
-    private ArrayList<Integer[]> myStateConfiguration;   //only used if configured
+    private String[] myStates;
+    private String myEdgeType;
+    private CELL_SHAPE myCellShape;
+    private Integer[] myNeighborConfig;
+    private String myConfigType;
+    private ArrayList<Double> myRandomComposition;       //only used if myConfigType is RANDOM_NUM_TYPE
+    private ArrayList<Integer> myRandomNumbers;          //only used if myConfigType is RANDOM_COMP_TYPE
+    private ArrayList<Integer[]> myStateLocations;       //only used if myConfigType is LOCATIONS_TYPE
     private ArrayList<Double> myParameters;
     private LinkedHashMap<String, Double[]> mySliderMap; //ordered map so that states and params are displayed in same order as xml file
 
     public XMLParser() {
         SCHEMAFACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         DOCUMENT_BUILDER = getDocumentBuilder();
-        resetInstanceVars();
     }
 
     /**
@@ -62,20 +79,20 @@ public class XMLParser {
      */
     public void parseFile(File xmlFile) {
         myXMLFile = xmlFile;
-        resetInstanceVars();
+        resetListsAndMaps();
         assignRootType();
-        NodeList elements = getRoot().getElementsByTagName("*"); //matches all tags
-        assignSizeAndSizeSlider(elements);
-        myNumStates = getIntFromNodeList(elements, myElementsIndex);
-        myElementsIndex++;
-        myIsRandom = RANDOM_TAG.equals(getTagNameFromNodeList(elements, myElementsIndex));
-        if (myIsRandom)
-            assignCompAndUpdateSliders(elements); //FIX throws XML exception
-        else
-            assignConfiguration(elements);
+        assignRoot();
+        assignSizeAndSizeSlider();
+        assignStateNames();
+        assignEdges();
+        assignCellShape();
+        assignNeighborConfig();
+        assignConfigTypeAndUpdateSliders();
+        assignParamsAndUpdateSliders();
+    }
 
-        myElementsIndex++;
-        assignParamsAndUpdateSliders(elements);
+    private Element getElementNamed(String name) {
+        return (Element) myRoot.getElementsByTagName(name).item(0);
     }
 
     private void assignRootType() {
@@ -93,98 +110,215 @@ public class XMLParser {
     }
 
     //should never throw the exception because the xml doc will conform to an xsd after assignRootType
-    private Element getRoot() throws XMLException {
+    private void assignRoot() throws XMLException {
         try {
             var xmlDoc = DOCUMENT_BUILDER.parse(myXMLFile);
-            return xmlDoc.getDocumentElement();
+            myRoot = xmlDoc.getDocumentElement();
         }
         catch (SAXException | IOException e) {
             throw new XMLException(e);
         }
     }
 
-    private void assignSizeAndSizeSlider(NodeList elements) {
-        addSliderFromNodeList(elements, myElementsIndex);
-        mySize = (int) outOfBoundsRevision(elements, myElementsIndex);
-        myElementsIndex++;
+    private void assignSizeAndSizeSlider() {
+        var element = getElementNamed(SIZE_TAG);
+        addSlider(element);
+        mySize = (int) outOfRangeRevision(element);
+    }
+
+    private void assignStateNames() {
+        var element = getElementNamed(STATE_NAMES_TAG);
+        myStates = element.getTextContent().split(", ");
+    }
+
+    private void assignEdges() {
+        var element = getElementNamed(EDGES_TAG);
+        myEdgeType = element.getTextContent();
+        //the xml file conforms to the general CA schema, which has edge enumerations
+    }
+
+    private void assignCellShape() {
+        var element = getElementNamed(SHAPE_TAG);
+        for (CELL_SHAPE shape : CELL_SHAPE.values()) {
+            if (shape.toString().equals(element.getTextContent()))
+                myCellShape = shape;
+        }
+        if (myCellShape == null)
+            myCellShape = DEFAULT_SHAPE;
+    }
+
+    private void assignNeighborConfig() {
+        int maxNeighbors = myCellShape.getMaxNumNeighbors();
+        var element = getElementNamed(NEIGHBORS_TAG);
+        try {
+            String[] stringNumbers = element.getTextContent().split(", ");
+            Integer[] numbers = new Integer[stringNumbers.length];
+            for (int k=0; k<numbers.length; k++) {
+                numbers[k] = Integer.parseInt(stringNumbers[k]);
+                if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
+                    throw new XMLException("neighbor config out of bounds");
+            }
+            myNeighborConfig = numbers;
+        }
+        catch (PatternSyntaxException | XMLException e) {
+            System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
+            myNeighborConfig = new Integer[-1]; // max possible neighbors
+        }
+    }
+
+    private void assignConfigTypeAndUpdateSliders() {
+        if (elementInDocument(RANDOM_COMP_TAG)) {
+            myConfigType = RANDOM_COMP_TYPE;
+            assignCompAndUpdateSliders(); //FIX throws XML exception
+        }
+        else if (elementInDocument(RANDOM_NUM_TAG)) {
+            myConfigType = RANDOM_NUM_TYPE;
+            assignRandomNumsAndUpdateSliders();
+        }
+        else {   //must be locations type at this point because the xml file conforms to general CA schema
+            myConfigType = LOCATIONS_TYPE;
+            assignLocations();
+        }
+    }
+
+    private boolean elementInDocument(String name) {
+        return myRoot.getElementsByTagName(name).getLength() > 0;
     }
 
     //extrema in form [min, max]
-    private Double[] getExtrema(NodeList list, int index) {
-        String min = getAttributeFromNodeList(list, index, "min");
-        String max = getAttributeFromNodeList(list, index, "max");
+    private Double[] getExtrema(Element element) {
+        String min = element.getAttribute("min");
+        String max = element.getAttribute("max");
         return new Double[]{ Double.parseDouble(min), Double.parseDouble(max) };
     }
 
-    private void assignCompAndUpdateSliders(NodeList elements) throws XMLException {
-        Element randomTag = (Element) elements.item(myElementsIndex);
-        NodeList compositions = randomTag.getElementsByTagName("*");
-        int k=0; // foreach not allowed for NodeList
+    //makes sure compositions sum to 1.0 or exactly one of the numbers is -1
+    private void assignCompAndUpdateSliders() throws XMLException {
+        var element = getElementNamed(RANDOM_COMP_TAG);
+        NodeList compositions = element.getElementsByTagName("*");
+        System.out.println(compositions.item(0).getTextContent());
+        double totalComp = 0;
+        boolean negativeOneIncluded = false;
+        int k=0;
         while (k < compositions.getLength()) {
-            myElementsIndex++;
-            myRandomComposition.add(getDoubleFromNodeList(compositions, k));
-            Double[] extrema = {0.0, 1.0};
-            mySliderMap.put(getTagNameFromNodeList(compositions,k), extrema);
+            var comp = (Element) compositions.item(k);
+            addSlider(comp);
+
+            Double value = getDouble(comp);
+            if (value == -1 && !negativeOneIncluded) {
+                negativeOneIncluded = true;
+            }
+            else
+                value = outOfRangeRevision(comp);
+            totalComp += value;
+            if (k == compositions.getLength() - 1) {
+                if (totalComp < 1 && !negativeOneIncluded)
+                    value = -1.0;
+                else if (totalComp > 1)
+                    value = 1 - (totalComp - value);
+            }
+            if (totalComp > 1) {
+                totalComp -= value;
+                value = 0.0;
+            }
+            myRandomComposition.add(value);
             k++;
         }
-        validateComp();
     }
 
-    private void assignConfiguration(NodeList elements) {
-        Element configuredTag = (Element) elements.item(myElementsIndex);
-        NodeList config = configuredTag.getElementsByTagName("*");
+    //makes sure numbers sum to mySize * mySize or exactly one of the numbers is -1
+    private void assignRandomNumsAndUpdateSliders() {
+        var element = getElementNamed(RANDOM_NUM_TAG);
+        NodeList states = element.getElementsByTagName("*");
+        int maxNum = mySize * mySize;
+        int totalNum = 0;
+        boolean negativeOneIncluded = false;
+        int k=0;
+        while (k<states.getLength()) {
+            var state = (Element) states.item(k);
+            addSlider(state);
+
+            Integer value = getInt(state);
+            if (value == -1 && !negativeOneIncluded) {
+                negativeOneIncluded = true;
+            }
+            else if (value < 0)
+                value = 0;
+            totalNum += value;
+            if (k == states.getLength() - 1) {
+                if (totalNum < maxNum && !negativeOneIncluded)
+                    value = -1;
+                else if (totalNum > 1)
+                    value = maxNum - (totalNum - value);
+            }
+            if (totalNum > maxNum) {
+                totalNum -= value;
+                value = 0;
+            }
+            myRandomNumbers.add(value);
+            k++;
+        }
+    }
+
+    private void assignLocations() {
+        var locations = getElementNamed(LOCATIONS_TAG);
+        NodeList config = locations.getElementsByTagName("*");
         int k=0;
         int numState=0;
         while(k<config.getLength()) {
-            myElementsIndex++;
-            int j=0;
-            if (!itemIsState(config.item(k))) {
-                k++;
-                continue;
-            }
-            Element state = (Element) config.item(k);
-            NodeList positions = state.getElementsByTagName("position");
-            while(j<positions.getLength()) {
-                myStateConfiguration.add(getCoords(positions, j, numState));
-                j++;
+            var element = (Element) config.item(k);
+            if (isState(element)) {
+                addStatePositions(element, numState);
             }
             k++;
             numState++;
         }
     }
 
-    //no need to increment myElementsIndex anymore
-    private void assignParamsAndUpdateSliders(NodeList elements) {
-        NodeList parameters = ((Element) elements.item(myElementsIndex)).getElementsByTagName("*");
+    //makes sure to only include positions that are in bounds and haven't been included before
+    private void addStatePositions(Element element, int numState) {
+        NodeList positions = element.getElementsByTagName("position");
+        int j = 0;
+        while (j < positions.getLength()) {
+            var position = (Element) positions.item(j);
+            NodeList rowColState = position.getElementsByTagName("*");
+            int row = getInt((Element) rowColState.item(0));
+            int col = getInt((Element) rowColState.item(1));
+            if (inBounds(row, col) && locationIsUnclaimed(row,col))
+                myStateLocations.add(new Integer[]{row, col, numState});
+            j++;
+        }
+    }
+
+    private boolean locationIsUnclaimed(int row, int col) {
+        for (Integer[] coords : myStateLocations) {
+            if (coords[0] == row && coords[1] == col)
+                return false;
+        }
+        return true;
+    }
+
+    private void assignParamsAndUpdateSliders() {
+        Element parameters = getElementNamed(PARAMETERS_TAG);
+        NodeList parametersList = parameters.getElementsByTagName("*");
         int k=0;
-        //make sure only one comp is -1
-        int numNegatives = 0;
-        while (k<parameters.getLength()) {
-            addSliderFromNodeList(parameters, k);
-            //FIX
-            myParameters.add(getDoubleFromNodeList(parameters, k));
+        while (k<parametersList.getLength()) {
+            var param = (Element) parametersList.item(k);
+            addSlider(param);
+            myParameters.add(outOfRangeRevision(param));
             k++;
         }
     }
 
-    //returns the error-checked and possibly revised value to add to mySize or myParameters
-    private void addSliderFromNodeList(NodeList parameters, int index) {
-        mySliderMap.put(getTagNameFromNodeList(parameters, index), getExtrema(parameters, index));
+    private double getDouble(Element element) {
+        return Double.parseDouble(element.getTextContent());
     }
 
-    // Throws exception if coordinates out of bounds
-    private Integer[] getCoords(NodeList positions, int positionIndex, int numState) throws XMLException {
-        Element position = (Element) positions.item(positionIndex);
-        NodeList rowColState = position.getElementsByTagName("*");
-        int row = getIntFromNodeList(rowColState, 0);
-        int col = getIntFromNodeList(rowColState, 1);
-        validateInBounds(row, col, numState);
-        return new Integer[]{row, col, numState};
+    private void addSlider(Element element) {
+        mySliderMap.put(element.getTagName(), getExtrema(element));
     }
 
-
-
-    private boolean itemIsState(Node item) {
+    private boolean isState(Node item) {
         String itemName = ((Element) item).getTagName();
         String[] nonStateNames = {"position", "row", "col"};
         for (String badName : nonStateNames) {
@@ -206,22 +340,8 @@ public class XMLParser {
         }
     }
 
-
-    private String getTagNameFromNodeList(NodeList list, int index) {
-        var element = (Element) list.item(index);
-        return element.getTagName();
-    }
-
-    private int getIntFromNodeList(NodeList list, int index) {
-        return Integer.parseInt(list.item(index).getTextContent());
-    }
-
-    private double getDoubleFromNodeList(NodeList list, int index) {
-        return Double.parseDouble(list.item(index).getTextContent());
-    }
-
-    private String getAttributeFromNodeList(NodeList list, int index, String name) {
-        return ((Element) list.item(index)).getAttribute(name);
+    private int getInt(Element element) {
+        return Integer.parseInt(element.getTextContent());
     }
 
     private DocumentBuilder getDocumentBuilder() {
@@ -233,53 +353,25 @@ public class XMLParser {
         }
     }
 
-    private void resetInstanceVars() {
+    private boolean inBounds(int row, int col) {
+        return row>=mySize || col>=mySize || ((row<0 || col<0) && row != -1 && col!=-1);
+    }
+
+    private double outOfRangeRevision(Element element) {
+        double value = getDouble(element);
+        Double[] extrema = getExtrema(element);
+        double min = extrema[0]; double max = extrema[1];
+        if (value < min || value > max)
+            return min;
+        return value;
+    }
+
+    private void resetListsAndMaps() {
         myRandomComposition = new ArrayList<>();
-        myStateConfiguration = new ArrayList<>();
+        myRandomNumbers = new ArrayList<>();
+        myStateLocations = new ArrayList<>();
         myParameters = new ArrayList<>();
         mySliderMap = new LinkedHashMap<>();
-        myRootType = null;
-        mySize = 0;
-        myNumStates = 0;
-        myIsRandom = false;
-        myElementsIndex = 0;
-    }
-
-    /*
-    ------------- Error-handling helper functions  ----------
-    */
-
-    private void validateComp() throws XMLException {
-        double totalComp = 0;
-        int negativeCount = 0;
-        for (int k=0; k<myRandomComposition.size(); k++) {
-            if (myRandomComposition.get(k) == -1 && negativeCount==0) {
-                negativeCount ++;
-                continue;
-            }
-            totalComp += myRandomComposition.get(k);
-            if (totalComp > 1.0 || negativeCount==2)
-                throw new XMLException("Error in composition values");
-        }
-
-        if (totalComp != 1 && negativeCount == 0)
-            throw new XMLException("Error in composition values");
-    }
-
-    private void validateInBounds(int row, int col, int numState) throws XMLException {
-        if ((!(row == -1 && col==-1) && (row<0 || col<0)) || row>=mySize || col>=mySize)
-            throw new XMLException("The location (%d, %d) for state %d is out of bounds for grid size %d", row, col, numState, mySize);
-    }
-
-    private double outOfBoundsRevision(NodeList list, int index) {
-        double value = getDoubleFromNodeList(list, index);
-        Double[] extrema = getExtrema(list, index);
-        double min = extrema[0]; double max = extrema[1];
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
     }
 
     /*
@@ -289,12 +381,12 @@ public class XMLParser {
     /**
      * @return CELL_SHAPE of file parsed
      */
-    public CELL_SHAPE getCellShape() { return CELL_SHAPE.SQUARE; } //FIX
+    public CELL_SHAPE getCellShape() { return myCellShape; }
 
     /**
      * @return integer array of specified neighbors for the cell shape
      */
-    public int[] getNeighborConfig() { return new int[]{-1}; } //FIX
+    public Integer[] getNeighborConfig() { return myNeighborConfig; }
 
     /**
      * @return XML.CA_TYPE of file parsed
@@ -302,23 +394,34 @@ public class XMLParser {
     public CA_TYPE getCAType() { return myRootType; }
 
     /**
+     * @return String representation of edge type. Either "normal", "toroidal", or "infinite"
+     */
+    public String getEdgeType() { return myEdgeType; }
+
+    /**
      * @return an ordered map with Slider names as keys and Double arrays containing min and max slider values
      */
     public LinkedHashMap<String, Double[]> getSliderNamesAndValues() { return mySliderMap; }
 
     /**
-     * Get the configured positions for all states.
+     * Get the configured positions for all states. Only should be called if myConfigType is "locations"
      * @return list of integer arrays in the form (row, col, state). The last state's row and col will be -1 to indicate
      *          that it's composition should be inferred.
      */
-    public ArrayList<Integer[]> getConfiguration() { return myStateConfiguration; }
+    public ArrayList<Integer[]> getLocations() { return myStateLocations; }
 
     /**
-     * Get the percent composition for each state.
+     * Get the percent composition for each state. Only should be called if myConfigType is "random composition"
      * @return an array of Doubles. The last state's composition will be -1 to indicate that it's composition
      *         should be inferred.
      */
     public Double[] getRandomComposition() { return myRandomComposition.toArray(new Double[0]); }
+
+    /**
+     * Get the number of cells for each cell to occupy. Only should be called if myConfigType is "random numbers"
+     * @return
+     */
+    public Integer[] getRandomNumbers() { return myRandomNumbers.toArray(new Integer[0]); }
 
     /**
      * @return an array of Doubles representing special parameters for the CA
@@ -326,9 +429,10 @@ public class XMLParser {
     public Double[] getParameters() { return myParameters.toArray(new Double[0]); }
 
     /**
-     * @return true if the xml file is for a random-position CA
+     * String representation of configuration type. Will either be "random composition", "random numbers", or "locations"
+     * @return type
      */
-    public boolean getIsRandom() { return myIsRandom; }
+    public String getConfigType() { return myConfigType; }
 
     /**
      * @return size of GridCell.Grid for the xml file
@@ -336,7 +440,7 @@ public class XMLParser {
     public int getGridSize() { return mySize; }
 
     /**
-     * @return number of states for the xmlFile
+     * @return state names for the xmlFile
      */
-    public int getNumStates() { return myNumStates; }
+    public String[] getStates() { return myStates; }
 }

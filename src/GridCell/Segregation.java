@@ -19,10 +19,10 @@ public class Segregation extends Grid {
      * @param gridSize
      * @param screenSize
      * @param cellShape
-     * @param neigborConfig
+     * @param neighborConfig
      */
-    public Segregation(int gridSize, double screenSize, CELL_SHAPE cellShape, int[] neigborConfig) {
-        super(gridSize, screenSize, cellShape, neigborConfig);
+    public Segregation(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
+        super(gridSize, screenSize, cellShape, neighborConfig);
     }
 
     public void setGridStates(Double[] composition){
