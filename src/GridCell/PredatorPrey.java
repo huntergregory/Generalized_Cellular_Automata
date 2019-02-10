@@ -70,9 +70,8 @@ public class PredatorPrey extends Grid {
         Cell[][] currentGrid = getGrid();
         updateEnergies(currentGrid);
         ArrayList<Integer[]> sharks = findCellsWithState(currentGrid,SHARK);
-        ArrayList<Integer[]> fish = findCellsWithState(currentGrid,FISH);
-        System.out.println("FISH: "+fish.size());
-        System.out.println("SHARKS: "+sharks.size());
+//        System.out.println("FISH: "+fish.size());
+//        System.out.println("SHARKS: "+sharks.size());
         for (Integer[] shark : sharks) {
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
@@ -96,6 +95,7 @@ public class PredatorPrey extends Grid {
             }
             currentGrid[shark[0]][shark[1]].setAge(currentGrid[shark[0]][shark[1]].getAge()+1);
         }
+        ArrayList<Integer[]> fish = findCellsWithState(currentGrid,FISH);
         for (Integer[] fishy : fish) {
             ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
