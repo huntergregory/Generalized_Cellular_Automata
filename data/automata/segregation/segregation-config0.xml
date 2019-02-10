@@ -1,5 +1,5 @@
 <segregation title="string">
-  <size min="3" max="10">10</size>
+  <size min="3" max="100">20</size>
   <num-states>3</num-states>
   <!--You have a CHOICE of the next 2 items at this level-->
   <random>

@@ -69,13 +69,17 @@ public class Segregation extends Grid {
 //                    }
 //                    System.out.println("<NEIGHBORS>");
                     int numSameState = 0;
+                    int numOccupied = 0;
                     for (Integer[] cell : neighbors){
                         if (cell[2] == myState){
                             numSameState++;
                         }
+                        if (cell[2] != 0){
+                            numOccupied++;
+                        }
                     }
                     //System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
-                    if (((double)numSameState)/((double)neighbors.size()) < happyPercent){
+                    if (((double)numSameState)/((double)numOccupied) < happyPercent){
                         Integer[] person = {i,j,myState};
                         unhappy.add(person);
                     }
