@@ -11,12 +11,15 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -33,7 +36,7 @@ public class SimulatorMain extends Application {
     private static final double SCREEN_HEIGHT = 600.0;
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-    private static final double BUTTON_WIDTH = 65.0;
+    private static final double BUTTON_WIDTH = 90.0;
     private static final double BUTTON_HEIGHT = 30.0;
     private static final double BUTTON_SPACING = 5.0;
 
@@ -43,10 +46,14 @@ public class SimulatorMain extends Application {
     private FileChooser myChooser;
     private Group root;
     private Group cellGroup;
+    private Group sliderGroup;
     private int stepCounter = 0;
     private boolean pauseSim;
     private Button stopButton;
     private Button startButton;
+    private Stage simStage;
+    private int roundCounter = 0;
+    private Text roundLabel;
 
     public SimulatorMain() {
         myType = null;
@@ -59,8 +66,11 @@ public class SimulatorMain extends Application {
     @Override
     public void start(Stage stage) {
         if (!handleXMLFile(stage)){
+            Platform.exit();
             return;
         }
+
+        simStage = stage;
 
         Scene scene = setUpScene();
         stage.setScene(scene);
@@ -81,8 +91,8 @@ public class SimulatorMain extends Application {
         ObservableList rootList = root.getChildren();
         cellGroup = initializeCellGroup();
         var buttonVBox = initializeButtonVBox();
-        var sliderGroup = initializeSliderGroup();
-        rootList.addAll(cellGroup, buttonVBox, sliderGroup);
+        sliderGroup = initializeSliderGroup();
+        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderGroup);
 
         pauseSim = true;
 
@@ -102,6 +112,8 @@ public class SimulatorMain extends Application {
     private void handleGridUpdate() {
         myGrid.updateCells();
         resetCellGroup();
+        roundCounter++;
+        updateRoundLabel();
     }
 
     private Group initializeCellGroup() {
@@ -123,10 +135,15 @@ public class SimulatorMain extends Application {
         root.getChildren().add(cellGroup);
     }
 
+    private void resetSliderGroup(){
+        root.getChildren().remove(sliderGroup);
+        sliderGroup = initializeSliderGroup();
+        root.getChildren().add(sliderGroup);
+    }
+
     private boolean handleXMLFile(Stage stage){
         File xmlFile = myChooser.showOpenDialog(stage);
         if (xmlFile == null) { //in case someone clicks cancel
-            Platform.exit();
             return false;
         }
         else {
@@ -199,25 +216,35 @@ public class SimulatorMain extends Application {
     private VBox initializeButtonVBox() {
         VBox buttonVBox = new VBox();
         ObservableList buttonList = buttonVBox.getChildren();
-        buttonList.addAll(createResetButton(), createStartButton(), createStopButton(), createStepButton());
+        var resetButton = createButton("Reset");
+        resetButton.setOnMouseClicked(buttonClick -> handleReset());
+        startButton = createButton("Start");
+        startButton.setOnMouseClicked(buttonClick -> handleStart());
+        stopButton = createButton("Stop");
+        stopButton.setOnMouseClicked(buttonClick -> handleStop());
+        var stepButton = createButton("Step");
+        stepButton.setOnMouseClicked(buttonClick -> handleStep());
+        var loadFileButton = createButton("Load File");
+        loadFileButton.setOnMouseClicked(buttonClick -> handleLoadFile());
+        buttonList.addAll(resetButton, startButton, stopButton, stepButton, loadFileButton);
         buttonVBox.setSpacing(BUTTON_SPACING);
         buttonVBox.setLayoutX(Grid.GRID_PADDING);
-        buttonVBox.setLayoutY(GRID_DISPLAY_SIZE + 2*Grid.GRID_PADDING);
+        buttonVBox.setLayoutY(GRID_DISPLAY_SIZE + (5*Grid.GRID_PADDING)/2);
+        buttonVBox.setAlignment(Pos.CENTER);
         return buttonVBox;
     }
 
-    private Button createResetButton() {
-        Button resetButton = new Button("Reset");
-        resetButton.setPrefWidth(BUTTON_WIDTH);
-        resetButton.setPrefHeight(BUTTON_HEIGHT);
-        resetButton.setFocusTraversable(false);
-        resetButton.setOnMouseClicked(buttonClick -> handleReset());
-        resetButton.setOnMouseEntered(mouseEvent -> resetButton.setEffect(new DropShadow()));
-        resetButton.setOnMouseExited(mouseEvent -> resetButton.setEffect(null));
-        resetButton.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
+    private Button createButton(String name){
+        var button = new Button(name);
+        button.setPrefWidth(BUTTON_WIDTH);
+        button.setPrefHeight(BUTTON_HEIGHT);
+        button.setFocusTraversable(false);
+        button.setOnMouseEntered(mouseEvent -> button.setEffect(new DropShadow()));
+        button.setOnMouseExited(mouseEvent -> button.setEffect(null));
+        button.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
                 "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%); " +
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1; -fx-text-fill: black; -fx-font-size: 14;");
-        return resetButton;
+        return button;
     }
 
     private void handleReset() {
@@ -231,20 +258,8 @@ public class SimulatorMain extends Application {
         pauseSim = true;
         stopButton.setDisable(true);
         startButton.setDisable(false);
-    }
-
-    private Button createStartButton() {
-        startButton = new Button("Start");
-        startButton.setPrefWidth(BUTTON_WIDTH);
-        startButton.setPrefHeight(BUTTON_HEIGHT);
-        startButton.setFocusTraversable(false);
-        startButton.setOnMouseClicked(buttonClick -> handleStart());
-        startButton.setOnMouseEntered(mouseEvent -> startButton.setEffect(new DropShadow()));
-        startButton.setOnMouseExited(mouseEvent -> startButton.setEffect(null));
-        startButton.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
-                "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%); " +
-                "-fx-background-radius: 30; -fx-background-insets: 0,1,1; -fx-text-fill: black; -fx-font-size: 14;");
-        return startButton;
+        roundCounter = 0;
+        updateRoundLabel();
     }
 
     private void handleStart() {
@@ -254,40 +269,11 @@ public class SimulatorMain extends Application {
         startButton.setDisable(true);
     }
 
-    private Button createStopButton() {
-        stopButton = new Button("Stop");
-        stopButton.setPrefWidth(BUTTON_WIDTH);
-        stopButton.setPrefHeight(BUTTON_HEIGHT);
-        stopButton.setFocusTraversable(false);
-        stopButton.setOnMouseClicked(buttonClick -> handleStop());
-        stopButton.setOnMouseEntered(mouseEvent -> stopButton.setEffect(new DropShadow()));
-        stopButton.setOnMouseExited(mouseEvent -> stopButton.setEffect(null));
-        stopButton.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
-                "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%); " +
-                "-fx-background-radius: 30; -fx-background-insets: 0,1,1; -fx-text-fill: black; -fx-font-size: 14;");
-        stopButton.setDisable(true);
-        return stopButton;
-    }
-
     private void handleStop() {
         pauseSim = true;
         System.out.println("Stop");
         startButton.setDisable(false);
         stopButton.setDisable(true);
-    }
-
-    private Button createStepButton() {
-        Button stepButton = new Button("Step");
-        stepButton.setPrefWidth(BUTTON_WIDTH);
-        stepButton.setPrefHeight(BUTTON_HEIGHT);
-        stepButton.setFocusTraversable(false);
-        stepButton.setOnMouseClicked(buttonClick -> handleStep());
-        stepButton.setOnMouseEntered(mouseEvent -> stepButton.setEffect(new DropShadow()));
-        stepButton.setOnMouseExited(mouseEvent -> stepButton.setEffect(null));
-        stepButton.setStyle("-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%), " +
-                "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%); " +
-                "-fx-background-radius: 30; -fx-background-insets: 0,1,1; -fx-text-fill: black; -fx-font-size: 14;");
-        return stepButton;
     }
 
     private void handleStep() {
@@ -296,6 +282,31 @@ public class SimulatorMain extends Application {
         stopButton.setDisable(true);
         startButton.setDisable(false);
         System.out.println("Step");
+    }
+
+    private void handleLoadFile() {
+        pauseSim = true;
+        if (handleXMLFile(simStage)) {
+            stopButton.setDisable(true);
+            startButton.setDisable(false);
+            resetCellGroup();
+            resetSliderGroup();
+            roundCounter = 0;
+            updateRoundLabel();
+        }
+    }
+
+    private Text createRoundLabel(){
+        roundLabel = new Text();
+        roundLabel.setText("Round " + roundCounter);
+        roundLabel.setFont(new Font(17.0));
+        roundLabel.setX(Grid.GRID_PADDING);
+        roundLabel.setY(GRID_DISPLAY_SIZE + 2*Grid.GRID_PADDING);
+        return roundLabel;
+    }
+
+    private void updateRoundLabel(){
+        roundLabel.setText("Round " + roundCounter);
     }
 
     private Group initializeSliderGroup() {
