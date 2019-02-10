@@ -35,7 +35,7 @@ public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
     public static final String RANDOM_TAG = "random";
-    public static final File DEFAULT_XML_FILE = new File("data/automata/fire-random.xml");
+    public static final File DEFAULT_XML_FILE = new File("data/automata/fire-random-comp.xml");
 
     File myXMLFile;
     private int myElementsIndex; //increment after passing an element in order to know where the parameters start
