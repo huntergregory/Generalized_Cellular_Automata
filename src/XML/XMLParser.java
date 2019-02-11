@@ -151,16 +151,21 @@ public class XMLParser {
         int maxNeighbors = myCellShape.getMaxNumNeighbors();
         var element = getElementNamed(NEIGHBORS_TAG);
         try {
-            String[] stringNumbers = element.getTextContent().split(", ");
-            Integer[] numbers = new Integer[stringNumbers.length];
-            for (int k=0; k<numbers.length; k++) {
-                numbers[k] = Integer.parseInt(stringNumbers[k]);
-                if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
-                    throw new XMLException("neighbor config out of bounds");
+            String text =element.getTextContent();
+            if (text.equals("-1"))
+                myNeighborConfig = new Integer[]{-1};
+            else {
+                String[] stringNumbers = text.split(", ");
+                Integer[] numbers = new Integer[stringNumbers.length];
+                for (int k = 0; k < numbers.length; k++) {
+                    numbers[k] = Integer.parseInt(stringNumbers[k]);
+                    if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
+                        throw new XMLException("neighbor config out of bounds");
+                }
+                myNeighborConfig = numbers;
             }
-            myNeighborConfig = numbers;
         }
-        catch (PatternSyntaxException | XMLException e) {
+        catch (PatternSyntaxException | NumberFormatException | XMLException e) {
             System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
             myNeighborConfig = new Integer[]{-1}; // max possible neighbors
         }
