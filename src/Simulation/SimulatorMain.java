@@ -193,8 +193,8 @@ public class SimulatorMain extends Application {
         CA_TYPE newType = myParser.getCAType();
         Constructor<? extends Grid> constructor = newType.getConstructor();
         try {
-            myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE, myParser.getCellShape(), myParser.getNeighborConfig());
-
+            myGrid = constructor.newInstance(gridSize, GRID_DISPLAY_SIZE);
+            myGrid.setImmutables(myParser.getEdgeType(), myParser.getCellShape(), myParser.getNeighborConfig());
             String configType = myParser.getConfigType();
             if (configType.equals(RANDOM_COMP))
                 myGrid.setGridRandom(myParser.getRandomComposition());

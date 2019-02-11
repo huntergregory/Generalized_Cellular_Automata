@@ -162,7 +162,7 @@ public class XMLParser {
         }
         catch (PatternSyntaxException | XMLException e) {
             System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
-            myNeighborConfig = new Integer[-1]; // max possible neighbors
+            myNeighborConfig = new Integer[]{-1}; // max possible neighbors
         }
     }
 

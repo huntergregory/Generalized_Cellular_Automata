@@ -72,7 +72,7 @@ public enum CELL_SHAPE {
     }
 
     private Integer[] getDelta(int row, int col, Integer[] selectedNeighbors, Integer[] fullDelta) {
-        if (this.equals(CELL_SHAPE.TRIANGLE) && (row + col) % 2 == 1)
+        if (this.equals(CELL_SHAPE.TRIANGLE) && (row + col) % 2 == 0)
             flipSign(fullDelta);
         // [-1] means include max possible neighbors
         if (selectedNeighbors.length == 1 && selectedNeighbors[0] == -1)

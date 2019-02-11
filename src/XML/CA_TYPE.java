@@ -31,7 +31,7 @@ public enum CA_TYPE {
      */
     public Constructor<? extends Grid> getConstructor() {
         try {
-            return myGridClass.getConstructor(int.class, double.class, CELL_SHAPE.class, Integer[].class);
+            return myGridClass.getConstructor(int.class, double.class);
         }
         catch (NoSuchMethodException e) {
             //should never happen
