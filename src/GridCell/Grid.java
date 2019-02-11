@@ -11,8 +11,9 @@ import java.util.HashMap;
  * @author Connor Ghazaleh
  */
 public abstract class Grid {
-    private final CELL_SHAPE myCellShape;
-    private final Integer[] myNeighborConfig;
+    private static final String TOROIDAL_EDGE = "toroidal";
+    private CELL_SHAPE myCellShape;
+    private Integer[] myNeighborConfig;
 
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
@@ -23,24 +24,35 @@ public abstract class Grid {
     private Double[] curComposition;
     LinkedHashMap<String, Double[]> sliderMap;
 
+    //Immutables
+    private String edgeType;
+
 
     /**
      * constructor
      * @param gridSize
      * @param screenSize
      */
-    public Grid(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
+    public Grid(int gridSize, double screenSize) {
         System.out.println("Called constructor on size: "+gridSize);
         grid = new Cell[gridSize][gridSize];
         System.out.println("Grid of size: " + grid.length);
         initStateColorMap();
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
+    }
+
+    /**
+     * Set values that should not change throughout the simulation
+     * @param sim_edgeType
+     * @param cellShape
+     * @param neighborConfig
+     */
+    public void setImmutables(String sim_edgeType, CELL_SHAPE cellShape, Integer[] neighborConfig){
+        edgeType = sim_edgeType;
         myCellShape = cellShape;
         myNeighborConfig = neighborConfig;
     }
-
-
     /**
      * Abstract method called in the GridCell.Grid constructor. Method must create a state-color map and call setStateColorMap.
      */
@@ -293,6 +305,10 @@ public abstract class Grid {
         for (int k=0; k<deltaR.length; k++) {
             int neighborRow = row + deltaR[k];
             int neighborCol = col + deltaC[k];
+            if (edgeType.equals(TOROIDAL_EDGE)){
+                neighborRow = neighborRow % grid.length;
+                neighborCol = neighborCol % grid.length;
+            }
             if (isInBounds(neighborRow, neighborCol)) {
                 Integer[] neighbor = {neighborRow, neighborCol, grid[neighborRow][neighborCol].getState()};
                 neighbors.add(neighbor);
