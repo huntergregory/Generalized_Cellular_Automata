@@ -43,6 +43,11 @@ public class RPSGrid extends Grid {
     }
 
     @Override
+    /*
+    FIXXX should check to see if a cell is eating and resetting gradient if moving on top of another
+    one of its states.
+    Also another problem with this way of choosing states
+     */
     public void updateCells() {
         Cell[][] oldGrid = getGrid();
         Cell[][] newGrid = getGrid();
@@ -57,19 +62,30 @@ public class RPSGrid extends Grid {
                 Integer[] selectedNeighbor = neighbors.get(getRandomInt(neighbors.size()));
                 int selectedOriginalState = selectedNeighbor[STATE_INDEX];
                 Cell newCell = newGrid[selectedNeighbor[ROW_INDEX]][selectedNeighbor[COL_INDEX]];
+                System.out.printf("old cell at row %d, col %d, and state %d ", r, c, oldCell.getState());
+                System.out.printf("chose new cell at %d, %d, and oldstate %d but new state %d\n", selectedNeighbor[ROW_INDEX], selectedNeighbor[COL_INDEX],
+                        selectedNeighbor[STATE_INDEX], newGrid[selectedNeighbor[ROW_INDEX]][selectedNeighbor[COL_INDEX]].getState());
+
                 if (selectedOriginalState == EMPTY && oldCell.getAge() < myMaxGradient - 1) {
+                    System.out.println("trying to move to old white space");
                     if (newCell.getState() != EMPTY) { //deal with case where states move to the same spot simultaneously
-                        if (canEatState(oldCell.getState(), newCell.getState()))
+                        if (canEatState(oldCell.getState(), newCell.getState())) {
                             replaceState(newCell, oldCell.getState(), 0); //oldCell eats enemy
-                        else
+                            System.out.println("got eaten...");
+                        }
+                        else {
                             newCell.setAge(0); // enemy eats oldCell
+                            System.out.println("eating enemy");
+                        }
                     }
                     else {
+                        System.out.println("no conflict");
                         replaceState(newCell, oldCell.getState(), oldCell.getAge() + 1); //oldCell expands to empty cell
                     }
                 }
                 else if (canEatState(oldCell.getState(), selectedOriginalState)) {
                     replaceState(newCell, oldCell.getState(), 0); //oldCell eats enemy
+                    System.out.println("eating enemy");
                 }
             }
         }

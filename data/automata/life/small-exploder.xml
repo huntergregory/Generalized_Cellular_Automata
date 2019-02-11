@@ -4,7 +4,7 @@
   <state-names states="populated, empty"/>
   <edges>normal</edges>
   <shape>square</shape>
-  <neighbors>string</neighbors>
+  <neighbors>-1</neighbors>
   <configured>
     <populated-spots>
       <position>
