@@ -266,6 +266,10 @@ public class XMLParser {
         int numState=0;
         while(k<config.getLength()) {
             var element = (Element) config.item(k);
+            if (!isState(element)) {
+                k++;
+                continue;
+            }
             if (isState(element)) {
                 addStatePositions(element, numState);
             }
@@ -283,6 +287,8 @@ public class XMLParser {
             NodeList rowColState = position.getElementsByTagName("*");
             int row = getInt((Element) rowColState.item(0));
             int col = getInt((Element) rowColState.item(1));
+            System.out.println("this state position is in bounds? " + inBounds(row,col));
+            System.out.println("this state position is unclaimed? " + locationIsUnclaimed(row,col));
             if (inBounds(row, col) && locationIsUnclaimed(row,col))
                 myStateLocations.add(new Integer[]{row, col, numState});
             j++;
@@ -353,7 +359,8 @@ public class XMLParser {
     }
 
     private boolean inBounds(int row, int col) {
-        return row>=mySize || col>=mySize || ((row<0 || col<0) && row != -1 && col!=-1);
+        return row<mySize && col<mySize &&
+                ((row>=0 && col>=0) || (row == -1 && col ==-1));
     }
 
     private double outOfRangeRevision(Element element) {
