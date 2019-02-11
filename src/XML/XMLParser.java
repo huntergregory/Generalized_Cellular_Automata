@@ -196,7 +196,6 @@ public class XMLParser {
     private void assignCompAndUpdateSliders() throws XMLException {
         var element = getElementNamed(RANDOM_COMP_TAG);
         NodeList compositions = element.getElementsByTagName("*");
-        System.out.println(compositions.item(0).getTextContent());
         double totalComp = 0;
         boolean negativeOneIncluded = false;
         int k=0;

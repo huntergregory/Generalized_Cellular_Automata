@@ -55,29 +55,36 @@ public class RPSGrid extends Grid {
 
                 ArrayList<Integer[]> neighbors = getNeighbors(r,c);
                 Integer[] selectedNeighbor = neighbors.get(getRandomInt(neighbors.size()));
-                int selectedState = selectedNeighbor[STATE_INDEX];
-                int selectedRow = selectedNeighbor[ROW_INDEX];
-                int selectedCol = selectedNeighbor[COL_INDEX];
-                if (selectedState == EMPTY && oldCell.getAge() < myMaxGradient - 1) {
-                    replaceCell(newGrid, selectedRow, selectedCol, oldCell.getState());
-                    newGrid[selectedRow][selectedCol].setAge(oldCell.getAge() + 1);
+                int selectedOriginalState = selectedNeighbor[STATE_INDEX];
+                Cell newCell = newGrid[selectedNeighbor[ROW_INDEX]][selectedNeighbor[COL_INDEX]];
+                if (selectedOriginalState == EMPTY && oldCell.getAge() < myMaxGradient - 1) {
+                    if (newCell.getState() != EMPTY) { //deal with case where states move to the same spot simultaneously
+                        if (canEatState(oldCell.getState(), newCell.getState()))
+                            replaceState(newCell, oldCell.getState(), 0); //oldCell eats enemy
+                        else
+                            newCell.setAge(0); // enemy eats oldCell
+                    }
+                    else {
+                        replaceState(newCell, oldCell.getState(), oldCell.getAge() + 1); //oldCell expands to empty cell
+                    }
                 }
-                else if (canEatCell(oldCell.getState(), selectedState)) {
-                    replaceCell(newGrid, selectedRow, selectedCol, oldCell.getState());
-                    newGrid[selectedRow][selectedCol].setAge(0);
+                else if (canEatState(oldCell.getState(), selectedOriginalState)) {
+                    replaceState(newCell, oldCell.getState(), 0); //oldCell eats enemy
                 }
             }
         }
+        setGrid(newGrid);
     }
 
-    private void replaceCell(Cell[][] newGrid, int r, int c, int state) {
-        newGrid[r][c].setState(state);
-        newGrid[r][c].setColor(getStateColorMap().get(state));
+    private void replaceState(Cell newCell, int newState, int newAge) {
+        newCell.setState(newState);
+        newCell.setColor(getStateColorMap().get(newState));
+        newCell.setAge(newAge);
     }
 
-    private boolean canEatCell(int oldState, int selectedState) {
-        return oldState == ROCK && selectedState == SCISSORS ||
-                oldState == SCISSORS && selectedState == PAPER ||
-                oldState == PAPER && selectedState == ROCK;
+    private boolean canEatState(int currentState, int otherState) {
+        return currentState == ROCK && otherState == SCISSORS ||
+                currentState == SCISSORS && otherState == PAPER ||
+                currentState == PAPER && otherState == ROCK;
     }
 }
