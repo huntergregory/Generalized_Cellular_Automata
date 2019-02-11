@@ -151,18 +151,23 @@ public class XMLParser {
         int maxNeighbors = myCellShape.getMaxNumNeighbors();
         var element = getElementNamed(NEIGHBORS_TAG);
         try {
-            String[] stringNumbers = element.getTextContent().split(", ");
-            Integer[] numbers = new Integer[stringNumbers.length];
-            for (int k=0; k<numbers.length; k++) {
-                numbers[k] = Integer.parseInt(stringNumbers[k]);
-                if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
-                    throw new XMLException("neighbor config out of bounds");
+            String text =element.getTextContent();
+            if (text.equals("-1"))
+                myNeighborConfig = new Integer[]{-1};
+            else {
+                String[] stringNumbers = text.split(", ");
+                Integer[] numbers = new Integer[stringNumbers.length];
+                for (int k = 0; k < numbers.length; k++) {
+                    numbers[k] = Integer.parseInt(stringNumbers[k]);
+                    if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
+                        throw new XMLException("neighbor config out of bounds");
+                }
+                myNeighborConfig = numbers;
             }
-            myNeighborConfig = numbers;
         }
-        catch (PatternSyntaxException | XMLException e) {
+        catch (PatternSyntaxException | NumberFormatException | XMLException e) {
             System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
-            myNeighborConfig = new Integer[-1]; // max possible neighbors
+            myNeighborConfig = new Integer[]{-1}; // max possible neighbors
         }
     }
 
@@ -196,7 +201,6 @@ public class XMLParser {
     private void assignCompAndUpdateSliders() throws XMLException {
         var element = getElementNamed(RANDOM_COMP_TAG);
         NodeList compositions = element.getElementsByTagName("*");
-        System.out.println(compositions.item(0).getTextContent());
         double totalComp = 0;
         boolean negativeOneIncluded = false;
         int k=0;
@@ -248,7 +252,7 @@ public class XMLParser {
             if (k == states.getLength() - 1) {
                 if (totalNum < maxNum && !negativeOneIncluded)
                     value = -1;
-                else if (totalNum > 1)
+                else if (totalNum > maxNum)
                     value = maxNum - (totalNum - value);
             }
             if (totalNum > maxNum) {
@@ -267,6 +271,10 @@ public class XMLParser {
         int numState=0;
         while(k<config.getLength()) {
             var element = (Element) config.item(k);
+            if (!isState(element)) {
+                k++;
+                continue;
+            }
             if (isState(element)) {
                 addStatePositions(element, numState);
             }
@@ -284,6 +292,8 @@ public class XMLParser {
             NodeList rowColState = position.getElementsByTagName("*");
             int row = getInt((Element) rowColState.item(0));
             int col = getInt((Element) rowColState.item(1));
+            System.out.println("this state position is in bounds? " + inBounds(row,col));
+            System.out.println("this state position is unclaimed? " + locationIsUnclaimed(row,col));
             if (inBounds(row, col) && locationIsUnclaimed(row,col))
                 myStateLocations.add(new Integer[]{row, col, numState});
             j++;
@@ -344,17 +354,9 @@ public class XMLParser {
         return Integer.parseInt(element.getTextContent());
     }
 
-    private DocumentBuilder getDocumentBuilder() {
-        try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
-            throw new XMLException(e);
-        }
-    }
-
     private boolean inBounds(int row, int col) {
-        return row>=mySize || col>=mySize || ((row<0 || col<0) && row != -1 && col!=-1);
+        return row<mySize && col<mySize &&
+                ((row>=0 && col>=0) || (row == -1 && col ==-1));
     }
 
     private double outOfRangeRevision(Element element) {
@@ -372,6 +374,15 @@ public class XMLParser {
         myStateLocations = new ArrayList<>();
         myParameters = new ArrayList<>();
         mySliderMap = new LinkedHashMap<>();
+    }
+
+    private DocumentBuilder getDocumentBuilder() {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e) {
+            throw new XMLException(e);
+        }
     }
 
     /*

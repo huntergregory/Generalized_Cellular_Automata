@@ -33,11 +33,9 @@ public class FireGrid extends Grid {
      * Create a FireGrid.
      * @param gridSize
      * @param screenSize
-     * @param cellShape
-     * @param neighborConfig
      */
-    public FireGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
-        super(gridSize, screenSize, cellShape, neighborConfig);
+    public FireGrid(int gridSize, double screenSize) {
+        super(gridSize, screenSize);
     }
 
     @Override

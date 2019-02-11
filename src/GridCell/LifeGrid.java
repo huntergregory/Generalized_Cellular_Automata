@@ -21,11 +21,9 @@ public class LifeGrid extends Grid {
      * Create a LifeGrid
      * @param gridSize
      * @param screenSize
-     * @param cellShape
-     * @param neighborConfig
      */
-    public LifeGrid(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
-        super(gridSize, screenSize, cellShape, neighborConfig);
+    public LifeGrid(int gridSize, double screenSize) {
+        super(gridSize, screenSize);
     }
 
     @Override
