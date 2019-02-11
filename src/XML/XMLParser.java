@@ -247,7 +247,7 @@ public class XMLParser {
             if (k == states.getLength() - 1) {
                 if (totalNum < maxNum && !negativeOneIncluded)
                     value = -1;
-                else if (totalNum > 1)
+                else if (totalNum > maxNum)
                     value = maxNum - (totalNum - value);
             }
             if (totalNum > maxNum) {
