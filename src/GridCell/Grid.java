@@ -102,15 +102,7 @@ public abstract class Grid {
     public void setGridRandom(Double[] composition){
         setCurrentComposition(composition);
         ArrayList<Integer> stateCounts = calcCellsPerState(composition);
-        for (int row = 0; row < grid.length; row++){
-            for (int col = 0; col < grid[0].length; col++){
-                int index = getRandomInt(stateCounts.size());
-                int state = stateCounts.get(index);
-                stateCounts.remove(index);
-                drawCells(row,col);
-                setCellState(row,col,state);
-            }
-        }
+        assignGridByStateCounts(stateCounts);
     }
     //EDIT THIS LATER
     public void drawCells(int row, int col){
@@ -130,19 +122,23 @@ public abstract class Grid {
         }
     }
     /**
-     * Set grid randomly based on input composition (array of percentages)
-     * @param composition array of percentages associated with each state
+     * Set grid randomly based on input composition (array of numbers)
+     * @param composition array of numbers associated with each state
      */
     public void setGridRandomNum(Double[] composition){
         setCurrentComposition(composition);
         ArrayList<Integer> stateCounts = calcNumStatesFromStatesArray(composition);
-        for (int row = 0; row < grid.length; row++){
-            for (int col = 0; col < grid[0].length; col++){
+        assignGridByStateCounts(stateCounts);
+    }
+
+    private void assignGridByStateCounts(ArrayList<Integer> stateCounts) {
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
                 int index = getRandomInt(stateCounts.size());
                 int state = stateCounts.get(index);
                 stateCounts.remove(index);
-                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
-                setCellState(row,col,state);
+                drawCells(row, col);
+                setCellState(row, col, state);
             }
         }
     }
