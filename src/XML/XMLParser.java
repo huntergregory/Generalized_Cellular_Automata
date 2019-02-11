@@ -354,15 +354,6 @@ public class XMLParser {
         return Integer.parseInt(element.getTextContent());
     }
 
-    private DocumentBuilder getDocumentBuilder() {
-        try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
-            throw new XMLException(e);
-        }
-    }
-
     private boolean inBounds(int row, int col) {
         return row<mySize && col<mySize &&
                 ((row>=0 && col>=0) || (row == -1 && col ==-1));
@@ -383,6 +374,15 @@ public class XMLParser {
         myStateLocations = new ArrayList<>();
         myParameters = new ArrayList<>();
         mySliderMap = new LinkedHashMap<>();
+    }
+
+    private DocumentBuilder getDocumentBuilder() {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e) {
+            throw new XMLException(e);
+        }
     }
 
     /*
