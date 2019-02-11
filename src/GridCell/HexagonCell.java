@@ -15,7 +15,7 @@ public class HexagonCell extends Cell{
     private double energy;
 
     public HexagonCell(double xPos, double yPos, double size){
-        super(xPos, yPos, size);
+        super();
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
     }

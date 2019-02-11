@@ -77,6 +77,10 @@ public abstract class Grid {
         return stateColorMap;
     }
 
+    public CELL_SHAPE getMyCellShape(){
+        return myCellShape;
+    }
+
     public abstract void initSliderMap();
 
     public LinkedHashMap<String, Double[]> getSliderMap(){
@@ -111,8 +115,8 @@ public abstract class Grid {
         }
         if (myCellShape == CELL_SHAPE.TRIANGLE){
             //rotate based on row-col position
-            grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
-            if (row+col % 2 == 1){
+            grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.5 + GRID_PADDING, cellSize);
+            if (col == 1){
                 grid[row][col].rotateAroundCenter(180);
             }
 

@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -125,11 +127,22 @@ public class SimulatorMain extends Application {
         ObservableList cellGroupList = cellGroup.getChildren();
         for (Cell[] cellRow : gridArray){
             for (Cell cell : cellRow){
-                cellGroupList.add(cell.getCellBody());
+                cellGroupList.add(getCellBody(cell));
             }
             //System.out.println();
         }
         return cellGroup;
+    }
+
+    private Shape getCellBody(Cell c){
+        if (myGrid.getMyCellShape() == CELL_SHAPE.SQUARE){
+            return ((RectangleCell)c).getCellBody();
+        }
+        else if (myGrid.getMyCellShape() == CELL_SHAPE.TRIANGLE){
+            return ((TriangleCell)c).getCellBody();
+        }else{
+            return ((HexagonCell)c).getCellBody();
+        }
     }
 
     private void resetCellGroup() {

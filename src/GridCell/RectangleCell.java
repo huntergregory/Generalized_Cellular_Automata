@@ -1,6 +1,7 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
@@ -15,7 +16,7 @@ public class RectangleCell extends Cell{
     private double energy;
 
     public RectangleCell(double xPos, double yPos, double size){
-        super(xPos, yPos, size);
+        super();
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
     }
