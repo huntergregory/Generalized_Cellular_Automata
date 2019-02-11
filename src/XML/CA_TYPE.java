@@ -10,7 +10,8 @@ public enum CA_TYPE {
     FIRE("data/schemas/fire.xsd", FireGrid.class),
     //PERCOLATION("data/schemas/percolation.xsd", PercolationGrid.class),
     PREDATOR_PREY("data/schemas/predator-prey.xsd", PredatorPrey.class),
-    SEGREGATION("data/schemas/segregation.xsd", Segregation.class);
+    SEGREGATION("data/schemas/segregation.xsd", Segregation.class),
+    RPS("data/schemas/rps.xsd", RPSGrid.class);
 
     private File mySchemaFile;
     private Class<? extends Grid> myGridClass;

@@ -1,0 +1,17 @@
+<rps title="RPS Random Composition">
+  <size min="3" max="50">5</size>
+  <num-states num="4"/>
+  <state-names states="empty, rock, paper, scissor"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>-1</neighbors>
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">-1</empty-comp>
+    <rock-comp min="0.0" max="1.0">0.1</rock-comp>
+    <paper-comp min="0.0" max="1.0">0.1</paper-comp>
+    <scissor-comp min="0.0" max="1.0">0.1</scissor-comp>
+  </random-composition>
+  <parameters>
+    <maxGradient min="3" max="15">10</maxGradient>
+  </parameters>
+</rps>
