@@ -1,6 +1,7 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -42,8 +43,7 @@ public abstract class Grid {
      */
     public Grid(int gridSize, double screenSize) {
         System.out.println("Called constructor on size: "+gridSize);
-        grid = new Cell[gridSize][gridSize];
-        System.out.println("Grid of size: " + grid.length);
+        System.out.println("Grid of size: " + gridSize);
         initStateColorMap();
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
@@ -58,6 +58,16 @@ public abstract class Grid {
     public void setImmutables(String sim_edgeType, CELL_SHAPE cellShape, Integer[] neighborConfig){
         edgeType = sim_edgeType;
         myCellShape = cellShape;
+        switch(myCellShape){
+            case HEXAGON:
+                grid = new HexagonCell[gridSize][gridSize];
+                break;
+            case TRIANGLE:
+                grid = new TriangleCell[gridSize][gridSize];
+                break;
+            default:
+                grid = new RectangleCell[gridSize][gridSize];
+        }
         myNeighborConfig = neighborConfig;
     }
     /**
@@ -115,15 +125,15 @@ public abstract class Grid {
         }
         if (myCellShape == CELL_SHAPE.TRIANGLE){
             //rotate based on row-col position
-            grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.5 + GRID_PADDING, cellSize);
-            if (col == 1){
-                grid[row][col].rotateAroundCenter(180);
+            boolean flip = false;
+            if ((row+col) % 2 == 1){
+                flip = true;
             }
+            grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.75 + GRID_PADDING, cellSize, flip);
 
         }
         if (myCellShape == CELL_SHAPE.HEXAGON){
-            //offset col based on row
-            //grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            grid[row][col] = new HexagonCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.75 + GRID_PADDING, cellSize);
         }
     }
     /**

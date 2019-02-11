@@ -12,16 +12,29 @@ public class TriangleCell extends Cell{
     private Color cellColor;
     private double cellSize;
     private Double[] vertices;
+    private boolean flippedCell;
+    private double xPosition;
+    private double yPosition;
 
-    public TriangleCell(double xPos, double yPos, double size){
+    public TriangleCell(double xPos, double yPos, double size, boolean flipped){
         super();
+        xPosition = xPos;
+        yPosition = yPos;
         cellSize = size;
+        flippedCell = flipped;
         cellBody = new Polygon();
         vertices = new Double[]{
                 xPos, yPos,
-                xPos + size, yPos,
-                xPos + size / 2, yPos + size / 2
+                xPos + cellSize, yPos,
+                xPos + cellSize *.5, yPos + cellSize * .75
         };
+        if (flipped){
+            vertices = new Double[]{
+                    xPos, yPos + cellSize*.75,
+                    xPos + cellSize, yPos + cellSize*.75,
+                    xPos + cellSize * .5, yPos
+            };
+        }
         cellBody.getPoints().addAll(vertices);
         cellBody.setStroke(Color.BLACK);
     }
@@ -49,23 +62,12 @@ public class TriangleCell extends Cell{
         cellBody.getPoints().setAll(vertices);
     }
 
-//    /**
-//     * Set size of cellBody
-//     * @param size new size
-//     */
-//    public void setSize(double size){
-//        cellBody.getPoints().setAll(new Double[]{
-//                xPos,yPos,
-//                xPos+cellSize,yPos,
-//                xPos+cellSize/2,yPos+cellSize/2
-//        });
-//    }
 
     /**
      * @return copy of this Cell
      */
     public TriangleCell getCopy() {
-        TriangleCell copiedCell = new TriangleCell(vertices[0], vertices[1], cellSize);
+        TriangleCell copiedCell = new TriangleCell(xPosition, yPosition, cellSize, flippedCell);
         copiedCell.setColor(cellColor);
         copiedCell.setAge(this.getAge());
         copiedCell.setState(this.getState());
@@ -86,9 +88,6 @@ public class TriangleCell extends Cell{
     }
 
 
-    public void rotateAroundCenter(double angle){
-        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
-    }
 
 
 }

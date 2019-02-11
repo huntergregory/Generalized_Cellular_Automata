@@ -1,5 +1,5 @@
 <segregation title="tri-segregation-01">
-  <size min="3" max="3">3</size>
+  <size min="3" max="10">10</size>
   <num-states num="3"/>
   <state-names states="empty, people A, people B"/>
   <edges>normal</edges>

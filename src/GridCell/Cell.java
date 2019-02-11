@@ -83,11 +83,6 @@ public abstract class Cell {
         return String.format("Cell state: %d",state);
     }
 
-    abstract void rotateAroundCenter(double angle);
-//    {
-//        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
-//    }
-
     public void setState(int State) {
         state = State;
     }
