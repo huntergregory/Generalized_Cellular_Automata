@@ -16,8 +16,8 @@ public abstract class Grid {
     private static final String INFINITE_EDGE = "infinite";
 
     protected static final int ROW_INDEX = 0;
-    protected static final int COL_INDEX = 0;
-    protected static final int STATE_INDEX = 0;
+    protected static final int COL_INDEX = 1;
+    protected static final int STATE_INDEX = 2;
 
     private CELL_SHAPE myCellShape;
     private Integer[] myNeighborConfig;
