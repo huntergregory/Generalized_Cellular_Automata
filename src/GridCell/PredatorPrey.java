@@ -24,11 +24,9 @@ public class PredatorPrey extends Grid {
      * Create a PredatorPrey
      * @param gridSize
      * @param screenSize
-     * @param cellShape
-     * @param neighborConfig
      */
-    public PredatorPrey(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
-        super(gridSize, screenSize, cellShape, neighborConfig);
+    public PredatorPrey(int gridSize, double screenSize) {
+        super(gridSize, screenSize);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Segregation extends Grid {
      * @param neighborConfig
      */
     public Segregation(int gridSize, double screenSize, CELL_SHAPE cellShape, Integer[] neighborConfig) {
-        super(gridSize, screenSize, cellShape, neighborConfig);
+        super(gridSize, screenSize);
     }
 
     public void setGridStates(Double[] composition){

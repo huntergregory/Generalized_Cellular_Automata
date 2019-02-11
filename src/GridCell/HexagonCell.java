@@ -7,7 +7,7 @@ import javafx.scene.transform.Rotate;
 /**
  * @author Connor Ghazaleh
  */
-public class HexagonCell {
+public class HexagonCell extends Cell{
     private Rectangle cellBody;
     private Color cellColor;
     private int state;
@@ -15,10 +15,9 @@ public class HexagonCell {
     private double energy;
 
     public HexagonCell(double xPos, double yPos, double size){
+        super(xPos, yPos, size);
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
-        age = 0;
-        energy = 0;
     }
 
     /**

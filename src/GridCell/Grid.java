@@ -108,18 +108,19 @@ public abstract class Grid {
     //EDIT THIS LATER
     public void drawCells(int row, int col){
         if (myCellShape == CELL_SHAPE.SQUARE){
-            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            grid[row][col] = new RectangleCell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
         }
         if (myCellShape == CELL_SHAPE.TRIANGLE){
             //rotate based on row-col position
-            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
-            if (row % 2 == 0){
-
+            grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            if (row+col % 2 == 1){
+                grid[row][col].rotateAroundCenter(180);
             }
+
         }
         if (myCellShape == CELL_SHAPE.HEXAGON){
             //offset col based on row
-            grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            //grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
         }
     }
     /**
@@ -134,7 +135,7 @@ public abstract class Grid {
                 int index = getRandomInt(stateCounts.size());
                 int state = stateCounts.get(index);
                 stateCounts.remove(index);
-                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                drawCells(row,col);
                 setCellState(row,col,state);
             }
         }
@@ -220,7 +221,7 @@ public abstract class Grid {
         int remainingState = coordinates.get(coordinates.size()-1)[2];
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[0].length; col++) {
-                grid[row][col] = new Cell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+                drawCells(row,col);
                 setCellState(row,col,remainingState);
             }
         }

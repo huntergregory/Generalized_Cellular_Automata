@@ -8,16 +8,13 @@ import javafx.scene.shape.Shape;
 /**
  * @author Connor Ghazaleh
  */
-public class Cell {
-    private Rectangle cellBody;
+public abstract class Cell {
     private Color cellColor;
     private int state;
     private int age;
     private double energy;
 
-    public Cell(double xPos, double yPos, double size){
-        cellBody = new Rectangle(xPos,yPos,size, size);
-        cellBody.setStroke(Color.BLACK);
+    public Cell(){
         age = 0;
         energy = 0;
     }
@@ -26,45 +23,49 @@ public class Cell {
      * Set color of cellBody
      * @param color color to change the fill to
      */
-    public void setColor(Color color){
-        cellColor = color;
-        cellBody.setFill(color);
-    }
+    abstract void setColor(Color color);
+//    {
+//        cellColor = color;
+//        cellBody.setFill(color);
+//    }
 
-    /**
-     * Set position of cellBody on the screen
-     * @param xPos new x position
-     * @param yPos new y position
-     */
-    public void setPos(double xPos, double yPos){
-        cellBody.setX(xPos);
-        cellBody.setY(yPos);
-    }
+//    /**
+//     * Set position of cellBody on the screen
+//     * @param xPos new x position
+//     * @param yPos new y position
+//     */
+//    public void setPos(double xPos, double yPos){
+//        cellBody.setX(xPos);
+//        cellBody.setY(yPos);
+//    }
 
     /**
      * Set size of cellBody
      * @param size new size
      */
-    public void setSize(double size){
-        cellBody.setHeight(size);
-        cellBody.setWidth(size);
-    }
+    //abstract void setSize(double size);
+//    {
+//        cellBody.setHeight(size);
+//        cellBody.setWidth(size);
+//    }
 
     /**
      * @return copy of this Cell
      */
-    public Cell getCopy() {
-        Cell copiedCell = new Cell(cellBody.getX(), cellBody.getY(), cellBody.getHeight());
-        copiedCell.setColor(cellColor);
-        copiedCell.setAge(age);
-        copiedCell.setState(state);
-        copiedCell.setEnergy(energy);
-        return copiedCell;
-    }
+    public abstract Cell getCopy();
+//    {
+//        Cell copiedCell = new Cell(cellBody.getX(), cellBody.getY(), cellBody.getHeight());
+//        copiedCell.setColor(cellColor);
+//        copiedCell.setAge(age);
+//        copiedCell.setState(state);
+//        copiedCell.setEnergy(energy);
+//        return copiedCell;
+//    }
 
-    public Rectangle getCellBody() {
-        return cellBody;
-    }
+//    abstract Rectangle getCellBody();
+//    {
+//        return cellBody;
+//    }
 
     /**
      * Return color of the cell
@@ -82,9 +83,11 @@ public class Cell {
         return String.format("Cell state: %d",state);
     }
 
-    public void rotateAroundCenter(double angle){
-        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
-    }
+    abstract void rotateAroundCenter(double angle);
+//    {
+//        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
+//    }
+
     public void setState(int State) {
         state = State;
     }

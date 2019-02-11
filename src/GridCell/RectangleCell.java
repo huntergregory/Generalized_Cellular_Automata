@@ -7,7 +7,7 @@ import javafx.scene.transform.Rotate;
 /**
  * @author Connor Ghazaleh
  */
-public class RectangleCell {
+public class RectangleCell extends Cell{
     private Rectangle cellBody;
     private Color cellColor;
     private int state;
@@ -15,10 +15,9 @@ public class RectangleCell {
     private double energy;
 
     public RectangleCell(double xPos, double yPos, double size){
+        super(xPos, yPos, size);
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
-        age = 0;
-        energy = 0;
     }
 
     /**
