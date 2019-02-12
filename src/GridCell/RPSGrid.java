@@ -43,11 +43,6 @@ public class RPSGrid extends Grid {
     }
 
     @Override
-    /*
-    FIXXX should check to see if a cell is eating and resetting gradient if moving on top of another
-    one of its states.
-    Also another problem with this way of choosing states
-     */
     public void updateCells() {
         Cell[][] oldGrid = getGrid();
         Cell[][] newGrid = getGrid();

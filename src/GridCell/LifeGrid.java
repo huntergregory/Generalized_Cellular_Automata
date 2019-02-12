@@ -64,11 +64,11 @@ public class LifeGrid extends Grid {
 
         if (oldCell.getState() == EMPTY && numPopulatedNeighbors == 3) {
             setCellState(newCell, POPULATED);
-            System.out.println("populating the empty spot ");
+            //System.out.println("populating the empty spot ");
         }
         else if (numPopulatedNeighbors <=1 || numPopulatedNeighbors >=4) {
             setCellState(newCell, EMPTY);
-            if (oldCell.getState() == POPULATED) System.out.println("emptying the populated spot ");
+            //if (oldCell.getState() == POPULATED) System.out.println("emptying the populated spot ");
         }
     }
 

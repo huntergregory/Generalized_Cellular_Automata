@@ -45,7 +45,7 @@ public class XMLParser {
     private static final String NEIGHBORS_TAG = "neighbors";
     private static final String RANDOM_COMP_TAG = "random-composition";
     private static final String RANDOM_COMP_TYPE = "random composition"; //aligned with SimulatorMain
-    private static final String RANDOM_NUM_TAG = "random-composition";
+    private static final String RANDOM_NUM_TAG = "random-numbers";
     private static final String RANDOM_NUM_TYPE = "random numbers";     //aligned with SimulatorMain
     private static final String LOCATIONS_TAG = "configured";
     private static final String LOCATIONS_TYPE = "locations";         //aligned with SimulatorMain
@@ -61,7 +61,7 @@ public class XMLParser {
     private Integer[] myNeighborConfig;
     private String myConfigType;
     private ArrayList<Double> myRandomComposition;       //only used if myConfigType is RANDOM_NUM_TYPE
-    private ArrayList<Integer> myRandomNumbers;          //only used if myConfigType is RANDOM_COMP_TYPE
+    private ArrayList<Double> myRandomNumbers;          //only used if myConfigType is RANDOM_COMP_TYPE
     private ArrayList<Integer[]> myStateLocations;       //only used if myConfigType is LOCATIONS_TYPE
     private ArrayList<Double> myParameters;
     private LinkedHashMap<String, Double[]> mySliderMap; //ordered map so that states and params are displayed in same order as xml file
@@ -242,22 +242,22 @@ public class XMLParser {
             var state = (Element) states.item(k);
             addSlider(state);
 
-            Integer value = getInt(state);
+            Double value = getDouble(state);
             if (value == -1 && !negativeOneIncluded) {
                 negativeOneIncluded = true;
             }
             else if (value < 0)
-                value = 0;
+                value = 0.0;
             totalNum += value;
             if (k == states.getLength() - 1) {
                 if (totalNum < maxNum && !negativeOneIncluded)
-                    value = -1;
+                    value = -1.0;
                 else if (totalNum > maxNum)
                     value = maxNum - (totalNum - value);
             }
             if (totalNum > maxNum) {
                 totalNum -= value;
-                value = 0;
+                value = 0.0;
             }
             myRandomNumbers.add(value);
             k++;
@@ -292,8 +292,6 @@ public class XMLParser {
             NodeList rowColState = position.getElementsByTagName("*");
             int row = getInt((Element) rowColState.item(0));
             int col = getInt((Element) rowColState.item(1));
-            System.out.println("this state position is in bounds? " + inBounds(row,col));
-            System.out.println("this state position is unclaimed? " + locationIsUnclaimed(row,col));
             if (inBounds(row, col) && locationIsUnclaimed(row,col))
                 myStateLocations.add(new Integer[]{row, col, numState});
             j++;
@@ -432,7 +430,7 @@ public class XMLParser {
      * Get the number of cells for each cell to occupy. Only should be called if myConfigType is "random numbers"
      * @return
      */
-    public Integer[] getRandomNumbers() { return myRandomNumbers.toArray(new Integer[0]); }
+    public Double[] getRandomNumbers() { return myRandomNumbers.toArray(new Double[0]); }
 
     /**
      * @return an array of Doubles representing special parameters for the CA

@@ -213,8 +213,8 @@ public class SimulatorMain extends Application {
                 myGrid.setGridRandom(myParser.getRandomComposition());
             else if (configType.equals(SPECIFIED_LOCATIONS))
                 myGrid.setGridSpecific(myParser.getLocations());
-            /*else
-                myGrid.setGridRandomNums(myParser.getRandomNumbers());*/
+            else
+                myGrid.setGridRandomNum(myParser.getRandomNumbers());
             return true;
         }
         catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
@@ -267,8 +267,12 @@ public class SimulatorMain extends Application {
     }
 
     private void handleReset() {
-        if (myParser.getConfigType().equals(SPECIFIED_LOCATIONS)) {
+        String configType = myParser.getConfigType();
+        if (configType.equals(SPECIFIED_LOCATIONS)) {
             myGrid.setGridSpecific(myParser.getLocations());
+        }
+        else if (configType.equals(RANDOM_NUMS)) {
+            myGrid.setGridRandomNum(myParser.getRandomNumbers());
         }
         else {
             myGrid.setGridRandom(myGrid.getCurComposition());

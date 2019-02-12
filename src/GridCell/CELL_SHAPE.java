@@ -6,7 +6,8 @@ import java.util.Arrays;
 public enum CELL_SHAPE {
     SQUARE(
           new Integer[]{-1, -1, 0, 1, 1, 1, 0, -1},
-          new Integer[]{0, 1, 1, 1, 0, -1, -1, -1}
+          new Integer[]{0, 1, 1, 1, 0, -1, -1, -1},
+          8
           ) {
         @Override
         public String toString() {
@@ -15,7 +16,8 @@ public enum CELL_SHAPE {
     },
     TRIANGLE(
           new Integer[]{-1, -1, -1, 0, 0, 1, 1,  1,  0,  0, -1, -1},
-          new Integer[]{ 0,  1,  2, 2, 1, 1, 0, -1, -1, -2, -2, -1}
+          new Integer[]{ 0,  1,  2, 2, 1, 1, 0, -1, -1, -2, -2, -1},
+          12
           ) {
         @Override
         public String toString() {
@@ -25,7 +27,8 @@ public enum CELL_SHAPE {
     HEXAGON(
 //                       U UR  R DR  D DL  L UL
           new Integer[]{-1,-1, 0, 1, 1, 1, 0,-1},
-          new Integer[]{ 0, 1, 1, 1, 0,-1,-1,-1}
+          new Integer[]{ 0, 1, 1, 1, 0,-1,-1,-1},
+          6
           ) {
         @Override
         public String toString() {
@@ -35,9 +38,11 @@ public enum CELL_SHAPE {
 
     private Integer[] myDeltaR;
     private Integer[] myDeltaC;
-    CELL_SHAPE(Integer[] deltaR, Integer[] deltaC) {
+    private int myMaxNeighbors;
+    CELL_SHAPE(Integer[] deltaR, Integer[] deltaC, int maxNeighbors) {
         myDeltaR = deltaR;
         myDeltaC = deltaC;
+        myMaxNeighbors = maxNeighbors;
     }
 
     /**

@@ -3,8 +3,8 @@
   <num-states num="3"/>
   <state-names states="empty, green, burning"/>
   <edges>normal</edges>
-  <shape>square</shape>
-  <neighbors>0, 2, 4, 6</neighbors>
+  <shape>triangle</shape>
+  <neighbors>2, 6, 10</neighbors>
   <configured>
     <empty-spots>
       <position>
@@ -31,7 +31,7 @@
   </configured>
   <parameters>
     <probCatch min="0.0" max="1.0">0.4</probCatch>
-    <probLightning min="0.0" max="1.0">0.5</probLightning>
+    <probLightning min="0.0" max="1.0">0.1</probLightning>
     <burnTime min="3" max="6">3</burnTime>
     <probGrow min="0.0" max="1.0">0.3</probGrow>
   </parameters>

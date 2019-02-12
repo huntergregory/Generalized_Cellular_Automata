@@ -1,0 +1,172 @@
+<game-of-life title="Gospel Glider Gun - Game of Life">
+    <size min="40" max="80">50</size>
+    <num-states num="2"/>
+    <state-names states="populated, empty"/>
+    <edges>toroidal</edges>
+    <shape>square</shape>
+    <neighbors>-1</neighbors>
+    <configured>
+        <populated-spots>
+            <!-- left block -->
+            <position>
+                <row>7</row>
+                <col>2</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>3</col>
+            </position>
+            <position>
+                <row>8</row>
+                <col>2</col>
+            </position>
+            <position>
+                <row>8</row>
+                <col>3</col>
+            </position>
+
+            <!-- left diamond -->
+            <position>
+                <row>8</row>
+                <col>10</col>
+            </position>
+            <position>
+                <row>9</row>
+                <col>10</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>11</col>
+            </position>
+            <position>
+                <row>9</row>
+                <col>11</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>12</col>
+            </position>
+            <position>
+                <row>8</row>
+                <col>12</col>
+            </position>
+
+            <!-- left glider -->
+            <position>
+                <row>9</row>
+                <col>18</col>
+            </position>
+            <position>
+                <row>10</row>
+                <col>18</col>
+            </position>
+            <position>
+                <row>11</row>
+                <col>18</col>
+            </position>
+            <position>
+                <row>9</row>
+                <col>19</col>
+            </position>
+            <position>
+                <row>10</row>
+                <col>20</col>
+            </position>
+
+            <!-- right diamond -->
+            <position>
+                <row>6</row>
+                <col>24</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>24</col>
+            </position>
+            <position>
+                <row>5</row>
+                <col>25</col>
+            </position>
+            <position>
+                <row>7</row>
+                <col>25</col>
+            </position>
+            <position>
+                <row>5</row>
+                <col>26</col>
+            </position>
+            <position>
+                <row>6</row>
+                <col>26</col>
+            </position>
+
+            <!-- middle glider -->
+            <position>
+                <row>17</row>
+                <col>26</col>
+            </position>
+            <position>
+                <row>18</row>
+                <col>26</col>
+            </position>
+            <position>
+                <row>17</row>
+                <col>27</col>
+            </position>
+            <position>
+                <row>19</row>
+                <col>27</col>
+            </position>
+            <position>
+                <row>17</row>
+                <col>28</col>
+            </position>
+
+            <!-- right glider -->
+            <position>
+                <row>12</row>
+                <col>37</col>
+            </position>
+            <position>
+                <row>13</row>
+                <col>37</col>
+            </position>
+            <position>
+                <row>14</row>
+                <col>37</col>
+            </position>
+            <position>
+                <row>12</row>
+                <col>38</col>
+            </position>
+            <position>
+                <row>13</row>
+                <col>39</col>
+            </position>
+
+            <!-- right block -->
+            <position>
+                <row>5</row>
+                <col>36</col>
+            </position>
+            <position>
+                <row>5</row>
+                <col>37</col>
+            </position>
+            <position>
+                <row>6</row>
+                <col>36</col>
+            </position>
+            <position>
+                <row>6</row>
+                <col>37</col>
+            </position>
+        </populated-spots>
+        <empty-spots>
+            <position>
+                <row>-1</row>
+                <col>-1</col>
+            </position>
+        </empty-spots>
+    </configured>
+    <parameters/>
+</game-of-life>

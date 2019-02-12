@@ -1,0 +1,19 @@
+<fire title="Random numbers - Fire simulation">
+  <size min="3" max="5">4</size>
+  <num-states num="3"/>
+  <state-names states="empty, green, burning"/>
+  <edges>normal</edges>
+  <shape>square</shape>
+  <neighbors>-1</neighbors>
+  <random-numbers>
+    <empty-num min="3" max="3">3</empty-num>
+    <green-num min="3" max="3">3</green-num>
+    <burning-num min="3" max="3">3</burning-num>
+  </random-numbers>
+  <parameters>
+    <probCatch min="0.0" max="1.0">0.3</probCatch>
+    <probLightning min="0.0" max="1.0">0.2</probLightning>
+    <burnTime min="3" max="3">3</burnTime>
+    <probGrow min="0.0" max="1.0">0.3</probGrow>
+  </parameters>
+</fire>
