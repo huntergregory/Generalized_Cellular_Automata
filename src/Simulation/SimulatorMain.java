@@ -106,7 +106,7 @@ public class SimulatorMain extends Application {
 
     private void simulationStep(Stage stage) {
         if (!pauseSim) {
-            if (stepCounter % 40 == 0) {
+            if (stepCounter % 5 == 0) {
                 handleGridUpdate();
                 stepCounter = 0;
             }
