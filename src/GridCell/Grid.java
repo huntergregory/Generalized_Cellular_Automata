@@ -167,6 +167,9 @@ public abstract class Grid {
     public void setGridRandomNum(Double[] composition){
         setCurrentComposition(composition);
         ArrayList<Integer> stateCounts = calcNumStatesFromStatesArray(composition);
+        for (Integer dub : stateCounts) {
+            System.out.println(dub);
+        }
         assignGridByStateCounts(stateCounts);
     }
 
@@ -194,9 +197,12 @@ public abstract class Grid {
             }
         }
         double inferred = gridSize*gridSize - sum;
-        composition[index] = inferred;
+        if (index == -1)
+            composition[composition.length-1] += inferred;
+        else
+            composition[index] = inferred;
         for(int state = 0; state < composition.length; state++){
-            for (int i = 0; i < state; i++){
+            for (int i = 0; i < composition[state]; i++){
                 statesArrList.add(state);
             }
         }

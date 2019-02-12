@@ -45,7 +45,7 @@ public class XMLParser {
     private static final String NEIGHBORS_TAG = "neighbors";
     private static final String RANDOM_COMP_TAG = "random-composition";
     private static final String RANDOM_COMP_TYPE = "random composition"; //aligned with SimulatorMain
-    private static final String RANDOM_NUM_TAG = "random-composition";
+    private static final String RANDOM_NUM_TAG = "random-numbers";
     private static final String RANDOM_NUM_TYPE = "random numbers";     //aligned with SimulatorMain
     private static final String LOCATIONS_TAG = "configured";
     private static final String LOCATIONS_TYPE = "locations";         //aligned with SimulatorMain
