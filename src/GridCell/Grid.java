@@ -27,6 +27,7 @@ public abstract class Grid {
     private Random rand = new Random();
     private int gridSize;
     private double cellSize;
+    private final double screenSize;
     public static final double GRID_PADDING = 25.0;
     private Double[] curComposition;
     LinkedHashMap<String, Double[]> sliderMap;
@@ -46,6 +47,7 @@ public abstract class Grid {
         System.out.println("Grid of size: " + grid.length);
         initStateColorMap();
         this.gridSize = gridSize;
+        this.screenSize = screenSize;
         cellSize = screenSize/gridSize;
     }
 
@@ -112,6 +114,7 @@ public abstract class Grid {
             }
         }
     }
+
     //EDIT THIS LATER
     public void drawCells(int row, int col){
         if (myCellShape == CELL_SHAPE.SQUARE){
@@ -357,6 +360,13 @@ public abstract class Grid {
 
     public int getGridSize(){
         return gridSize;
+    }
+
+    public void setGridSize(int gridSize){
+        this.gridSize = gridSize;
+        cellSize = screenSize/gridSize;
+        grid = new Cell[gridSize][gridSize];
+
     }
 
 

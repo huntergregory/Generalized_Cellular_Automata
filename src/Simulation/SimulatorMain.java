@@ -15,7 +15,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,18 +33,21 @@ import javafx.util.Duration;
  * @coauthor Hunter Gregory
  */
 public class SimulatorMain extends Application {
-    private static final double GRID_DISPLAY_SIZE = 350.0;
+    private static final double GRID_DISPLAY_SIZE = 400.0;
     private static final String DATA_FILE_EXTENSION = "*.xml";
-    private static final double SCREEN_WIDTH = 600.0;
-    private static final double SCREEN_HEIGHT = 600.0;
+    private static final double SCREEN_WIDTH = 650.0;
+    private static final double SCREEN_HEIGHT = 650.0;
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double BUTTON_WIDTH = 90.0;
     private static final double BUTTON_HEIGHT = 30.0;
     private static final double BUTTON_SPACING = 5.0;
+    private static final double SLIDER_SPACING = 5.0;
+    private static final double SLIDER_WIDTH = 175.0;
     private static final String SPECIFIED_LOCATIONS = "locations";
     private static final String RANDOM_COMP = "random composition";
     private static final String RANDOM_NUMS = "random numbers";
+    private static final int INITIAL_DELAY = 100;
 
     private CA_TYPE myType;
     private Grid myGrid;
@@ -49,7 +55,8 @@ public class SimulatorMain extends Application {
     private FileChooser myChooser;
     private Group root;
     private Group cellGroup;
-    private Group sliderGroup;
+    private VBox sliderLabels;
+    private VBox sliderVBox;
     private int stepCounter = 0;
     private boolean pauseSim;
     private Button stopButton;
@@ -57,6 +64,9 @@ public class SimulatorMain extends Application {
     private Stage simStage;
     private int roundCounter = 0;
     private Text roundLabel;
+    private int sliderDelayValue = INITIAL_DELAY;
+    private boolean delayUpdated = false;
+    private int simDelay = INITIAL_DELAY;
 
     public SimulatorMain() {
         myType = null;
@@ -80,7 +90,7 @@ public class SimulatorMain extends Application {
         stage.setTitle("Cell Society");
         stage.show();
 
-        var frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> simulationStep(stage));
+        var frame = new KeyFrame(Duration.ONE, e -> simulationStep(stage));
         var gameTime = new Timeline();
         gameTime.setCycleCount(Timeline.INDEFINITE);
         gameTime.getKeyFrames().add(frame);
@@ -94,8 +104,8 @@ public class SimulatorMain extends Application {
         ObservableList rootList = root.getChildren();
         cellGroup = initializeCellGroup();
         var buttonVBox = initializeButtonVBox();
-        sliderGroup = initializeSliderGroup();
-        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderGroup);
+        sliderVBox = initializeSliderVBox();
+        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderVBox);
 
         pauseSim = true;
 
@@ -104,11 +114,15 @@ public class SimulatorMain extends Application {
 
     private void simulationStep(Stage stage) {
         if (!pauseSim) {
-            if (stepCounter % 40 == 0) {
+            if (simDelay == 0 || stepCounter % simDelay == 0) {
                 handleGridUpdate();
                 stepCounter = 0;
             }
             stepCounter++;
+        }
+        else if (delayUpdated){
+            simDelay = sliderDelayValue;
+            delayUpdated = false;
         }
     }
 
@@ -138,10 +152,10 @@ public class SimulatorMain extends Application {
         root.getChildren().add(cellGroup);
     }
 
-    private void resetSliderGroup(){
-        root.getChildren().remove(sliderGroup);
-        sliderGroup = initializeSliderGroup();
-        root.getChildren().add(sliderGroup);
+    private void resetSliderVBox(){
+        root.getChildren().remove(sliderVBox);
+        sliderVBox = initializeSliderVBox();
+        root.getChildren().add(sliderVBox);
     }
 
     private boolean handleXMLFile(Stage stage){
@@ -270,14 +284,12 @@ public class SimulatorMain extends Application {
 
     private void handleStart() {
         pauseSim = false;
-        System.out.println("Start");
         stopButton.setDisable(false);
         startButton.setDisable(true);
     }
 
     private void handleStop() {
         pauseSim = true;
-        System.out.println("Stop");
         startButton.setDisable(false);
         stopButton.setDisable(true);
     }
@@ -287,7 +299,6 @@ public class SimulatorMain extends Application {
         handleGridUpdate();
         stopButton.setDisable(true);
         startButton.setDisable(false);
-        System.out.println("Step");
     }
 
     private void handleLoadFile() {
@@ -296,7 +307,7 @@ public class SimulatorMain extends Application {
             stopButton.setDisable(true);
             startButton.setDisable(false);
             resetCellGroup();
-            resetSliderGroup();
+            resetSliderVBox();
             roundCounter = 0;
             updateRoundLabel();
         }
@@ -315,15 +326,79 @@ public class SimulatorMain extends Application {
         roundLabel.setText("Round " + roundCounter);
     }
 
-    private Group initializeSliderGroup() {
-        var sliderGroup = new Group();
-//        ObservableList sliderList = sliderGroup.getChildren();
-//        var sliderMap = myGrid.getSliderMap();
-//        for (String key : sliderMap.keySet()){
-//
-//
-//        }
-        return sliderGroup;
+    private VBox initializeSliderVBox() {
+        sliderVBox = new VBox();
+        ObservableList sliderList = sliderVBox.getChildren();
+        sliderList.addAll(createSizeSliderHBox(), createDelaySliderHBox());
+        sliderVBox.setSpacing(SLIDER_SPACING);
+        sliderVBox.setLayoutX(150.0);
+        sliderVBox.setLayoutY(GRID_DISPLAY_SIZE + (5*Grid.GRID_PADDING)/2);
+        sliderVBox.setAlignment(Pos.CENTER);
+        return sliderVBox;
+    }
+
+    private HBox createSizeSliderHBox() {
+        HBox sizeSliderHBox = new HBox();
+        var sizeLabel = createSizeSliderLabel();
+        sizeSliderHBox.getChildren().addAll(createSizeSlider(sizeLabel), sizeLabel);
+        sizeSliderHBox.setSpacing(20.0);
+        return sizeSliderHBox;
+    }
+
+    private Text createSizeSliderLabel() {
+        Text sizeLabel = new Text();
+        sizeLabel.setText("Size: " + myGrid.getGridSize() + "x" + myGrid.getGridSize());
+        sizeLabel.setFont(new Font(17.0));
+        return sizeLabel;
+    }
+
+    private Slider createSizeSlider(Text sizeLabel) {
+        var sizeSlider = new Slider(10,50, myGrid.getGridSize());
+        sizeSlider.setMajorTickUnit(10);
+        sizeSlider.setMinorTickCount(9);
+        sizeSlider.setSnapToTicks(true);
+        sizeSlider.setMaxWidth(SCREEN_WIDTH);
+        sizeSlider.valueProperty().addListener(e -> handleSizeSliderChange(sizeSlider, sizeLabel));
+        return sizeSlider;
+    }
+
+    private void handleSizeSliderChange(Slider sizeSlider, Text sizeLabel) {
+        var newSize = (int) sizeSlider.getValue();
+        myGrid.setGridSize(newSize);
+        sizeLabel.setText("Size: " + newSize + "x" + newSize);
+        handleReset();
+    }
+
+    private HBox createDelaySliderHBox() {
+        HBox delaySliderHBox = new HBox();
+        var delayLabel = createDelaySliderLabel();
+        delaySliderHBox.getChildren().addAll(createDelaySlider(delayLabel), delayLabel);
+        delaySliderHBox.setSpacing(20.0);
+        return delaySliderHBox;
+    }
+
+    private Text createDelaySliderLabel() {
+        Text delayLabel = new Text();
+        delayLabel.setText("Delay: " + INITIAL_DELAY + " ms");
+        delayLabel.setFont(new Font(17.0));
+        return delayLabel;
+    }
+
+    private Slider createDelaySlider(Text delayLabel) {
+        var delaySlider = new Slider(100,3000, INITIAL_DELAY);
+        delaySlider.setMajorTickUnit(100);
+        delaySlider.setMinorTickCount(99);
+        delaySlider.setSnapToTicks(true);
+        delaySlider.setMaxWidth(SCREEN_WIDTH);
+        delaySlider.valueProperty().addListener(e -> handleDelaySliderChange(delaySlider, delayLabel));
+        return delaySlider;
+
+    }
+
+    private void handleDelaySliderChange(Slider delaySlider, Text delayLabel) {
+        sliderDelayValue = (int)delaySlider.getValue();
+        delayUpdated = true;
+        delayLabel.setText("Delay: " + sliderDelayValue + " ms");
     }
 
     /**
