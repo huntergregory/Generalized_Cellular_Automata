@@ -25,10 +25,10 @@ public class HexagonCell extends Cell{
         vertices = new Double[]{
                 xPos+ cellSize/3, yPos,
                 xPos+cellSize*2/3, yPos,
-                xPos, yPos+cellSize/2,
                 xPos + cellSize, yPos+cellSize/2,
+                xPos+cellSize*2/3, yPos+cellSize,
                 xPos+ cellSize/3, yPos+cellSize,
-                xPos+cellSize*2/3, yPos+cellSize
+                xPos, yPos+cellSize/2
         };
         cellBody.getPoints().addAll(vertices);
         cellBody.setStroke(Color.BLACK);
@@ -61,8 +61,8 @@ public class HexagonCell extends Cell{
     /**
      * @return copy of this Cell
      */
-    public TriangleCell getCopy() {
-        TriangleCell copiedCell = new TriangleCell(xPosition, yPosition, cellSize, flippedCell);
+    public HexagonCell getCopy() {
+        HexagonCell copiedCell = new HexagonCell(xPosition, yPosition, cellSize);
         copiedCell.setColor(cellColor);
         copiedCell.setAge(this.getAge());
         copiedCell.setState(this.getState());

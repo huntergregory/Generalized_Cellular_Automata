@@ -133,7 +133,13 @@ public abstract class Grid {
 
         }
         if (myCellShape == CELL_SHAPE.HEXAGON){
-            grid[row][col] = new HexagonCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.75 + GRID_PADDING, cellSize);
+            if (col % 2 == 0){
+                grid[row][col] = new HexagonCell(col*cellSize*(2.0/3.0) + GRID_PADDING, row*cellSize + GRID_PADDING-cellSize/2, cellSize);
+            }else{
+                grid[row][col] = new HexagonCell(col*cellSize*(2.0/3.0) + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
+            }
+
+
         }
     }
     /**
