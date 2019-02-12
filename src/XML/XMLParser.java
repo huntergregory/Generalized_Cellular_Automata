@@ -292,8 +292,6 @@ public class XMLParser {
             NodeList rowColState = position.getElementsByTagName("*");
             int row = getInt((Element) rowColState.item(0));
             int col = getInt((Element) rowColState.item(1));
-            System.out.println("this state position is in bounds? " + inBounds(row,col));
-            System.out.println("this state position is unclaimed? " + locationIsUnclaimed(row,col));
             if (inBounds(row, col) && locationIsUnclaimed(row,col))
                 myStateLocations.add(new Integer[]{row, col, numState});
             j++;
