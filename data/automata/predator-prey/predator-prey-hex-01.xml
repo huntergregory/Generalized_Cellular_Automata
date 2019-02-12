@@ -1,9 +1,9 @@
 <predator-prey title="string">
-  <size min="3" max="10">10</size>
+  <size min="3" max="10">3</size>
   <num-states num="3"/>
   <state-names states="empty, fish, shark"/>
   <edges>normal</edges>
-  <shape>hexagon</shape>
+  <shape>triangle</shape>
   <neighbors>-1</neighbors>
   <random-composition>
     <empty-comp min="0.0" max="1.0">0.6</empty-comp>
