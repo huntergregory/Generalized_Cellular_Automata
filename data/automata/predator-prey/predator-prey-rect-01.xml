@@ -3,17 +3,17 @@
   <num-states num="3"/>
   <state-names states="empty, fish, shark"/>
   <edges>normal</edges>
-  <shape>triangle</shape>
-  <neighbors>-1</neighbors>
+  <shape>square</shape>
+  <neighbors>0, 2, 4, 6</neighbors>
   <random-composition>
     <empty-comp min="0.0" max="1.0">0.6</empty-comp>
     <fish-comp min="0.0" max="1.0">0.2</fish-comp>
     <shark-comp min="0.0" max="1.0">0.2</shark-comp>
   </random-composition>
   <parameters>
-    <fish-breeding-age min="0" max="4">6</fish-breeding-age>
+    <fish-breeding-age min="0" max="4">4</fish-breeding-age>
     <shark-breeding-age min="0" max="4">4</shark-breeding-age>
-    <fish-energy min="0" max="3">1</fish-energy>
-    <shark-energy min="3" max="5">1</shark-energy>
+    <fish-energy min="0" max="3">0</fish-energy>
+    <shark-energy min="1" max="5">1</shark-energy>
   </parameters>
 </predator-prey>

@@ -261,8 +261,8 @@ public abstract class Grid {
             }
         }
         if (inferredState == -1){
-            sum -= stateCounts[stateCounts.length-1];
-            stateCounts[stateCounts.length-1] = gridSize - sum;
+            sum -= stateCounts[0];
+            stateCounts[0] = gridSize - sum;
         }else {
             stateCounts[inferredState] = gridSize - sum;
         }
