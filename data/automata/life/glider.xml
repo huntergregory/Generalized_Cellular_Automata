@@ -1,6 +1,10 @@
-<game-of-life title="Glider">
-  <size min="10" max="30">15</size>
-  <num-states>2</num-states>
+<game-of-life title="string">
+  <size min="10" max="30">12</size>
+  <num-states num="2"/>
+  <state-names states="populated, empty"/>
+  <edges>toroidal</edges>
+  <shape>square</shape>
+  <neighbors>-1</neighbors>
   <configured>
     <populated-spots>
       <position>

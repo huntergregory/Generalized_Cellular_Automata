@@ -45,7 +45,7 @@ public class XMLParser {
     private static final String NEIGHBORS_TAG = "neighbors";
     private static final String RANDOM_COMP_TAG = "random-composition";
     private static final String RANDOM_COMP_TYPE = "random composition"; //aligned with SimulatorMain
-    private static final String RANDOM_NUM_TAG = "random-composition";
+    private static final String RANDOM_NUM_TAG = "random-numbers";
     private static final String RANDOM_NUM_TYPE = "random numbers";     //aligned with SimulatorMain
     private static final String LOCATIONS_TAG = "configured";
     private static final String LOCATIONS_TYPE = "locations";         //aligned with SimulatorMain
@@ -61,7 +61,7 @@ public class XMLParser {
     private Integer[] myNeighborConfig;
     private String myConfigType;
     private ArrayList<Double> myRandomComposition;       //only used if myConfigType is RANDOM_NUM_TYPE
-    private ArrayList<Integer> myRandomNumbers;          //only used if myConfigType is RANDOM_COMP_TYPE
+    private ArrayList<Double> myRandomNumbers;          //only used if myConfigType is RANDOM_COMP_TYPE
     private ArrayList<Integer[]> myStateLocations;       //only used if myConfigType is LOCATIONS_TYPE
     private ArrayList<Double> myParameters;
     private LinkedHashMap<String, Double[]> mySliderMap; //ordered map so that states and params are displayed in same order as xml file
@@ -151,16 +151,21 @@ public class XMLParser {
         int maxNeighbors = myCellShape.getMaxNumNeighbors();
         var element = getElementNamed(NEIGHBORS_TAG);
         try {
-            String[] stringNumbers = element.getTextContent().split(", ");
-            Integer[] numbers = new Integer[stringNumbers.length];
-            for (int k=0; k<numbers.length; k++) {
-                numbers[k] = Integer.parseInt(stringNumbers[k]);
-                if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
-                    throw new XMLException("neighbor config out of bounds");
+            String text =element.getTextContent();
+            if (text.equals("-1"))
+                myNeighborConfig = new Integer[]{-1};
+            else {
+                String[] stringNumbers = text.split(", ");
+                Integer[] numbers = new Integer[stringNumbers.length];
+                for (int k = 0; k < numbers.length; k++) {
+                    numbers[k] = Integer.parseInt(stringNumbers[k]);
+                    if (numbers[k] < 0 || numbers[k] >= maxNeighbors)
+                        throw new XMLException("neighbor config out of bounds");
+                }
+                myNeighborConfig = numbers;
             }
-            myNeighborConfig = numbers;
         }
-        catch (PatternSyntaxException | XMLException e) {
+        catch (PatternSyntaxException | NumberFormatException | XMLException e) {
             System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
             myNeighborConfig = new Integer[]{-1}; // max possible neighbors
         }
@@ -196,7 +201,6 @@ public class XMLParser {
     private void assignCompAndUpdateSliders() throws XMLException {
         var element = getElementNamed(RANDOM_COMP_TAG);
         NodeList compositions = element.getElementsByTagName("*");
-        System.out.println(compositions.item(0).getTextContent());
         double totalComp = 0;
         boolean negativeOneIncluded = false;
         int k=0;
@@ -238,22 +242,22 @@ public class XMLParser {
             var state = (Element) states.item(k);
             addSlider(state);
 
-            Integer value = getInt(state);
+            Double value = getDouble(state);
             if (value == -1 && !negativeOneIncluded) {
                 negativeOneIncluded = true;
             }
             else if (value < 0)
-                value = 0;
+                value = 0.0;
             totalNum += value;
             if (k == states.getLength() - 1) {
                 if (totalNum < maxNum && !negativeOneIncluded)
-                    value = -1;
-                else if (totalNum > 1)
+                    value = -1.0;
+                else if (totalNum > maxNum)
                     value = maxNum - (totalNum - value);
             }
             if (totalNum > maxNum) {
                 totalNum -= value;
-                value = 0;
+                value = 0.0;
             }
             myRandomNumbers.add(value);
             k++;
@@ -267,6 +271,10 @@ public class XMLParser {
         int numState=0;
         while(k<config.getLength()) {
             var element = (Element) config.item(k);
+            if (!isState(element)) {
+                k++;
+                continue;
+            }
             if (isState(element)) {
                 addStatePositions(element, numState);
             }
@@ -344,17 +352,9 @@ public class XMLParser {
         return Integer.parseInt(element.getTextContent());
     }
 
-    private DocumentBuilder getDocumentBuilder() {
-        try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
-            throw new XMLException(e);
-        }
-    }
-
     private boolean inBounds(int row, int col) {
-        return row>=mySize || col>=mySize || ((row<0 || col<0) && row != -1 && col!=-1);
+        return row<mySize && col<mySize &&
+                ((row>=0 && col>=0) || (row == -1 && col ==-1));
     }
 
     private double outOfRangeRevision(Element element) {
@@ -372,6 +372,15 @@ public class XMLParser {
         myStateLocations = new ArrayList<>();
         myParameters = new ArrayList<>();
         mySliderMap = new LinkedHashMap<>();
+    }
+
+    private DocumentBuilder getDocumentBuilder() {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e) {
+            throw new XMLException(e);
+        }
     }
 
     /*
@@ -421,7 +430,7 @@ public class XMLParser {
      * Get the number of cells for each cell to occupy. Only should be called if myConfigType is "random numbers"
      * @return
      */
-    public Integer[] getRandomNumbers() { return myRandomNumbers.toArray(new Integer[0]); }
+    public Double[] getRandomNumbers() { return myRandomNumbers.toArray(new Double[0]); }
 
     /**
      * @return an array of Doubles representing special parameters for the CA

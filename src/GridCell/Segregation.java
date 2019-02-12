@@ -23,6 +23,10 @@ public class Segregation extends Grid {
         super(gridSize, screenSize);
     }
 
+    /**
+     * Sets all states of grid and creates cell objects based on the percent of the grid that each state occupies
+     * @param composition
+     */
     public void setGridStates(Double[] composition){
         setGridRandom(composition);
     }
@@ -49,54 +53,48 @@ public class Segregation extends Grid {
         happyPercent = params[0];
     }
 
+    /**
+     * Updates properties of cells to run simulation
+     */
     @Override
     public void updateCells(){
         Cell[][] currentGrid = getGrid();
-        //locate empty cells and unhappy cells
         ArrayList<Integer[]> unhappy = new ArrayList<Integer[]>();
         ArrayList<Integer[]> empty = new ArrayList<Integer[]>();
         for (int i = 0; i < currentGrid.length; i++){
             for (int j = 0; j < currentGrid.length; j++){
                 int myState = currentGrid[i][j].getState();
-                if (myState!= 0){
-                    ArrayList<Integer[]> neighbors = getNeighbors(i,j);
-//                    System.out.println("<NEIGHBORS>");
-//                    System.out.println("["+i+","+j+"] : ");
-//                    for(Integer[] n : neighbors){
-//                        System.out.println(n[0]+","+n[1]+","+n[2]);
-//                    }
-//                    System.out.println("<NEIGHBORS>");
-                    int numSameState = 0;
-                    int numOccupied = 0;
-                    for (Integer[] cell : neighbors){
-                        if (cell[2] == myState){
-                            numSameState++;
-                        }
-                        if (cell[2] != 0){
-                            numOccupied++;
-                        }
-                    }
-                    //System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
-                    if (numOccupied == 0){
-                        Integer[] person = {i,j,myState};
-                        unhappy.add(person);
-                    }else if (((double)numSameState)/((double)numOccupied) < happyPercent){
-                        Integer[] person = {i,j,myState};
-                        unhappy.add(person);
-                    }
-                }else{
-                    Integer[] location = {i,j};
-                    empty.add(location);
-                }
+                determineHappiness(i, j, myState, unhappy, empty);
             }
         }
-//        System.out.println("<UNHAPPY>");
-//        for(Integer[] i : unhappy){
-//            System.out.println(i[0]+","+i[1]);
-//        }
-//        System.out.println("<UNHAPPY>");
+        moveUnhappyCells(unhappy,empty,currentGrid);
+        setGrid(currentGrid);
+    }
 
-        //move unhappy cells
+    private void determineHappiness(int i, int j, int myState, ArrayList<Integer[]> unhappy, ArrayList<Integer[]> empty){
+        if (myState!= 0){
+            ArrayList<Integer[]> neighbors = getNeighbors(i,j);
+            int numSameState = 0;
+            int numOccupied = 0;
+            for (Integer[] cell : neighbors){
+                if (cell[2] == myState){
+                    numSameState++;
+                }
+                if (cell[2] != 0){
+                    numOccupied++;
+                }
+            }
+            if (numOccupied == 0){
+                unhappy.add(new Integer[]{i,j,myState});
+            }else if (((double)numSameState)/((double)numOccupied) < happyPercent){
+                unhappy.add(new Integer[]{i,j,myState});
+            }
+        }else{
+            empty.add(new Integer[]{i,j});
+        }
+    }
+
+    private void moveUnhappyCells(ArrayList<Integer[]> unhappy, ArrayList<Integer[]> empty, Cell[][] currentGrid){
         while (!unhappy.isEmpty()){
             Random rand = new Random();
             //unhappy person and empty spot
@@ -112,7 +110,6 @@ public class Segregation extends Grid {
             Integer[] vacatedSpot = {person[0],person[1]};
             empty.add(vacatedSpot);
         }
-        setGrid(currentGrid);
     }
 
 

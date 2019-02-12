@@ -1,0 +1,17 @@
+<segregation title="string">
+  <size min="3" max="10">10</size>
+  <num-states num="3"/>
+  <state-names states="empty, people A, people B"/>
+  <edges>toroidal</edges>
+  <shape>hexagon</shape>
+  <neighbors>-1</neighbors>
+  <!--You have a CHOICE of the next 3 items at this level-->
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">0.6</empty-comp>
+    <people-A-comp min="0.0" max="1.0">0.2</people-A-comp>
+    <people-B-comp min="0.0" max="1.0">0.2</people-B-comp>
+  </random-composition>
+  <parameters>
+    <similar min="0.0" max="1.0">0.5</similar>
+  </parameters>
+</segregation>

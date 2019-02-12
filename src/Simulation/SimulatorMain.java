@@ -21,6 +21,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -139,11 +141,22 @@ public class SimulatorMain extends Application {
         ObservableList cellGroupList = cellGroup.getChildren();
         for (Cell[] cellRow : gridArray){
             for (Cell cell : cellRow){
-                cellGroupList.add(cell.getCellBody());
+                cellGroupList.add(getCellBody(cell));
             }
             //System.out.println();
         }
         return cellGroup;
+    }
+
+    private Shape getCellBody(Cell c){
+        if (myGrid.getMyCellShape() == CELL_SHAPE.SQUARE){
+            return ((RectangleCell)c).getCellBody();
+        }
+        else if (myGrid.getMyCellShape() == CELL_SHAPE.TRIANGLE){
+            return ((TriangleCell)c).getCellBody();
+        }else{
+            return ((HexagonCell)c).getCellBody();
+        }
     }
 
     private void resetCellGroup() {
@@ -214,8 +227,8 @@ public class SimulatorMain extends Application {
                 myGrid.setGridRandom(myParser.getRandomComposition());
             else if (configType.equals(SPECIFIED_LOCATIONS))
                 myGrid.setGridSpecific(myParser.getLocations());
-            /*else
-                myGrid.setGridRandomNums(myParser.getRandomNumbers());*/
+            else
+                myGrid.setGridRandomNum(myParser.getRandomNumbers());
             return true;
         }
         catch (InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
@@ -268,8 +281,12 @@ public class SimulatorMain extends Application {
     }
 
     private void handleReset() {
-        if (myParser.getConfigType().equals(SPECIFIED_LOCATIONS)) {
+        String configType = myParser.getConfigType();
+        if (configType.equals(SPECIFIED_LOCATIONS)) {
             myGrid.setGridSpecific(myParser.getLocations());
+        }
+        else if (configType.equals(RANDOM_NUMS)) {
+            myGrid.setGridRandomNum(myParser.getRandomNumbers());
         }
         else {
             myGrid.setGridRandom(myGrid.getCurComposition());

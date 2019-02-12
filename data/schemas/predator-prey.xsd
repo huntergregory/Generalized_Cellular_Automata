@@ -65,9 +65,9 @@
             <xsd:complexContent>
                 <xsd:extension base="parameter-list">
                     <xsd:sequence>
-                        <xsd:element name="fish-breeding-age" type="probability"/>
-                        <xsd:element name="shark-breeding-age" type="probability"/>
-                        <xsd:element name="fish-energy" type="probability"/>
+                        <xsd:element name="fish-breeding-age" type="int-min-max"/>
+                        <xsd:element name="shark-breeding-age" type="int-min-max"/>
+                        <xsd:element name="fish-energy" type="int-min-max"/>
                         <xsd:element name="shark-energy" type="int-min-max"/>
                     </xsd:sequence>
                 </xsd:extension>
