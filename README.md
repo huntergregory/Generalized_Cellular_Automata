@@ -9,9 +9,9 @@ Names: Dhanush Madabusi, Hunter Gregory, Connor Ghazaleh
 
 Start Date: 1/27/19
 
-Finish Date: 
+Finish Date: 2/12/19
 
-Hours Spent:
+Hours Spent: 30
 
 ### Primary Roles
 
