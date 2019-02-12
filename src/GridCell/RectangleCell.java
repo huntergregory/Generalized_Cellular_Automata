@@ -73,33 +73,58 @@ public class RectangleCell extends Cell{
         return cellColor;
     }
 
+    /**
+     * Return state of cell
+     * @return
+     */
     public int getState() {
         return state;
     }
 
+    /**
+     * Set string representation of cell
+     * @return
+     */
     public String toString(){
         return String.format("Cell state: %d",state);
     }
 
-    public void rotateAroundCenter(double angle){
-        cellBody.getTransforms().add(new Rotate(angle,cellBody.getBoundsInLocal().getCenterX(), cellBody.getBoundsInLocal().getCenterY()));
-    }
+    /**
+     * Set state of cell
+     * @param State integer representing state
+     */
     public void setState(int State) {
         state = State;
     }
 
+    /**
+     * Return value of age property of cell
+     * @return
+     */
     public int getAge(){
         return age;
     }
 
+    /**
+     * Set age property of cell
+     * @param newAge integer representing age
+     */
     public void setAge(int newAge){
         age = newAge;
     }
 
+    /**
+     * Return value of energy property of cell
+     * @return
+     */
     public double getEnergy(){
         return energy;
     }
 
+    /**
+     * Set value of energy property
+     * @param newEnergy integer representing energy
+     */
     public void setEnergy(double newEnergy){
         energy = newEnergy;
     }

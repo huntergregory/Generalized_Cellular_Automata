@@ -1,7 +1,6 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import javafx.scene.shape.Polygon;
 
 /**

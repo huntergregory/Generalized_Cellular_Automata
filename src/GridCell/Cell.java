@@ -24,81 +24,72 @@ public abstract class Cell {
      * @param color color to change the fill to
      */
     abstract void setColor(Color color);
-//    {
-//        cellColor = color;
-//        cellBody.setFill(color);
-//    }
 
-//    /**
-//     * Set position of cellBody on the screen
-//     * @param xPos new x position
-//     * @param yPos new y position
-//     */
-//    public void setPos(double xPos, double yPos){
-//        cellBody.setX(xPos);
-//        cellBody.setY(yPos);
-//    }
-
-    /**
-     * Set size of cellBody
-     * @param size new size
-     */
-    //abstract void setSize(double size);
-//    {
-//        cellBody.setHeight(size);
-//        cellBody.setWidth(size);
-//    }
 
     /**
      * @return copy of this Cell
      */
-    public abstract Cell getCopy();
-//    {
-//        Cell copiedCell = new Cell(cellBody.getX(), cellBody.getY(), cellBody.getHeight());
-//        copiedCell.setColor(cellColor);
-//        copiedCell.setAge(age);
-//        copiedCell.setState(state);
-//        copiedCell.setEnergy(energy);
-//        return copiedCell;
-//    }
+    abstract Cell getCopy();
 
-//    abstract Rectangle getCellBody();
-//    {
-//        return cellBody;
-//    }
 
     /**
      * Return color of the cell
      * @return
      */
-    public Color getColor(){
-        return cellColor;
-    }
+     abstract Color getColor();
 
+    /**
+     * Return state of cell
+     * @return
+     */
     public int getState() {
         return state;
     }
 
+    /**
+     * Set string for cell (for printing mostly)
+     * @return
+     */
     public String toString(){
         return String.format("Cell state: %d",state);
     }
 
+    /**
+     * Set state of cell
+     * @param State integer representing state
+     */
     public void setState(int State) {
         state = State;
     }
 
+    /**
+     * Return age property of cell
+     * @return
+     */
     public int getAge(){
         return age;
     }
 
+    /**
+     * Set age property of cell
+     * @param newAge integer representing age
+     */
     public void setAge(int newAge){
         age = newAge;
     }
 
+    /**
+     * Return energy property of cell
+     * @return
+     */
     public double getEnergy(){
         return energy;
     }
 
+    /**
+     * Set energy property of cell
+     * @param newEnergy integer representing energy
+     */
     public void setEnergy(double newEnergy){
         energy = newEnergy;
     }

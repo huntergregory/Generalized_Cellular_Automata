@@ -20,9 +20,6 @@ public abstract class Grid {
     protected static final int COL_INDEX = 1;
     protected static final int STATE_INDEX = 2;
 
-    private CELL_SHAPE myCellShape;
-    private Integer[] myNeighborConfig;
-
     private Cell[][] grid;
     private HashMap<Integer, Color> stateColorMap;
     private Random rand = new Random();
@@ -34,7 +31,8 @@ public abstract class Grid {
 
     //Immutables
     private String edgeType;
-
+    private CELL_SHAPE myCellShape;
+    private Integer[] myNeighborConfig;
 
     /**
      * constructor
@@ -83,25 +81,43 @@ public abstract class Grid {
         stateColorMap = colorMap;
     }
 
+    /**
+     *
+     * @return
+     */
     public HashMap<Integer, Color> getStateColorMap() {
         return stateColorMap;
     }
 
+
+    /**
+     * returns cell shape
+     * @return
+     */
     public CELL_SHAPE getMyCellShape(){
         return myCellShape;
     }
 
+
+    /**
+     *
+     */
     public abstract void initSliderMap();
 
+
+    /**
+     *
+     * @return
+     */
     public LinkedHashMap<String, Double[]> getSliderMap(){
         return sliderMap;
     }
+
 
     /**
      * Abstract method to get any additional parameters required by specific simulation types
      */
     public abstract void setAdditionalParams(Double[] params);
-
 
 
     /**
@@ -118,8 +134,13 @@ public abstract class Grid {
         ArrayList<Integer> stateCounts = calcCellsPerState(composition);
         assignGridByStateCounts(stateCounts);
     }
-    //EDIT THIS LATER
-    public void drawCells(int row, int col){
+
+    /**
+     * Method that calculates x and y positions of each cell on the screen and stores them in the cell objects
+     * @param row row cell resides at in the grid
+     * @param col column cell resides at in the grid
+     */
+    private void drawCells(int row, int col){
         if (myCellShape == CELL_SHAPE.SQUARE){
             grid[row][col] = new RectangleCell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
         }
@@ -130,7 +151,6 @@ public abstract class Grid {
                 flip = true;
             }
             grid[row][col] = new TriangleCell(col*cellSize*.5 + GRID_PADDING, row*cellSize*.75 + GRID_PADDING, cellSize, flip);
-
         }
         if (myCellShape == CELL_SHAPE.HEXAGON){
             if (col % 2 == 0){
@@ -138,8 +158,6 @@ public abstract class Grid {
             }else{
                 grid[row][col] = new HexagonCell(col*cellSize*(2.0/3.0) + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
             }
-
-
         }
     }
     /**
@@ -206,10 +224,26 @@ public abstract class Grid {
      */
     private ArrayList<Integer> calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
-        int[] stateCounts = new int[composition.length];
+        int[] stateCounts = fillStateCounts(composition,gridSize);
         ArrayList<Integer> allStates = new ArrayList<>();
+        for (int index = 0; index < stateCounts.length; index++){
+            for (int i = 0; i < stateCounts[index]; i++){
+                allStates.add(index);
+            }
+        }
+        return allStates;
+    }
+
+    /**
+     * Fill array holding count of each state at index equal to state
+     * @param composition array of doubles representing percent of grid that each state represents
+     * @param gridSize sum of all cells in the grid
+     * @return filled array of state counts
+     */
+    private int[] fillStateCounts(Double[] composition, int gridSize){
         int sum = 0;
         int inferredState = -1;
+        int[] stateCounts = new int[composition.length];
         for (int i = 0; i < composition.length; i++){
             if (composition[i] != -1){
                 int numCells = (int)(gridSize*composition[i]);
@@ -223,22 +257,16 @@ public abstract class Grid {
         if (inferredState == -1){
             sum -= stateCounts[stateCounts.length-1];
             stateCounts[stateCounts.length-1] = gridSize - sum;
-        }
-        else {
+        }else {
             stateCounts[inferredState] = gridSize - sum;
         }
-        for (int index = 0; index < stateCounts.length; index++){
-            for (int i = 0; i < stateCounts[index]; i++){
-                allStates.add(index);
-            }
-        }
-        return allStates;
+        return stateCounts;
     }
-
 
 
     /**
      * set grid specifically based on ArrayList of int[] arrays that are each of length 3 - last int[] specifies state for rest of grid
+     * @param coordinates
      */
     public void setGridSpecific(ArrayList<Integer[]> coordinates){
         int remainingState = coordinates.get(coordinates.size()-1)[2];
@@ -254,9 +282,6 @@ public abstract class Grid {
             }
         }
     }
-
-
-
 
 
     /**
@@ -281,26 +306,16 @@ public abstract class Grid {
     ArrayList<Integer[]> getNeighbors(int row, int col) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
-
         Integer[] deltaR = myCellShape.getDeltaR(row, col, myNeighborConfig);
         Integer[] deltaC = myCellShape.getDeltaC(row, col, myNeighborConfig);
-
         ArrayList<Integer[]> neighbors = new ArrayList<>();
         for (int k=0; k<deltaR.length; k++) {
             int neighborRow = row + deltaR[k];
             int neighborCol = col + deltaC[k];
             if (edgeType.equals(TOROIDAL_EDGE)){
-                //wrapEdge(neighborCol,neighborRow);
-                if (neighborCol < 0){
-                    neighborCol = grid.length+neighborCol;
-                }
-                if (neighborRow < 0) {
-                    neighborRow = grid.length+neighborRow;
-                }
-                if (neighborCol >= 0 && neighborRow >= 0){
-                    neighborRow = neighborRow % grid.length;
-                    neighborCol = neighborCol % grid.length;
-                }
+                int[] coordinates = wrapEdge(neighborCol,neighborRow);
+                neighborRow = coordinates[0];
+                neighborCol = coordinates[1];
             }
             if (isInBounds(neighborRow, neighborCol)) {
                 Integer[] neighbor = {neighborRow, neighborCol, grid[neighborRow][neighborCol].getState()};
@@ -311,7 +326,7 @@ public abstract class Grid {
     }
 
 
-    private void wrapEdge(int neighborCol, int neighborRow){
+    private int[] wrapEdge(int neighborCol, int neighborRow){
         if (neighborCol < 0){
             neighborCol = grid.length+neighborCol;
         }
@@ -322,6 +337,7 @@ public abstract class Grid {
             neighborRow = neighborRow % grid.length;
             neighborCol = neighborCol % grid.length;
         }
+        return new int[]{neighborRow,neighborCol};
     }
 
 
@@ -355,6 +371,11 @@ public abstract class Grid {
         grid = cells;
     }
 
+
+    /**
+     * Return size of grid
+     * @return
+     */
     public int getGridSize(){
         return gridSize;
     }
