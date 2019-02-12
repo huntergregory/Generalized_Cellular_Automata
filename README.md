@@ -31,12 +31,16 @@ Data files needed:
 * Config files generated from schema files
 
 Interesting data files:
+* If you're familiar with the gospel glider 
+gun in the game of life - and even if you're not - the gospel-glider-gun-imposter.xml
+file is a cool deviation. 
+* The toroidal-gospel-gun-glider-imposter.xml is even wilder...
 
 Features implemented:
 * Different cell shapes
 * Toroidal edges
 * Sliders to configure input parameters
-* Configurable neighbor selection
+* Ability to encode any possible permutation of neighbors
 * Initial grid configuration can be set using:
     * states at specific coordinates
     * percentages of the grid that each state occupies
@@ -49,7 +53,7 @@ Assumptions or Simplifications:
 * Grid has same height and width
 
 Known Bugs:
-*
+* 
 
 Extra credit:
 * Fun colors
