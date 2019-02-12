@@ -76,7 +76,7 @@ public enum CELL_SHAPE {
         if (this.equals(CELL_SHAPE.TRIANGLE) && (row + col) % 2 == 0)
             flipSign(fullDelta);
         if (this.equals(CELL_SHAPE.HEXAGON)){
-            if (row % 2 == 0){
+            if (col % 2 == 0){
                 fullDelta = copyWithoutIndices(3,5,fullDelta);
             }else{
                 fullDelta = copyWithoutIndices(1,7,fullDelta);

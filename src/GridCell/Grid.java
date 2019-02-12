@@ -290,6 +290,7 @@ public abstract class Grid {
             int neighborRow = row + deltaR[k];
             int neighborCol = col + deltaC[k];
             if (edgeType.equals(TOROIDAL_EDGE)){
+                //wrapEdge(neighborCol,neighborRow);
                 if (neighborCol < 0){
                     neighborCol = grid.length+neighborCol;
                 }
@@ -300,7 +301,6 @@ public abstract class Grid {
                     neighborRow = neighborRow % grid.length;
                     neighborCol = neighborCol % grid.length;
                 }
-
             }
             if (isInBounds(neighborRow, neighborCol)) {
                 Integer[] neighbor = {neighborRow, neighborCol, grid[neighborRow][neighborCol].getState()};
@@ -308,6 +308,20 @@ public abstract class Grid {
             }
         }
         return neighbors;
+    }
+
+
+    private void wrapEdge(int neighborCol, int neighborRow){
+        if (neighborCol < 0){
+            neighborCol = grid.length+neighborCol;
+        }
+        if (neighborRow < 0) {
+            neighborRow = grid.length+neighborRow;
+        }
+        if (neighborCol >= 0 && neighborRow >= 0){
+            neighborRow = neighborRow % grid.length;
+            neighborCol = neighborCol % grid.length;
+        }
     }
 
 
