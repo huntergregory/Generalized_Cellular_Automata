@@ -60,12 +60,12 @@ public class Segregation extends Grid {
                 int myState = currentGrid[i][j].getState();
                 if (myState!= 0){
                     ArrayList<Integer[]> neighbors = getNeighbors(i,j);
-//                    System.out.println("<NEIGHBORS>");
-//                    System.out.println("["+i+","+j+"] : ");
-//                    for(Integer[] n : neighbors){
-//                        System.out.println(n[0]+","+n[1]+","+n[2]);
-//                    }
-//                    System.out.println("<NEIGHBORS>");
+                    System.out.println("<NEIGHBORS>");
+                    System.out.println("["+i+","+j+"] : ");
+                    for(Integer[] n : neighbors){
+                        System.out.println(n[0]+","+n[1]+","+n[2]);
+                    }
+                    System.out.println("<NEIGHBORS>");
                     int numSameState = 0;
                     int numOccupied = 0;
                     for (Integer[] cell : neighbors){
@@ -76,7 +76,7 @@ public class Segregation extends Grid {
                             numOccupied++;
                         }
                     }
-                    //System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
+                    System.out.println("PCT SAME STATE: "+((double)numSameState)/((double)neighbors.size()));
                     if (numOccupied == 0){
                         Integer[] person = {i,j,myState};
                         unhappy.add(person);
