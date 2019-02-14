@@ -1,9 +1,7 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
 
 /**
  * @author Connor Ghazaleh
@@ -15,7 +13,7 @@ public class RectangleCell extends Cell{
     private int age;
     private double energy;
 
-    public RectangleCell(double xPos, double yPos, double size){
+    RectangleCell(double xPos, double yPos, double size){
         super();
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
@@ -129,6 +127,14 @@ public class RectangleCell extends Cell{
         energy = newEnergy;
     }
 
-
+    @Override
+    public void setCellBorder(boolean addBorder) {
+        if (addBorder){
+            cellBody.setStrokeWidth(1.0);
+        }
+        else{
+            cellBody.setStrokeWidth(0.0);
+        }
+    }
 
 }

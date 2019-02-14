@@ -3,7 +3,6 @@ import GridCell.*;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 
 public enum CA_TYPE {
     GAME_OF_LIFE("data/schemas/game-of-life.xsd", LifeGrid.class),

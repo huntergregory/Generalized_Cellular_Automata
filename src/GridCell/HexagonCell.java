@@ -15,7 +15,7 @@ public class HexagonCell extends Cell{
     private double xPosition;
     private double yPosition;
 
-    public HexagonCell(double xPos, double yPos, double size){
+    HexagonCell(double xPos, double yPos, double size){
         super();
         xPosition = xPos;
         yPosition = yPos;
@@ -81,7 +81,15 @@ public class HexagonCell extends Cell{
         return cellColor;
     }
 
-
+    @Override
+    public void setCellBorder(boolean addBorder) {
+        if (addBorder){
+            cellBody.setStrokeWidth(1.0);
+        }
+        else{
+            cellBody.setStrokeWidth(0.0);
+        }
+    }
 
 
 }

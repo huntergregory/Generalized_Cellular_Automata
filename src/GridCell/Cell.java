@@ -1,9 +1,6 @@
 package GridCell;
 
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
-import javafx.scene.shape.Shape;
 
 /**
  * @author Connor Ghazaleh
@@ -94,6 +91,6 @@ public abstract class Cell {
         energy = newEnergy;
     }
 
-
+    public abstract void setCellBorder(boolean addBorder);
 
 }

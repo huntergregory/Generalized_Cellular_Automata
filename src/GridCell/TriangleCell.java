@@ -15,7 +15,7 @@ public class TriangleCell extends Cell{
     private double xPosition;
     private double yPosition;
 
-    public TriangleCell(double xPos, double yPos, double size, boolean flipped){
+    TriangleCell(double xPos, double yPos, double size, boolean flipped){
         super();
         xPosition = xPos;
         yPosition = yPos;
@@ -86,7 +86,14 @@ public class TriangleCell extends Cell{
         return cellColor;
     }
 
-
-
+    @Override
+    public void setCellBorder(boolean addBorder) {
+        if (addBorder){
+            cellBody.setStrokeWidth(1.0);
+        }
+        else{
+            cellBody.setStrokeWidth(0.0);
+        }
+    }
 
 }
