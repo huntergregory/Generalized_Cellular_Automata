@@ -49,7 +49,7 @@ public class SimulatorMain extends Application {
     private static final String SPECIFIED_LOCATIONS = "locations";
     private static final String RANDOM_COMP = "random composition";
     private static final String RANDOM_NUMS = "random numbers";
-    private static final int INITIAL_DELAY = 100;
+    private static final int INITIAL_DELAY = 30;
 
     private CA_TYPE myType;
     private Grid myGrid;
