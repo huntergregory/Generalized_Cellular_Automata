@@ -12,8 +12,8 @@ import java.util.HashMap;
  * @author Hunter Gregory
  */
 public class LifeGrid extends Grid {
-    public static final int EMPTY = 1;
-    public static final int POPULATED = 0;
+    private static final int EMPTY = 1;
+    private static final int POPULATED = 0;
 
     private HashMap<Integer, Color> myStateColorMap;
 

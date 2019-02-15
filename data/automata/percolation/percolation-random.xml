@@ -1,0 +1,16 @@
+<percolation title="Percolation">
+    <size min="10" max="50">20</size>
+    <num-states num="3"/>
+    <state-names states="empty, percolated, blocked"/>
+    <edges>normal</edges>
+    <shape>square</shape>
+    <neighbors>-1</neighbors>
+    <random-composition>
+        <empty-comp min="0.0" max="1.0">0.1</empty-comp>
+        <people-A-comp min="0.0" max="1.0">0.4</people-A-comp>
+        <people-B-comp min="0.0" max="1.0">-1</people-B-comp>
+    </random-composition>
+    <parameters>
+        <similar min="0.0" max="1.0">0.5</similar>
+    </parameters>
+</percolation>

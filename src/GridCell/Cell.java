@@ -1,11 +1,9 @@
 package GridCell;
 
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
-import javafx.scene.shape.Shape;
 
 /**
+ * Superclass that manages the cell objects that represent each grid element. The super class outlines the methods that the subclasses for different cell shapes will need. It also defines some common variables in the constructor such as the ones that track cell properties like age and energy.
  * @author Connor Ghazaleh
  */
 public abstract class Cell {
@@ -36,7 +34,7 @@ public abstract class Cell {
      * Return color of the cell
      * @return
      */
-     abstract Color getColor();
+    abstract Color getColor();
 
     /**
      * Return state of cell
@@ -94,6 +92,10 @@ public abstract class Cell {
         energy = newEnergy;
     }
 
-
+    /**
+     * Method to set whether cell borders are drawn or not
+     * @param addBorder boolean determining whether to set the borders or not
+     */
+    public abstract void setCellBorder(boolean addBorder);
 
 }

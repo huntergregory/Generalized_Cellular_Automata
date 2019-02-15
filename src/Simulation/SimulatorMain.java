@@ -16,12 +16,11 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -39,8 +38,6 @@ public class SimulatorMain extends Application {
     private static final String DATA_FILE_EXTENSION = "*.xml";
     private static final double SCREEN_WIDTH = 650.0;
     private static final double SCREEN_HEIGHT = 650.0;
-    private static final int FRAMES_PER_SECOND = 60;
-    private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double BUTTON_WIDTH = 90.0;
     private static final double BUTTON_HEIGHT = 30.0;
     private static final double BUTTON_SPACING = 5.0;
@@ -69,6 +66,7 @@ public class SimulatorMain extends Application {
     private int sliderDelayValue = INITIAL_DELAY;
     private boolean delayUpdated = false;
     private int simDelay = INITIAL_DELAY;
+    private boolean cellBorders = true;
 
     public SimulatorMain() {
         myType = null;
@@ -89,7 +87,7 @@ public class SimulatorMain extends Application {
 
         Scene scene = setUpScene();
         stage.setScene(scene);
-        stage.setTitle("Cell Society");
+        stage.setTitle("Cellular Automata Simulator");
         stage.show();
 
         var frame = new KeyFrame(Duration.ONE, e -> simulationStep(stage));
@@ -104,10 +102,10 @@ public class SimulatorMain extends Application {
         root = new Group();
         Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT, Color.LIGHTCYAN);
         ObservableList rootList = root.getChildren();
-        cellGroup = initializeCellGroup();
+        cellGroup = initializeCellGroup(cellBorders);
         var buttonVBox = initializeButtonVBox();
         sliderVBox = initializeSliderVBox();
-        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderVBox);
+        rootList.addAll(cellGroup, createRoundLabel(), buttonVBox, sliderVBox, createBorderToggle());
 
         pauseSim = true;
 
@@ -130,21 +128,22 @@ public class SimulatorMain extends Application {
 
     private void handleGridUpdate() {
         myGrid.updateCells();
-        resetCellGroup();
+        resetCellGroup(cellBorders);
         roundCounter++;
         updateRoundLabel();
     }
 
-    private Group initializeCellGroup() {
+    private Group initializeCellGroup(boolean addBorder) {
         var gridArray = myGrid.getGrid();
         var cellGroup = new Group();
         ObservableList cellGroupList = cellGroup.getChildren();
         for (Cell[] cellRow : gridArray){
             for (Cell cell : cellRow){
+                cell.setCellBorder(addBorder);
                 cellGroupList.add(getCellBody(cell));
             }
-            //System.out.println();
         }
+        myGrid.setGrid(gridArray);
         return cellGroup;
     }
 
@@ -159,9 +158,9 @@ public class SimulatorMain extends Application {
         }
     }
 
-    private void resetCellGroup() {
+    private void resetCellGroup(boolean addCellBorders) {
         root.getChildren().remove(cellGroup);
-        cellGroup = initializeCellGroup();
+        cellGroup = initializeCellGroup(addCellBorders);
         root.getChildren().add(cellGroup);
     }
 
@@ -184,20 +183,6 @@ public class SimulatorMain extends Application {
             }
         }
         return true;
-    }
-
-    /**
-     * DEBUGGING, prints grids for specified # of transitions
-     * @param numTransitions
-     */
-    private void simulateTransitions(int numTransitions) {
-        System.out.println("Initial State");
-        myGrid.printGrid();
-        for (int k=0; k<numTransitions;k++) {
-            myGrid.updateCells();
-            System.out.println("Round " + (k + 1));
-            myGrid.printGrid();
-        }
     }
 
     private void getNewGrid(File xmlFile) throws InstantiationException {
@@ -291,12 +276,21 @@ public class SimulatorMain extends Application {
         else {
             myGrid.setGridRandom(myGrid.getCurComposition());
         }
-        resetCellGroup();
+        resetCellGroup(cellBorders);
+        handleAgeAndEnergyReset();
         pauseSim = true;
         stopButton.setDisable(true);
         startButton.setDisable(false);
         roundCounter = 0;
         updateRoundLabel();
+    }
+
+    private void handleAgeAndEnergyReset() {
+        if (myGrid instanceof PredatorPrey){
+            Double[] parameters = myParser.getParameters();
+            if (parameters.length > 0)
+                myGrid.setAdditionalParams(parameters);
+        }
     }
 
     private void handleStart() {
@@ -323,7 +317,7 @@ public class SimulatorMain extends Application {
         if (handleXMLFile(simStage)) {
             stopButton.setDisable(true);
             startButton.setDisable(false);
-            resetCellGroup();
+            resetCellGroup(cellBorders);
             resetSliderVBox();
             roundCounter = 0;
             updateRoundLabel();
@@ -418,6 +412,20 @@ public class SimulatorMain extends Application {
         delayLabel.setText("Delay: " + sliderDelayValue + " ms");
     }
 
+    private ToggleButton createBorderToggle() {
+        var borderToggle = new ToggleButton("Cell Borders");
+        borderToggle.setSelected(true);
+        borderToggle.selectedProperty().addListener(e -> handleBorderToggle(borderToggle.isSelected()));
+        borderToggle.setLayoutX(450.0);
+        borderToggle.setLayoutY(GRID_DISPLAY_SIZE + (5*Grid.GRID_PADDING)/2);
+        return borderToggle;
+    }
+
+    private void handleBorderToggle(boolean addCellBorder) {
+        resetCellGroup(addCellBorder);
+        cellBorders = addCellBorder;
+    }
+
     /**
      * Starts the program.
      *
@@ -465,7 +473,7 @@ public class SimulatorMain extends Application {
     }
 
     private void printAllPositions(ArrayList<Integer[]> list) {
-        int row = 0; int col=0; int state=0;
+        int row; int col; int state;
         System.out.println("Printing configuration");
         for (Integer[] coords : list) {
             row=coords[0]; col=coords[1]; state=coords[2];

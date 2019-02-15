@@ -18,10 +18,10 @@ import java.util.HashMap;
  * @author Hunter Gregory
  */
 public class RPSGrid extends Grid {
-    public static final int EMPTY = 0;
-    public static final int ROCK = 1;
-    public static final int PAPER = 2;
-    public static final int SCISSORS = 3;
+    private static final int EMPTY = 0;
+    private static final int ROCK = 1;
+    private static final int PAPER = 2;
+    private static final int SCISSORS = 3;
 
     private int myMaxGradient;
 

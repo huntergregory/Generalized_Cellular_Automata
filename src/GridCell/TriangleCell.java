@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 /**
+ * This is a type of cell that inherits from the cell class but differentiates itself by its triangular shape representation on the screen. The method largely contains getter and setter methods for properties of this type of cell, however the constructor also contains logic and calculations that determine where to draw the cell on the screen when it is created.
  * @author Connor Ghazaleh
  */
 public class TriangleCell extends Cell{
@@ -15,7 +16,7 @@ public class TriangleCell extends Cell{
     private double xPosition;
     private double yPosition;
 
-    public TriangleCell(double xPos, double yPos, double size, boolean flipped){
+    TriangleCell(double xPos, double yPos, double size, boolean flipped){
         super();
         xPosition = xPos;
         yPosition = yPos;
@@ -74,6 +75,10 @@ public class TriangleCell extends Cell{
         return copiedCell;
     }
 
+    /**
+     * Return the polygon representing the body of the cell
+     * @return
+     */
     public Polygon getCellBody() {
         return cellBody;
     }
@@ -87,6 +92,18 @@ public class TriangleCell extends Cell{
     }
 
 
-
+    /**
+     * Method to add border lines on cell body
+     * @param addBorder boolean representing whether or not the feature should be on
+     */
+    @Override
+    public void setCellBorder(boolean addBorder) {
+        if (addBorder){
+            cellBody.setStrokeWidth(1.0);
+        }
+        else{
+            cellBody.setStrokeWidth(0.0);
+        }
+    }
 
 }

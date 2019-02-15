@@ -1,11 +1,10 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
 
 /**
+ * This is a type of cell that inherits from the cell class but differentiates itself by its rectangular shape representation on the screen. The method largely contains getter and setter methods for properties of this type of cell, however the constructor also contains logic and calculations that determine where to draw the cell on the screen when it is created.
  * @author Connor Ghazaleh
  */
 public class RectangleCell extends Cell{
@@ -15,7 +14,7 @@ public class RectangleCell extends Cell{
     private int age;
     private double energy;
 
-    public RectangleCell(double xPos, double yPos, double size){
+    RectangleCell(double xPos, double yPos, double size){
         super();
         cellBody = new Rectangle(xPos,yPos,size, size);
         cellBody.setStroke(Color.BLACK);
@@ -61,6 +60,10 @@ public class RectangleCell extends Cell{
         return copiedCell;
     }
 
+    /**
+     * Return the rectangle representing the body of the cell
+     * @return
+     */
     public Rectangle getCellBody() {
         return cellBody;
     }
@@ -129,6 +132,18 @@ public class RectangleCell extends Cell{
         energy = newEnergy;
     }
 
-
+    /**
+     * Method to add border lines on cell body
+     * @param addBorder boolean representing whether or not the feature should be on
+     */
+    @Override
+    public void setCellBorder(boolean addBorder) {
+        if (addBorder){
+            cellBody.setStrokeWidth(1.0);
+        }
+        else{
+            cellBody.setStrokeWidth(0.0);
+        }
+    }
 
 }

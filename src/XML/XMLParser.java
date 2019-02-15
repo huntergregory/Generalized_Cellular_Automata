@@ -34,9 +34,9 @@ import java.util.regex.PatternSyntaxException;
 public class XMLParser {
     private final SchemaFactory SCHEMAFACTORY;
     private final DocumentBuilder DOCUMENT_BUILDER;
-    private static final String RANDOM_TAG = "random";
-    public static final File DEFAULT_XML_FILE = new File("data/automata/fire/fire-random-comp.xml");
-    public static final CELL_SHAPE DEFAULT_SHAPE = CELL_SHAPE.SQUARE;
+    //private static final String RANDOM_TAG = "random";
+    private static final File DEFAULT_XML_FILE = new File("data/automata/fire/fire-random-comp.xml");
+    private static final CELL_SHAPE DEFAULT_SHAPE = CELL_SHAPE.SQUARE;
 
     private static final String SIZE_TAG = "size";
     private static final String STATE_NAMES_TAG = "state-names";
@@ -166,7 +166,7 @@ public class XMLParser {
             }
         }
         catch (PatternSyntaxException | NumberFormatException | XMLException e) {
-            System.out.printf("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
+            System.out.println("Warning: " + e.getMessage() + "\nSetting neighbor config to max possible.\n");
             myNeighborConfig = new Integer[]{-1}; // max possible neighbors
         }
     }
