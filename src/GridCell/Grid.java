@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * Super class that all other simulations will inherit from. This class defines all methods common to all simulations such as a method to get the neighbors of the current cell, as well as getters and setters for objects contained within the super class. This class also sets global variables that help to define input parameters to some of the methods and customize their behavior to for difference scenarios. It contains another important method to set all the immutable properties of a simulation that are related to the configuration of the simulation.
  * @author Connor Ghazaleh
  */
 public abstract class Grid {
@@ -70,6 +71,7 @@ public abstract class Grid {
         }
         myNeighborConfig = neighborConfig;
     }
+
     /**
      * Abstract method called in the GridCell.Grid constructor. Method must create a state-color map and call setStateColorMap.
      */
@@ -84,7 +86,7 @@ public abstract class Grid {
     }
 
     /**
-     *
+     * Return the map that assigns colors to states
      * @return
      */
     public HashMap<Integer, Color> getStateColorMap() {
@@ -93,7 +95,7 @@ public abstract class Grid {
 
 
     /**
-     * returns cell shape
+     * Returns cell shape
      * @return
      */
     public CELL_SHAPE getMyCellShape(){
@@ -102,13 +104,13 @@ public abstract class Grid {
 
 
     /**
-     *
+     * Initialize the sliders for a simulation
      */
     public abstract void initSliderMap();
 
 
     /**
-     *
+     * Return the map that holds the sliders for a simulation
      * @return
      */
     public LinkedHashMap<String, Double[]> getSliderMap(){
@@ -137,11 +139,6 @@ public abstract class Grid {
         assignGridByStateCounts(stateCounts);
     }
 
-    /**
-     * Method that calculates x and y positions of each cell on the screen and stores them in the cell objects
-     * @param row row cell resides at in the grid
-     * @param col column cell resides at in the grid
-     */
     private void drawCells(int row, int col){
         if (myCellShape == CELL_SHAPE.SQUARE){
             grid[row][col] = new RectangleCell(col*cellSize + GRID_PADDING, row*cellSize + GRID_PADDING, cellSize);
@@ -162,6 +159,7 @@ public abstract class Grid {
             }
         }
     }
+
     /**
      * Set grid randomly based on input composition (array of numbers)
      * @param composition array of numbers associated with each state
@@ -220,16 +218,14 @@ public abstract class Grid {
         curComposition = composition;
     }
 
+    /**
+     * Return the current composition of the grid (in terms of states)
+     * @return
+     */
     public Double [] getCurComposition(){
         return curComposition;
     }
 
-
-    /**
-     * Make array of number of cells per state
-     * @param composition array of percentages associated with each state
-     * @return array of number of cells per state
-     */
     private ArrayList<Integer> calcCellsPerState(Double[] composition){
         int gridSize = grid.length*grid.length;
         int[] stateCounts = fillStateCounts(composition,gridSize);
@@ -242,12 +238,6 @@ public abstract class Grid {
         return allStates;
     }
 
-    /**
-     * Fill array holding count of each state at index equal to state
-     * @param composition array of doubles representing percent of grid that each state represents
-     * @param gridSize sum of all cells in the grid
-     * @return filled array of state counts
-     */
     private int[] fillStateCounts(Double[] composition, int gridSize){
         int sum = 0;
         int inferredState = -1;
@@ -292,12 +282,6 @@ public abstract class Grid {
     }
 
 
-    /**
-     * Access cell at particular grid location and set its state
-     * @param row
-     * @param column
-     * @param state
-     */
     private void setCellState(int row, int column, int state){
         grid[row][column].setState(state);
         grid[row][column].setColor(stateColorMap.get(state));
@@ -311,7 +295,7 @@ public abstract class Grid {
      * @return array of Integers of the form [row, col, state] for each neighboring cell
      * @throws IllegalArgumentException
      */
-    ArrayList<Integer[]> getNeighbors(int row, int col) throws IllegalArgumentException {
+    protected ArrayList<Integer[]> getNeighbors(int row, int col) throws IllegalArgumentException {
         if (!isInBounds(row,col))
             throw new IllegalArgumentException(String.format("(%d, %d) is not in the grid bounds", row,col));
         Integer[] deltaR = myCellShape.getDeltaR(row, col, myNeighborConfig);
@@ -388,6 +372,10 @@ public abstract class Grid {
         return gridSize;
     }
 
+    /**
+     * Set size of the grid
+     * @param gridSize grid is always square so this param specifies 1 side length
+     */
     public void setGridSize(int gridSize){
         this.gridSize = gridSize;
         cellSize = screenSize/gridSize;
@@ -413,9 +401,7 @@ public abstract class Grid {
         return rand.nextDouble();
     }
 
-    /**
-     * Prints the current grid's states. Useful for debugging
-     */
+
     public void printGrid() {
         for (int r=0; r<grid.length; r++) {
             for (int c=0; c<grid.length; c++) {

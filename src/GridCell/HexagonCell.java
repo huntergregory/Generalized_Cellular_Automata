@@ -56,7 +56,6 @@ public class HexagonCell extends Cell{
         cellBody.getPoints().setAll(vertices);
     }
 
-
     /**
      * @return copy of this Cell
      */
@@ -69,6 +68,10 @@ public class HexagonCell extends Cell{
         return copiedCell;
     }
 
+    /**
+     * Return the polygon representing the body of the cell
+     * @return
+     */
     public Polygon getCellBody() {
         return cellBody;
     }
@@ -81,6 +84,10 @@ public class HexagonCell extends Cell{
         return cellColor;
     }
 
+    /**
+     * Method to add border lines on cell body
+     * @param addBorder boolean representing whether or not the feature should be on
+     */
     @Override
     public void setCellBorder(boolean addBorder) {
         if (addBorder){

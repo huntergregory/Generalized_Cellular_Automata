@@ -31,6 +31,9 @@ public class Segregation extends Grid {
         setGridRandom(composition);
     }
 
+    /**
+     * Initialize the map assigning colors to states
+     */
     @Override
     public void initStateColorMap(){
         HashMap<Integer, Color > colorMap = new HashMap<Integer,Color>();
@@ -40,6 +43,9 @@ public class Segregation extends Grid {
         setStateColorMap(colorMap);
     }
 
+    /**
+     * initializes the sliders relevant to the simulation
+     */
     @Override
     public void initSliderMap(){
         sliderMap = new LinkedHashMap<>();
@@ -48,6 +54,10 @@ public class Segregation extends Grid {
         sliderMap.put("Empty", new Double[]{0.0, 0.1});
     }
 
+    /**
+     * Set additional parameters specific to the current simulation
+     * @param params array of doubles specifying parameter values
+     */
     @Override
     public void setAdditionalParams(Double[] params){
         happyPercent = params[0];
@@ -71,6 +81,14 @@ public class Segregation extends Grid {
         setGrid(currentGrid);
     }
 
+    /**
+     * Determine if cells are happy and no longer want to move
+     * @param i row of the current cell
+     * @param j column of the current cell
+     * @param myState state of the current cell
+     * @param unhappy arraylist of all unhappy cells
+     * @param empty arraylist of all empty cells
+     */
     private void determineHappiness(int i, int j, int myState, ArrayList<Integer[]> unhappy, ArrayList<Integer[]> empty){
         if (myState!= 0){
             ArrayList<Integer[]> neighbors = getNeighbors(i,j);
@@ -94,6 +112,12 @@ public class Segregation extends Grid {
         }
     }
 
+    /**
+     * Relocate cells that are unhappy to a random empty cell
+     * @param unhappy arraylist of unhappy cells
+     * @param empty arraylist of empty cells
+     * @param currentGrid copy of the current grid that gets updated on each iteration replaces the main grid
+     */
     private void moveUnhappyCells(ArrayList<Integer[]> unhappy, ArrayList<Integer[]> empty, Cell[][] currentGrid){
         while (!unhappy.isEmpty()){
             Random rand = new Random();

@@ -31,6 +31,9 @@ public class PredatorPrey extends Grid {
         super(gridSize, screenSize);
     }
 
+    /**
+     * Initialize the map assigning colors to states
+     */
     @Override
     public void initStateColorMap(){
         HashMap<Integer, Color > colorMap = new HashMap<Integer,Color>();
@@ -41,11 +44,18 @@ public class PredatorPrey extends Grid {
         setStateColorMap(colorMap);
     }
 
+    /**
+     * initializes the sliders relevant to the simulation
+     */
     @Override
     public void initSliderMap(){
 
     }
 
+    /**
+     * Set additional parameters specific to the current simulation
+     * @param params array of doubles specifying parameter values
+     */
     @Override
     public void setAdditionalParams(Double[] params){
         fishBreedingAge = params[0];
@@ -60,13 +70,6 @@ public class PredatorPrey extends Grid {
                 }
             }
         }
-//        System.out.println("<AGES>");
-//        printAges(currentGrid);
-//        System.out.println("<AGES>");
-//        System.out.println("<ENERGIES>");
-//        printEnergies(currentGrid);
-//        System.out.println("<ENERGIES>");
-//        setGrid(currentGrid);
     }
 
     /**
@@ -77,6 +80,7 @@ public class PredatorPrey extends Grid {
         Cell[][] currentGrid = getGrid();
         updateEnergies(currentGrid);
         updateAges(currentGrid);
+        printAges(currentGrid);
         ArrayList<Integer[]> sharks = findCellsWithState(currentGrid,SHARK);
         for (Integer[] shark : sharks) {
             updateSharkProperties(currentGrid,shark);
@@ -85,9 +89,12 @@ public class PredatorPrey extends Grid {
         for (Integer[] fishy : fish) {
             updateFishProperties(currentGrid,fishy);
         }
+        System.out.println("HELLO");
+        setGrid(currentGrid);
     }
 
     private void updateSharkProperties(Cell[][] currentGrid, Integer[] shark){
+        System.out.println("HELL9");
         boolean didKillShark = killShark(currentGrid, shark);
         if (!didKillShark){
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1]);
@@ -104,6 +111,7 @@ public class PredatorPrey extends Grid {
     }
 
     private void updateFishProperties(Cell[][] currentGrid, Integer[] fishy){
+        System.out.println("HELLO8");
         ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1]);
         ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
         findEmptyNeighbors(neighbors,emptyNeighbors,currentGrid);
@@ -116,21 +124,23 @@ public class PredatorPrey extends Grid {
     }
 
     private void moveFish(ArrayList<Integer[]> emptyNeighbors, Cell[][] currentGrid, Integer[] fishy){
+        System.out.println("HELLO7");
         if (!emptyNeighbors.isEmpty()){
             Random rand = new Random();
             Integer[] emptyCell = emptyNeighbors.get(rand.nextInt(emptyNeighbors.size()));
             switchSpots(currentGrid,emptyCell[0],emptyCell[1],FISH,fishy[0],fishy[1],EMPTY);
         }
-        //currentGrid[fishy[0]][fishy[1]].setAge(currentGrid[fishy[0]][fishy[1]].getAge()+1);
     }
 
     private void findEmptyNeighbors(ArrayList<Integer[]> neighbors, ArrayList<Integer[]> emptyNeighbors, Cell[][] currentGrid){
+        System.out.println("HELLO6");
         for (Integer[] neighbor : neighbors){
             if (currentGrid[neighbor[0]][neighbor[1]].getState() == EMPTY) {
                 emptyNeighbors.add(neighbor);
             }
         }
     }
+
 
     private void feedMoveOrKillShark(ArrayList<Integer[]> neighbors, ArrayList<Integer[]> emptyNeighbors, Cell[][] currentGrid, Integer[] shark){
         boolean foundFish = false;
@@ -219,6 +229,7 @@ public class PredatorPrey extends Grid {
     }
 
     private void switchSpots(Cell[][] grid, int y1, int x1, int state1, int y2, int x2, int state2){
+        System.out.println("HELL5");
         grid[y1][x1].setState(state1);
         grid[y1][x1].setColor(stateColorMap.get(state1));
         grid[y2][x2].setState(state2);
@@ -244,6 +255,7 @@ public class PredatorPrey extends Grid {
             }
         }
     }
+
     private void updateAges(Cell[][] temp){
         for (Cell[] row : temp){
             for (Cell cell : row){
@@ -253,6 +265,7 @@ public class PredatorPrey extends Grid {
             }
         }
     }
+
     private void printEnergies(Cell[][] temp){
         for (Cell[] row : temp){
             for (Cell cell : row){

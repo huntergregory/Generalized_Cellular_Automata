@@ -59,6 +59,10 @@ public class RectangleCell extends Cell{
         return copiedCell;
     }
 
+    /**
+     * Return the rectangle representing the body of the cell
+     * @return
+     */
     public Rectangle getCellBody() {
         return cellBody;
     }
@@ -127,6 +131,10 @@ public class RectangleCell extends Cell{
         energy = newEnergy;
     }
 
+    /**
+     * Method to add border lines on cell body
+     * @param addBorder boolean representing whether or not the feature should be on
+     */
     @Override
     public void setCellBorder(boolean addBorder) {
         if (addBorder){
