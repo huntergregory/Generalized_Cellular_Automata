@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
+ * This is a simulation that inherits from the Grid class. In this simulation red and blue people move about the grid until they become satisfied with their surroundings. To be satisfied, a certain number of their occupied neighbor cells must be of the same type that they are. The most important method in this class is updateCells() which defines the rules of the simulation. It is broken down into several smaller methods to be easier to read.
  * @author Connor Ghazaleh
  */
 

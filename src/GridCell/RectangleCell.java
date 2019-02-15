@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
+ * This is a type of cell that inherits from the cell class but differentiates itself by its rectangular shape representation on the screen. The method largely contains getter and setter methods for properties of this type of cell, however the constructor also contains logic and calculations that determine where to draw the cell on the screen when it is created.
  * @author Connor Ghazaleh
  */
 public class RectangleCell extends Cell{

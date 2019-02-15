@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
+ * Individual simulation created by inheriting from the Grid superclass. This simulation involves sharks, fish, and empty space. Sharks move about the grid looking for fish, and eat when they find them. Sharks reproduce after a certain number of cycles but can also die if they don't find a fish to eat in a certain number of cycles. Fish swim around and reproduce after a certain number of cycles. The most important part of this class is the updateCells() method which is broken into many different methods to make it more readable.
  * @author Connor Ghazaleh
  */
 

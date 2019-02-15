@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Super class that all other simulations will inherit from. This class defines all methods common to all simulations such as a method to get the neighbors of the current cell, as well as getters and setters for objects contained within the super class. This class also sets global variables that help to define input parameters to some of the methods and customize their behavior to for difference scenarios. It contains another important method to set all the immutable properties of a simulation that are related to the configuration of the simulation.
+ * Super class that all other simulations will inherit from. This class defines all methods common to all simulations such as a method to get the neighbors of the current cell, as well as getters and setters for objects contained within the super class. This class also sets global variables that help to define input parameters to some of the methods and customize their behavior to for difference scenarios. It contains another important method to set all the immutable properties of a simulation that are related to the configuration of the simulation. The most important method in this class is the getNeighbors() method which defines which cells in the grid have the relationship "neighbor" to the current cell based on the shape of the cell.
  * @author Connor Ghazaleh
  */
 public abstract class Grid {
