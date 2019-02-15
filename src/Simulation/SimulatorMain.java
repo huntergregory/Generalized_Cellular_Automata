@@ -277,11 +277,20 @@ public class SimulatorMain extends Application {
             myGrid.setGridRandom(myGrid.getCurComposition());
         }
         resetCellGroup(cellBorders);
+        handleAgeAndEnergyReset();
         pauseSim = true;
         stopButton.setDisable(true);
         startButton.setDisable(false);
         roundCounter = 0;
         updateRoundLabel();
+    }
+
+    private void handleAgeAndEnergyReset() {
+        if (myGrid instanceof PredatorPrey){
+            Double[] parameters = myParser.getParameters();
+            if (parameters.length > 0)
+                myGrid.setAdditionalParams(parameters);
+        }
     }
 
     private void handleStart() {
