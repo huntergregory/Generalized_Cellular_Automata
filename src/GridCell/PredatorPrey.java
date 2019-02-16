@@ -71,7 +71,7 @@ public class PredatorPrey extends Grid {
                 }
             }
         }
-        printEnergies(currentGrid);
+        setGrid(currentGrid);
     }
 
     /**
@@ -100,33 +100,27 @@ public class PredatorPrey extends Grid {
             ArrayList<Integer[]> neighbors = getNeighbors(shark[0],shark[1]);
             ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
             findEmptyNeighbors(neighbors,emptyNeighbors,currentGrid);
-            //try to reproduce
             boolean didReproduce = reproduce(shark, currentGrid, emptyNeighbors, neighbors,SHARK,sharkBreedingAge);
-            //try to eat
             if (!didReproduce){
                 feedMoveOrKillShark(neighbors,emptyNeighbors,currentGrid,shark);
             }
         }
-
     }
 
     private void updateFishProperties(Cell[][] currentGrid, Integer[] fishy){
         ArrayList<Integer[]> neighbors = getNeighbors(fishy[0],fishy[1]);
         ArrayList<Integer[]> emptyNeighbors = new ArrayList<Integer[]>();
         findEmptyNeighbors(neighbors,emptyNeighbors,currentGrid);
-        //try to reproduce
         boolean didReproduce = reproduce(fishy, currentGrid, emptyNeighbors, neighbors,FISH,fishBreedingAge);
-        //try to move
         if (!didReproduce){
             moveFish(emptyNeighbors,currentGrid,fishy);
         }
     }
 
+
     private void moveFish(ArrayList<Integer[]> emptyNeighbors, Cell[][] currentGrid, Integer[] fishy){
         if (!emptyNeighbors.isEmpty()){
-            Random rand = new Random();
-            Integer[] emptyCell = emptyNeighbors.get(rand.nextInt(emptyNeighbors.size()));
-            switchSpots(currentGrid,emptyCell[0],emptyCell[1],FISH,fishy[0],fishy[1],EMPTY);
+            findEmptyAndSwitch(emptyNeighbors,currentGrid,fishy,FISH);
         }
     }
 
@@ -156,23 +150,22 @@ public class PredatorPrey extends Grid {
         if (!foundFish){
             killOrMoveShark(currentGrid,shark,emptyNeighbors);
         }
-        //currentGrid[shark[0]][shark[1]].setAge(currentGrid[shark[0]][shark[1]].getAge()+1);
     }
 
     private void killOrMoveShark(Cell[][] currentGrid, Integer[] shark, ArrayList<Integer[]> emptyNeighbors){
         if (currentGrid[shark[0]][shark[1]].getEnergy() <= 0){
             setCellState(currentGrid,shark,EMPTY,0,0);
-//            currentGrid[shark[0]][shark[1]].setState(EMPTY);
-//            currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(EMPTY));
-//            currentGrid[shark[0]][shark[1]].setEnergy(0);
-//            currentGrid[shark[0]][shark[1]].setAge(0);
         }else {
             if (!emptyNeighbors.isEmpty()){
-                Random rand = new Random();
-                Integer[] emptyCell = emptyNeighbors.get(rand.nextInt(emptyNeighbors.size()));
-                switchSpots(currentGrid,emptyCell[0],emptyCell[1],SHARK,shark[0],shark[1],EMPTY);
+                findEmptyAndSwitch(emptyNeighbors,currentGrid,shark,SHARK);
             }
         }
+    }
+
+    private void findEmptyAndSwitch(ArrayList<Integer[]> emptyNeighbors, Cell[][] currentGrid, Integer[] pos, int state){
+        Random rand = new Random();
+        Integer[] emptyCell = emptyNeighbors.get(rand.nextInt(emptyNeighbors.size()));
+        switchSpots(currentGrid,emptyCell[0],emptyCell[1],state,pos[0],pos[1],EMPTY);
     }
 
     private void setCellState(Cell[][] currentGrid, Integer[] pos, int state, double energy, int age){
@@ -187,10 +180,6 @@ public class PredatorPrey extends Grid {
         if (currentGrid[shark[0]][shark[1]].getEnergy() <= 0){
             didKillShark = true;
             setCellState(currentGrid,shark,EMPTY,0,0);
-//            currentGrid[shark[0]][shark[1]].setState(EMPTY);
-//            currentGrid[shark[0]][shark[1]].setColor(stateColorMap.get(EMPTY));
-//            currentGrid[shark[0]][shark[1]].setEnergy(0);
-//            currentGrid[shark[0]][shark[1]].setAge(0);
         }
         return didKillShark;
     }
@@ -226,12 +215,6 @@ public class PredatorPrey extends Grid {
                     energy = sharkEnergy;
                 }
                 setCellState(currentGrid,spawnLocation,state,energy,0);
-//                currentGrid[spawnLocation[0]][spawnLocation[1]].setState(state);
-//                currentGrid[spawnLocation[0]][spawnLocation[1]].setColor(stateColorMap.get(state));
-//                currentGrid[spawnLocation[0]][spawnLocation[1]].setAge(0);
-//                if (state == SHARK){
-//                    currentGrid[spawnLocation[0]][spawnLocation[1]].setEnergy(sharkEnergy);
-//                }
                 emptyNeighbors.remove(spawnLocation);
                 currentGrid[animal[0]][animal[1]].setAge(0);
             }
@@ -240,21 +223,12 @@ public class PredatorPrey extends Grid {
     }
 
     private void switchSpots(Cell[][] grid, int y1, int x1, int state1, int y2, int x2, int state2){
-//        grid[y1][x1].setState(state1);
-//        grid[y1][x1].setColor(stateColorMap.get(state1));
-//        grid[y2][x2].setState(state2);
-//        grid[y2][x2].setColor(stateColorMap.get(state2));
         //switch energies
         double cell1Energy = grid[y1][x1].getEnergy();
         double cell2Energy = grid[y2][x2].getEnergy();
-//        grid[y1][x1].setEnergy(cell2Energy);
-//        grid[y2][x2].setEnergy(cell1Energy);
         //switch ages
         int cell1Age = grid[y1][x1].getAge();
         int cell2Age = grid[y2][x2].getAge();
-//        grid[y1][x1].setAge(cell2Age);
-//        grid[y2][x2].setAge(cell1Age);
-
         setCellState(grid,new Integer[]{y1,x1},state1,cell2Energy,cell2Age);
         setCellState(grid,new Integer[]{y2,x2},state2,cell1Energy,cell1Age);
     }
@@ -279,7 +253,7 @@ public class PredatorPrey extends Grid {
         }
     }
 
-    private void printEnergies(Cell[][] temp){
+    public void printEnergies(Cell[][] temp){
         for (Cell[] row : temp){
             for (Cell cell : row){
                 System.out.print(cell.getEnergy()+",");
@@ -289,6 +263,7 @@ public class PredatorPrey extends Grid {
         System.out.println();
 
     }
+
 
     private void printAges(Cell[][] temp){
         for (Cell[] row : temp){

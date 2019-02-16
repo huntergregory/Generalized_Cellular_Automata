@@ -354,7 +354,6 @@ public abstract class Grid {
     }
 
 
-
     /**
      * Set grid to new grid passed as input
      * @param cells
