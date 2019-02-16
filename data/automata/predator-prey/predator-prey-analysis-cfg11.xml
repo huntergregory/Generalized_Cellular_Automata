@@ -1,0 +1,48 @@
+<predator-prey title="string">
+  <size min="3" max="3">3</size>
+  <num-states num="3"/>
+  <state-names states="empty, fish, shark"/>
+  <edges>normal</edges>
+  <shape>triangle</shape>
+  <neighbors>string</neighbors>
+  <!--You have a CHOICE of the next 3 items at this level-->
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">1000.00</empty-comp>
+    <fish-comp min="0.0" max="1.0">1000.00</fish-comp>
+    <shark-comp min="0.0" max="1.0">1000.00</shark-comp>
+  </random-composition>
+  <random-numbers>
+    <empty-num min="3" max="3">3</empty-num>
+    <shark-num min="3" max="3">3</shark-num>
+    <fish-num min="3" max="3">3</fish-num>
+  </random-numbers>
+  <configured>
+    <empty-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </empty-spots>
+    <fish-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </fish-spots>
+    <shark-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </shark-spots>
+  </configured>
+  <parameters>
+    <fish-breeding-age min="3" max="3">3</fish-breeding-age>
+    <shark-breeding-age min="3" max="3">3</shark-breeding-age>
+    <fish-energy min="3" max="3">3</fish-energy>
+    <shark-energy min="3" max="3">3</shark-energy>
+  </parameters>
+</predator-prey>

@@ -3,7 +3,7 @@
   <num-states num="3"/>
   <state-names states="empty, fish, shark"/>
   <edges>normal</edges>
-  <shape>triangle</shape>
+  <shape>hexagon</shape>
   <neighbors>-1</neighbors>
   <random-composition>
     <empty-comp min="0.0" max="1.0">0.6</empty-comp>
