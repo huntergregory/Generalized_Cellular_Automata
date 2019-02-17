@@ -38,7 +38,7 @@ public class SimulatorMain extends Application {
     private static final String SPECIFIED_LOCATIONS = "locations";
     private static final String RANDOM_COMP = "random composition";
     private static final String RANDOM_NUMS = "random numbers";
-    private static final int INITIAL_DELAY = 30;
+    private static final int INITIAL_DELAY = 50;
     private Grid myGrid;
     private XMLParser myParser;
     private FileChooser myChooser;
@@ -305,7 +305,7 @@ public class SimulatorMain extends Application {
     private HBox createDelaySliderHBox() {
         HBox delaySliderHBox = new HBox();
         var delayLabel = new SimLabel("Delay: " + INITIAL_DELAY + " ms", 17.0);
-        var delaySlider = new SimSlider(100,3000, INITIAL_DELAY);
+        var delaySlider = new SimSlider(50,3000, INITIAL_DELAY);
         delaySlider.valueProperty().addListener(e -> handleDelaySliderChange(delaySlider, delayLabel));
         delaySliderHBox.getChildren().addAll(delaySlider, delayLabel);
         delaySliderHBox.setSpacing(20.0);

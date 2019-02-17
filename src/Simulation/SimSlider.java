@@ -11,8 +11,7 @@ class SimSlider extends Slider {
 
     SimSlider(int startVal, int endVal, int initialVal){
         super(startVal, endVal, initialVal);
-        this.setMajorTickUnit(10);
-        this.setMinorTickCount(9);
+        this.setMajorTickUnit(1);
         this.setSnapToTicks(true);
         this.setMaxWidth(SLIDER_WIDTH);
     }

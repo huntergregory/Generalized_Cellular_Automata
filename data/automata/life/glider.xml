@@ -1,5 +1,5 @@
 <game-of-life title="string">
-  <size mi="10" max="30">12</size>
+  <size min="10" max="30">12</size>
   <num-states num="2"/>
   <state-names states="populated, empty"/>
   <edges>toroidal</edges>
