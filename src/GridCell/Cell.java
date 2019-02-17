@@ -1,6 +1,7 @@
 package GridCell;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
 /**
  * Superclass that manages the cell objects that represent each grid element. The super class outlines the methods that the subclasses for different cell shapes will need. It also defines some common variables in the constructor such as the ones that track cell properties like age and energy.
@@ -23,6 +24,11 @@ public abstract class Cell {
      */
     abstract void setColor(Color color);
 
+    /**
+     * Returns shape object that Cell class contains
+     * @return shape object that Cell class contains
+     */
+    public abstract Shape getCellBody();
 
     /**
      * @return copy of this Cell
