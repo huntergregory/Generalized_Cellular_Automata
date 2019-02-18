@@ -6,7 +6,7 @@ Design
 
 The goal of this project was to design a simulator that provided the foundation for running various types of Cellular 
 Automata simulations. One of our main goals while implementing the project was to design and structure the code to be as
-as flexible as possible so that it would be easy to add new features and simulations later. With that in mind, we used 
+flexible as possible so that it would be easy to add new features and simulations later. With that in mind, we used 
 polymorphism in 2 important places to allow for flexibility. The first was in creating cells for each simulation. This 
 was done so that we could customize the properties of the cell without having to make significant changes to the code 
 base for each additional type of cell. This resulted in one super class called Cell that had three subclasses,
