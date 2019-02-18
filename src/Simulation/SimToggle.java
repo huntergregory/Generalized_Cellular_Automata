@@ -8,7 +8,7 @@ import javafx.scene.control.ToggleButton;
  * @author Dhanush Madabusi
  */
 class SimToggle extends ToggleButton {
-    public SimToggle(String name, boolean isSelected, double xPos, double yPos){
+    SimToggle(String name, boolean isSelected, double xPos, double yPos){
         super(name);
         this.setSelected(isSelected);
         this.setLayoutX(xPos);

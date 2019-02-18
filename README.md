@@ -11,15 +11,23 @@ Start Date: 1/27/19
 
 Finish Date: 2/12/19
 
-Hours Spent: 30
+Hours Spent: 40
 
 ### Primary Roles
 
+Connor was primarily responsible for constructing the abstract Cell and Grid classes as well as the Cell subclasses and
+multiple of the CA simulations, or Grid subclasses. Hunter was primarily responsible for constructing the XML schemas
+and various test files for all the simulations. Additionally, he handled the implementation for the FileChooser and
+the XML parser, and he designed some of the Grid simulation subclasses. Dhanush was primarily responsible for all the 
+visualization for the project. He constructed all front end components and handled what was displayed at each step in
+the simulations.
 
 ### Resources Used
 
 * Stack Overflow
 * Java documentation
+* JavaFX tutorial
+* Information on Cellular Automata simulations
 
 
 ### Running the Program
@@ -53,7 +61,7 @@ Assumptions or Simplifications:
 * Grid has same height and width
 
 Known Bugs:
-* 
+* no known bugs in current state of project
 
 Extra credit:
 * Fun colors
