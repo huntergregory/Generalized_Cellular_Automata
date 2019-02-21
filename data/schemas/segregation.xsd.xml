@@ -1,0 +1,45 @@
+<segregation title="string">
+  <size min="3" max="3">3</size>
+  <num-states num="3"/>
+  <state-names states="empty, people A, people B"/>
+  <edges>normal</edges>
+  <shape>triangle</shape>
+  <neighbors>string</neighbors>
+  <!--You have a CHOICE of the next 3 items at this level-->
+  <random-composition>
+    <empty-comp min="0.0" max="1.0">1000.00</empty-comp>
+    <people-A-comp min="0.0" max="1.0">1000.00</people-A-comp>
+    <people-B-comp min="0.0" max="1.0">1000.00</people-B-comp>
+  </random-composition>
+  <random-numbers>
+    <empty-num min="3" max="3">3</empty-num>
+    <people-A-num min="3" max="3">3</people-A-num>
+    <people-B-num min="3" max="3">3</people-B-num>
+  </random-numbers>
+  <configured>
+    <empty-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </empty-spots>
+    <people-A-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </people-A-spots>
+    <people-B-spots>
+      <!--1 or more repetitions:-->
+      <position>
+        <row>3</row>
+        <col>3</col>
+      </position>
+    </people-B-spots>
+  </configured>
+  <parameters>
+    <similar min="0.0" max="1.0">1000.00</similar>
+  </parameters>
+</segregation>
